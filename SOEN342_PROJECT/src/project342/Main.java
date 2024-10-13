@@ -1,4 +1,6 @@
 package SOEN342_PROJECT.src.project342;
+import src.project342.DbFunctions;
+
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

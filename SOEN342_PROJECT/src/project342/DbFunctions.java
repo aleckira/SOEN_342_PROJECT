@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.src.project342;
+package src.project342;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

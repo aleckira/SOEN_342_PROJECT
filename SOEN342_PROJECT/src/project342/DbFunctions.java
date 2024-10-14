@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class DbFunctions {
     public Connection connectToDb() {
         Connection conn = null;
-        String url = "jdbc:postgresql://localhost:5432/SOEN342-Project";
-        String user = "postgres";
-        String password = "DataBahel420!";
+        String url = "jdbc:postgresql://db342-do-user-13923136-0.g.db.ondigitalocean.com:25060/defaultdb?sslmode=require";
+        String user = "doadmin";
+        String password = "AVNS_W1VGJX2LCLaI2p5l0wf";
         try {
             conn = DriverManager.getConnection(url, user, password);
             if (conn != null) {

@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.src.project342;
+package src.project342;
 import src.project342.DbFunctions;
 
 import javax.swing.*;

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbFunctions {
-    public Connection connectToDb() {
+    public static Connection connectToDb() {
         Connection conn = null;
         String url = "jdbc:postgresql://db342-do-user-13923136-0.g.db.ondigitalocean.com:25060/defaultdb?sslmode=require";
         String user = "doadmin";

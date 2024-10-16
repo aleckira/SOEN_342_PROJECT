@@ -1,4 +1,6 @@
-package src.project342;
+package PackageUI;
+
+import src.project342.DbFunctions;
 
 import javax.swing.*;
 import java.awt.*;

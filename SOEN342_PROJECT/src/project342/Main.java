@@ -11,13 +11,13 @@ import java.sql.SQLException;
 public class Main {
 
 	public static void main(String[] args) throws SQLException {
-		DbFunctions db = new DbFunctions();
+		InitialDbFunctions db = new InitialDbFunctions();
 		PreparedStatement stmt = null;
 		String query = "SELECT \"offerings\".\"class_type\" FROM \"offerings\"";
 		ResultSet rs = null;
 
 		try {
-			Connection connection = db.connectToDb();
+			Connection connection = InitialDbFunctions.getConnection();
 			stmt = connection.prepareStatement(query);
 			rs = stmt.executeQuery();
 			System.out.println("Available Offerings:");

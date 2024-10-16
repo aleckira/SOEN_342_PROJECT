@@ -60,7 +60,6 @@ public class LoginForm extends JFrame {
         // Add the panel to the frame
         add(panel);
 
-        // Set the action for the buttons (for demonstration purposes)
         createAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,10 +77,24 @@ public class LoginForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = firstField.getText();
-                String secondFieldString = new String(secondField.getText());
+                String secondFieldString = secondField.getText();
 
-                // Perform login action here (e.g., validation)
-                JOptionPane.showMessageDialog(null, "Login button clicked\nUsername: " + name);
+                if (userType.equals("admin")) {
+//                    Admin a = InitialDbFunctions.getAdmin(name, secondFieldString);
+//                    if (a != null) {
+//                        new AdminPage();
+//                    }
+                    new AdminPage();
+                    dispose();
+                }
+                if (userType.equals("client")) {
+                    new ClientPage();
+                    dispose();
+                }
+                if (userType.equals("instructor")) {
+                    new InstructorPage();
+                    dispose();
+                }
             }
         });
 

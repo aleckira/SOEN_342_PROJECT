@@ -5,13 +5,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginPage extends JFrame {
+
+public class ClientPage extends JFrame {
 
     // Constructor for LoginPage
-    public LoginPage() {
+    public ClientPage() {
         // Set up the frame
-        setTitle("Login Page");
-        setSize(400, 200);
+        setTitle("Client Page");
+        setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
@@ -20,52 +21,51 @@ public class LoginPage extends JFrame {
         panel.setLayout(new GridLayout(4, 1, 10, 10)); // 4 rows, 1 column, with spacing
 
         // Create the label for login selection
-        JLabel loginLabel = new JLabel("Select Login Type", JLabel.CENTER);
+        JLabel loginLabel = new JLabel("Select among the following options", JLabel.CENTER);
         loginLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(loginLabel);
 
         // Create buttons for User, Instructor, and Admin logins
-        JButton userLoginBtn = new JButton("Client Login");
-        JButton instructorLoginBtn = new JButton("Instructor Login");
-        JButton adminLoginBtn = new JButton("Admin Login");
+        JButton viewAllAvailableOfferings = new JButton("View available offerings");
+        JButton viewBookingsBtn = new JButton("View your bookings");
+        JButton logout = new JButton("Logout");
 
         // Add action listeners for each button
-        userLoginBtn.addActionListener(new ActionListener() {
+        viewAllAvailableOfferings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //handleLogin("user"); // Call method for User login
-                new LoginForm("client");
+                //new LoginForm("client");
                 dispose();
 
             }
         });
 
-        instructorLoginBtn.addActionListener(new ActionListener() {
+        viewBookingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //handleLogin("instructor"); // Call method for Instructor login
-                new LoginForm("instructor");
+                //new LoginForm("instructor");
                 dispose();
             }
         });
 
-        adminLoginBtn.addActionListener(new ActionListener() {
+        logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LoginForm("admin");
+                //new LoginForm("admin");
                 dispose();
             }
         });
 
-        panel.add(userLoginBtn);
-        panel.add(instructorLoginBtn);
-        panel.add(adminLoginBtn);
-        add(panel);
+
+        // Add buttons to the panel
+        panel.add(viewAllAvailableOfferings);
+        panel.add(viewBookingsBtn);
+        panel.add(logout);
         // Add panel to the frame
+        add(panel);
 
+        // Make the frame visible
         setVisible(true);
     }
-
-
 
 }

@@ -1,5 +1,8 @@
 package PackageUI;
 
+import PackageActors.Admin;
+import src.project342.InitialDbFunctions;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -63,7 +66,7 @@ public class LoginForm extends JFrame {
         createAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Objects.equals(userType, "user")) {
+                if (Objects.equals(userType, "client")) {
                     new CreateAccountClient();
                 }
                 if (Objects.equals(userType, "instructor")) {
@@ -72,30 +75,31 @@ public class LoginForm extends JFrame {
                 dispose();
             }
         });
-
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = firstField.getText();
                 String secondFieldString = secondField.getText();
-
                 if (userType.equals("admin")) {
-//                    Admin a = InitialDbFunctions.getAdmin(name, secondFieldString);
-//                    if (a != null) {
-//                        new AdminPage();
-//                    }
-                    new AdminPage();
-                    dispose();
+                    Admin a = InitialDbFunctions.getAdmin(name, secondFieldString);
+                    if (a != null) {
+                        new AdminPage();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 if (userType.equals("client")) {
                     new ClientPage();
                     dispose();
+
                 }
                 if (userType.equals("instructor")) {
                     new InstructorPage();
                     dispose();
                 }
             }
+
         });
 
         setVisible(true); // Make the frame visible

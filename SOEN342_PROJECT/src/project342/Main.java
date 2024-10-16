@@ -11,27 +11,6 @@ import java.sql.SQLException;
 public class Main {
 
 	public static void main(String[] args) throws SQLException {
-		InitialDbFunctions db = new InitialDbFunctions();
-		PreparedStatement stmt = null;
-		String query = "SELECT \"offerings\".\"class_type\" FROM \"offerings\"";
-		ResultSet rs = null;
-
-		try {
-			Connection connection = InitialDbFunctions.getConnection();
-			stmt = connection.prepareStatement(query);
-			rs = stmt.executeQuery();
-			System.out.println("Available Offerings:");
-			while (rs.next()) {
-				String data = rs.getString("class_type");
-				System.out.println(data);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) rs.close();
-			if (stmt != null) stmt.close();
-		}
-
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new LoginPage(); // Create and display the login page

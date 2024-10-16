@@ -1,14 +1,13 @@
 package PackageActors;
 
-public class Admin {
-    private String name;
+public class Admin extends Actor {
     private String password;
     public Admin(String name, String password) {
-        this.name = name;
+        super(name);
         this.password = password;
     }
     public String getName() {
-        return name;
+        return this.getName();
     }
     public String getPassword() {
         return password;

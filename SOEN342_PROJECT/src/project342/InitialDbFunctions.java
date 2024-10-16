@@ -58,7 +58,37 @@ public class InitialDbFunctions {
         if (adminName != null && adminPassword != null && name.equals(adminName) && password.equals(adminPassword)) {
             return new Admin(name, password);
         }
-        System.out.println(adminName + " " + adminPassword);
         return null;
     }
+//    public static Admin getInstructor(String name, String phoneNumber) {
+//        PreparedStatement stmt = null;
+//        String query = "SELECT \"name\", \"password\" FROM \"admin\" LIMIT 1";
+//        ResultSet rs = null;
+//        String adminName = null;
+//        String adminPassword = null;
+//
+//        try {
+//            Connection connection = getConnection();
+//            stmt = connection.prepareStatement(query);
+//            rs = stmt.executeQuery();
+//
+//            if (rs.next()) {
+//                adminName = rs.getString("name");
+//                adminPassword = rs.getString("password");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (rs != null) rs.close();
+//                if (stmt != null) stmt.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if (adminName != null && adminPassword != null && name.equals(adminName) && password.equals(adminPassword)) {
+//            return new Admin(name, password);
+//        }
+//        return null;
+//    }
 }

@@ -1,7 +1,7 @@
 package PackageUI;
 
 import PackageActors.Admin;
-import src.project342.InitialDbFunctions;
+import src.project342.GeneralDBFunctions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,7 +81,7 @@ public class LoginForm extends JFrame {
                 String name = firstField.getText();
                 String secondFieldString = secondField.getText();
                 if (userType.equals("admin")) {
-                    Admin a = InitialDbFunctions.getAdmin(name, secondFieldString);
+                    Admin a = GeneralDBFunctions.getAdmin(name, secondFieldString);
                     if (a != null) {
                         new AdminPage();
                         dispose();

@@ -6,12 +6,20 @@ public class Instructor extends Actor {
     private String[] cities;
     //private Booking[] bookings;
 
-    public Instructor(String name, String phoneNumber) {
+    public Instructor(String name, String phoneNumber, String specialty, String[] cities) {
         super(name);
         this.phoneNumber = phoneNumber;
-        //this.cities = getCities
+        this.specialty = specialty;
+        this.cities = cities;
         //this.bookings = getBookings()
     }
+//    public Instructor(String name, String phoneNumber, String specialty, String[] cities, private Booking[] bookings) {
+//        super(name);
+//        this.phoneNumber = phoneNumber;
+//        this.specialty = specialty;
+//        this.cities = cities;
+//        //this.bookings = getBookings()
+//    }
     public String getName() {
         return this.getName();
     }

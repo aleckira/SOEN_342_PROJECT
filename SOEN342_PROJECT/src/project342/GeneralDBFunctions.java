@@ -1,35 +1,29 @@
 package src.project342;
 
 import PackageActors.Admin;
+import PackageActors.Client;
 import PackageActors.Instructor;
 
 import java.sql.*;
 
 public class GeneralDBFunctions {
     private static Connection connection;
-    private static void connectToDb() {
-        Connection conn = null;
+    private static Connection connectToDb() {
         String url = "jdbc:postgresql://db342-do-user-13923136-0.g.db.ondigitalocean.com:25060/defaultdb?sslmode=require";
         String user = "doadmin";
         String password = "AVNS_W1VGJX2LCLaI2p5l0wf";
         try {
-            conn = DriverManager.getConnection(url, user, password);
-            if (conn != null) {
-                System.out.println("Connected to PostgreSQL database");
+            connection = DriverManager.getConnection(url, user, password);
+            if (connection != null) {
             } else {
                 System.out.println("Failed to connect to PostgreSQL database");
             }
         } catch (SQLException e) {
-            System.out.println(e);
-        }
-        connection = conn;
-    }
-    public static Connection getConnection() {
-        if (connection == null) {
-            connectToDb();
+            System.out.println("Connection error: " + e.getMessage());
         }
         return connection;
     }
+
     public static Admin getAdmin(String name, String password) {
         PreparedStatement stmt = null;
         String query = "SELECT \"name\", \"password\" FROM \"admin\" LIMIT 1";
@@ -38,7 +32,7 @@ public class GeneralDBFunctions {
         String adminPassword = null;
 
         try {
-            Connection connection = getConnection();
+            Connection connection = connectToDb();
             stmt = connection.prepareStatement(query);
             rs = stmt.executeQuery();
 
@@ -62,15 +56,14 @@ public class GeneralDBFunctions {
         return null;
     }
     public static Instructor registerInstructor(String name, String phoneNumber, String specialty, String cities) throws SQLException {
-        System.out.println(name);
-        System.out.println(phoneNumber);
-        System.out.println(specialty);
-        System.out.println(cities);
 
         if (name == null || name.trim().isEmpty()) {
             return null;
         }
-        if (!phoneNumber.matches("\\d{15}") && isPhoneNumberUnique(phoneNumber, "instructor")) {
+        if (!phoneNumber.matches("\\d{15}") || !isPhoneNumberUnique(phoneNumber, "instructor")) {
+            return null;
+        }
+        if (cities.trim().isEmpty()) {
             return null;
         }
 
@@ -78,7 +71,7 @@ public class GeneralDBFunctions {
 
         String query= "INSERT INTO \"public\".\"instructors\" (\"name\", \"phone_number\", \"specialty\", \"cities\") VALUES (?, ?, ?, ?)";
 
-        try (Connection connection = getConnection();
+        try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, name);
@@ -93,11 +86,40 @@ public class GeneralDBFunctions {
             throw e;
         }
     }
+    public static Client registerClient(String name, String phoneNumber, String age) throws SQLException {
+
+        if (name == null || name.trim().isEmpty()) {
+            return null;
+        }
+        if (!phoneNumber.matches("\\d{15}") || !isPhoneNumberUnique(phoneNumber, "client")) {
+            return null;
+        }
+        if (!age.trim().matches("\\d+") || Integer.parseInt(age) <= 0) {
+            return null;
+        }
+        int ageInt = Integer.parseInt(age);
+
+        String query= "INSERT INTO \"public\".\"clients\" (\"name\", \"phone_number\", \"age\") VALUES (?, ?, ?)";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, phoneNumber);
+            stmt.setInt(3, ageInt);
+            stmt.executeUpdate();
+            Client c = new Client(name, phoneNumber, ageInt);
+            return c;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
     private static boolean isPhoneNumberUnique(String phoneNumber, String typeOfActor) {
         String query = typeOfActor == "client" ? "SELECT COUNT(*) FROM \"public\".\"clients\" WHERE \"phone_number\" = ?" :
                 "SELECT COUNT(*) FROM \"public\".\"instructors\" WHERE \"phone_number\" = ?";
 
-        try (Connection connection = getConnection();
+        try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, phoneNumber);

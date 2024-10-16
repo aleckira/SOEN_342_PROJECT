@@ -1,5 +1,7 @@
 package PackageUI;
 
+import PackageActors.Client;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +11,7 @@ import java.awt.event.ActionListener;
 public class ClientPage extends JFrame {
 
     // Constructor for LoginPage
-    public ClientPage() {
+    public ClientPage(Client c) {
         // Set up the frame
         setTitle("Client Page");
         setSize(500, 400);

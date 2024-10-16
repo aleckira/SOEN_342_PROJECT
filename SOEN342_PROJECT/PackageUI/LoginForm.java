@@ -1,6 +1,8 @@
 package PackageUI;
 
 import PackageActors.Admin;
+import PackageActors.Client;
+import PackageActors.Instructor;
 import src.project342.GeneralDBFunctions;
 
 import javax.swing.*;
@@ -90,18 +92,21 @@ public class LoginForm extends JFrame {
                     }
                 }
                 if (userType.equals("client")) {
-                    new ClientPage();
+                    Client c = new Client("1","2",3); // need to get client and send it in ClientPage
+                    new ClientPage(c);
                     dispose();
 
                 }
                 if (userType.equals("instructor")) {
-                    new InstructorPage();
+                    String[] mockCities = {"mtl"};
+                    Instructor i = new Instructor("1","2","judo", mockCities); // need to get client
+                    new InstructorPage(i);
                     dispose();
                 }
             }
 
         });
 
-        setVisible(true); // Make the frame visible
+        setVisible(true);
     }
 }

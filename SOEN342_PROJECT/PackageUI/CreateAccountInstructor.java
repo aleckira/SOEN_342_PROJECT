@@ -83,7 +83,7 @@ public class CreateAccountInstructor extends JFrame {
                 try {
                     Instructor i = GeneralDBFunctions.registerInstructor(name, phoneNumber, specialty, citiesInput);
                     if (i != null) {
-                        new InstructorPage();
+                        new InstructorPage(i);
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(CreateAccountInstructor.this,

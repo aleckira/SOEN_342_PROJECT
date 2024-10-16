@@ -1,5 +1,7 @@
 package PackageUI;
 
+import PackageActors.Instructor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +11,7 @@ import java.awt.event.ActionListener;
 public class InstructorPage extends JFrame {
 
     // Constructor for LoginPage
-    public InstructorPage() {
+    public InstructorPage(Instructor i) {
         // Set up the frame
         setTitle("Instructor Page");
         setSize(500, 400);

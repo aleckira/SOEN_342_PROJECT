@@ -16,7 +16,7 @@ public class Client extends Actor {
     private int age;
     private ArrayList<Offering> bookings = new ArrayList<Offering>();
     public Client() {}
-    public Client(int id, String name, String phoneNumber, int age) { // if a new Client Registers
+    public Client(int id, String name, String phoneNumber, int age) { // if a new Client Registers, also for the Offering class
         super(name);
         this.id = id;
         this.phoneNumber = phoneNumber;

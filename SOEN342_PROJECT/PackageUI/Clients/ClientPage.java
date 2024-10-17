@@ -1,4 +1,6 @@
-package PackageUI;
+package PackageUI.Clients;
+
+import PackageActors.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,19 +8,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class AdminPage extends JFrame {
+public class ClientPage extends JFrame {
 
     // Constructor for LoginPage
-    public AdminPage() {
+    public ClientPage(Client c) {
         // Set up the frame
-        setTitle("Admin Page");
+        setTitle("Client Page");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
         // Create the main panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 1, 10, 10)); // 4 rows, 1 column, with spacing
+        panel.setLayout(new GridLayout(4, 1, 10, 10)); // 4 rows, 1 column, with spacing
 
         // Create the label for login selection
         JLabel loginLabel = new JLabel("Select among the following options", JLabel.CENTER);
@@ -26,14 +28,12 @@ public class AdminPage extends JFrame {
         panel.add(loginLabel);
 
         // Create buttons for User, Instructor, and Admin logins
-        JButton enterOfferingsBtn = new JButton("Enter organization offerings");
-        JButton deleteAccBtn = new JButton("Delete an account");
-        JButton viewOfferingsBtn = new JButton("View all offerings");
-        JButton viewBookingsBtn = new JButton("View all bookings");
+        JButton viewAllAvailableOfferings = new JButton("View available offerings");
+        JButton viewBookingsBtn = new JButton("View your bookings");
         JButton logout = new JButton("Logout");
 
         // Add action listeners for each button
-        enterOfferingsBtn.addActionListener(new ActionListener() {
+        viewAllAvailableOfferings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("client");
@@ -42,7 +42,7 @@ public class AdminPage extends JFrame {
             }
         });
 
-        deleteAccBtn.addActionListener(new ActionListener() {
+        viewBookingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("instructor");
@@ -50,20 +50,6 @@ public class AdminPage extends JFrame {
             }
         });
 
-        viewOfferingsBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //new LoginForm("admin");
-                dispose();
-            }
-        });
-        viewBookingsBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //new LoginForm("admin");
-                dispose();
-            }
-        });
         logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,13 +58,11 @@ public class AdminPage extends JFrame {
             }
         });
 
+
         // Add buttons to the panel
-        panel.add(enterOfferingsBtn);
-        panel.add(deleteAccBtn);
-        panel.add(viewOfferingsBtn);
+        panel.add(viewAllAvailableOfferings);
         panel.add(viewBookingsBtn);
         panel.add(logout);
-
         // Add panel to the frame
         add(panel);
 

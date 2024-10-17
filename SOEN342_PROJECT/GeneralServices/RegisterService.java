@@ -1,60 +1,16 @@
-package src.project342;
+package GeneralServices;
 
-import PackageActors.Admin;
 import PackageActors.Client;
 import PackageActors.Instructor;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class GeneralDBFunctions {
-    private static Connection connection;
-    private static Connection connectToDb() {
-        String url = "jdbc:postgresql://db342-do-user-13923136-0.g.db.ondigitalocean.com:25060/defaultdb?sslmode=require";
-        String user = "doadmin";
-        String password = "AVNS_W1VGJX2LCLaI2p5l0wf";
-        try {
-            connection = DriverManager.getConnection(url, user, password);
-            if (connection != null) {
-            } else {
-                System.out.println("Failed to connect to PostgreSQL database");
-            }
-        } catch (SQLException e) {
-            System.out.println("Connection error: " + e.getMessage());
-        }
-        return connection;
-    }
+import static GeneralServices.DbConnectionService.connectToDb;
 
-    public static Admin getAdmin(String name, String password) {
-        PreparedStatement stmt = null;
-        String query = "SELECT \"name\", \"password\" FROM \"admin\" LIMIT 1";
-        ResultSet rs = null;
-        String adminName = null;
-        String adminPassword = null;
-
-        try {
-            Connection connection = connectToDb();
-            stmt = connection.prepareStatement(query);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                adminName = rs.getString("name");
-                adminPassword = rs.getString("password");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (adminName != null && adminPassword != null && name.equals(adminName) && password.equals(adminPassword)) {
-            return new Admin(name, password);
-        }
-        return null;
-    }
+public class RegisterService {
     public static Instructor registerInstructor(String name, String phoneNumber, String specialty, String cities) throws SQLException {
 
         if (name == null || name.trim().isEmpty()) {

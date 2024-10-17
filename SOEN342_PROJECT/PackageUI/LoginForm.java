@@ -1,9 +1,14 @@
 package PackageUI;
 
+import GeneralServices.LoginService;
 import PackageActors.Admin;
 import PackageActors.Client;
 import PackageActors.Instructor;
-import src.project342.GeneralDBFunctions;
+import PackageUI.Admins.AdminPage;
+import PackageUI.Clients.ClientPage;
+import PackageUI.Clients.CreateAccountClient;
+import PackageUI.Instructors.CreateAccountInstructor;
+import PackageUI.Instructors.InstructorPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +88,7 @@ public class LoginForm extends JFrame {
                 String name = firstField.getText();
                 String secondFieldString = secondField.getText();
                 if (userType.equals("admin")) {
-                    Admin a = GeneralDBFunctions.getAdmin(name, secondFieldString);
+                    Admin a = LoginService.loginAdmin(name, secondFieldString);
                     if (a != null) {
                         new AdminPage();
                         dispose();

@@ -1,7 +1,7 @@
-package PackageUI;
+package PackageUI.Clients;
 
-import PackageActors.Instructor;
-import src.project342.GeneralDBFunctions;
+import GeneralServices.RegisterService;
+import PackageActors.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class CreateAccountInstructor extends JFrame {
+public class CreateAccountClient extends JFrame {
 
-    public CreateAccountInstructor() {
+    public CreateAccountClient() {
         setTitle("Create account as Instructor");
         setSize(450, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,17 +24,14 @@ public class CreateAccountInstructor extends JFrame {
 
         JLabel nameLabel = new JLabel("Name:");
         JLabel phoneNumberLabel = new JLabel("Phone number:");
-        JLabel specialtyLabel = new JLabel("Specialty:");
-        JLabel cityLabel = new JLabel("Cities (comma separated):");
+        JLabel ageLabel = new JLabel("Age:");
 
         JTextField nameField = new JTextField(15);
         JTextField phoneNumberField = new JTextField(15);
-
+        JTextField ageField = new JTextField(15);
         String[] specialties = {"Swimming", "Judo", "MMA", "Basketball", "Soccer", "Yoga"};
         JComboBox<String> specialtyDropdown = new JComboBox<>(specialties);
 
-        JTextArea citiesArea = new JTextArea(3, 15);
-        JScrollPane scrollPane = new JScrollPane(citiesArea);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -52,17 +49,11 @@ public class CreateAccountInstructor extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        panel.add(specialtyLabel, gbc);
+        panel.add(ageLabel, gbc);
 
         gbc.gridx = 1;
-        panel.add(specialtyDropdown, gbc);
+        panel.add(ageField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        panel.add(cityLabel, gbc);
-
-        gbc.gridx = 1;
-        panel.add(scrollPane, gbc);
 
         JButton createAccountButton = new JButton("Create Account");
         gbc.gridx = 0;
@@ -77,16 +68,15 @@ public class CreateAccountInstructor extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText().trim();
                 String phoneNumber = phoneNumberField.getText().trim();
-                String specialty = (String) specialtyDropdown.getSelectedItem();
-                String citiesInput = citiesArea.getText().trim();
+                String age = ageField.getText().trim();
 
                 try {
-                    Instructor i = GeneralDBFunctions.registerInstructor(name, phoneNumber, specialty, citiesInput);
-                    if (i != null) {
-                        new InstructorPage(i);
+                    Client c = RegisterService.registerClient(name, phoneNumber, age);
+                    if (c != null) {
+                        new ClientPage(c);
                         dispose();
                     } else {
-                        JOptionPane.showMessageDialog(CreateAccountInstructor.this,
+                        JOptionPane.showMessageDialog(CreateAccountClient.this,
                                 "Registration failed. Please check your input.",
                                 "Error",
                                 JOptionPane.ERROR_MESSAGE);

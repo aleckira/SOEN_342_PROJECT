@@ -35,7 +35,11 @@ public class Instructor extends Actor {
         sb.append("]");
         return sb.toString();
     }
-
+    public void setInstructor(Offering offering) {
+        //should have code to associate an instructor with this offering via an ID
+        //this is called when an instructor chooses to teach a particular offering
+        int instructorId = this.id;
+    }
 
     public int getId() {
         return id;

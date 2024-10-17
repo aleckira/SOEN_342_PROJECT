@@ -97,16 +97,25 @@ public class LoginForm extends JFrame {
                     }
                 }
                 if (userType.equals("client")) {
-                    Client c = new Client(1, "1","2",3); // need to get client and send it in ClientPage
-                    new ClientPage(c);
-                    dispose();
+                    Client c = LoginService.loginClient(name, secondFieldString);
+                    if (c != null) {
+                        new ClientPage(c);
+                        dispose();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    }
 
                 }
                 if (userType.equals("instructor")) {
-                    String[] mockCities = {"mtl"};
-                    Instructor i = new Instructor(1, "1","2","judo", mockCities); // need to get client
-                    new InstructorPage(i);
-                    dispose();
+                    Instructor i = LoginService.loginInstructor(name, secondFieldString);
+                    if (i != null) {
+                        new InstructorPage(i);
+                        dispose();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
 

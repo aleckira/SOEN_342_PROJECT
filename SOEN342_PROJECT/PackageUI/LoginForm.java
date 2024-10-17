@@ -1,9 +1,9 @@
 package PackageUI;
 
 import GeneralServices.LoginService;
-import PackageActors.Admin;
-import PackageActors.Client;
-import PackageActors.Instructor;
+import PackageImportantObjects.Admin;
+import PackageImportantObjects.Client;
+import PackageImportantObjects.Instructor;
 import PackageUI.Admins.AdminPage;
 import PackageUI.Clients.ClientPage;
 import PackageUI.Clients.CreateAccountClient;
@@ -97,14 +97,14 @@ public class LoginForm extends JFrame {
                     }
                 }
                 if (userType.equals("client")) {
-                    Client c = new Client("1","2",3); // need to get client and send it in ClientPage
+                    Client c = new Client(1, "1","2",3); // need to get client and send it in ClientPage
                     new ClientPage(c);
                     dispose();
 
                 }
                 if (userType.equals("instructor")) {
                     String[] mockCities = {"mtl"};
-                    Instructor i = new Instructor("1","2","judo", mockCities); // need to get client
+                    Instructor i = new Instructor(1, "1","2","judo", mockCities); // need to get client
                     new InstructorPage(i);
                     dispose();
                 }

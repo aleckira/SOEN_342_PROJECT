@@ -1,27 +1,24 @@
-package PackageActors;
+package PackageImportantObjects;
 
 public class Instructor extends Actor {
+    private int id;
     private String phoneNumber;
     private String specialty;
     private String[] cities;
-    //private Booking[] bookings;
-
-    public Instructor(String name, String phoneNumber, String specialty, String[] cities) {
+    public Instructor() {}
+    public Instructor(int id, String name, String phoneNumber, String specialty, String[] cities) {
         super(name);
+        this.id = id;
         this.phoneNumber = phoneNumber;
         this.specialty = specialty;
         this.cities = cities;
-        //this.bookings = getBookings()
     }
-//    public Instructor(String name, String phoneNumber, String specialty, String[] cities, private Booking[] bookings) {
-//        super(name);
-//        this.phoneNumber = phoneNumber;
-//        this.specialty = specialty;
-//        this.cities = cities;
-//        //this.bookings = getBookings()
-//    }
-    public String getName() {
-        return this.getName();
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
     public String getPhoneNumber() {
         return phoneNumber;

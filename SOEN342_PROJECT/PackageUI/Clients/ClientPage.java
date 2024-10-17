@@ -1,6 +1,6 @@
 package PackageUI.Clients;
 
-import PackageActors.Client;
+import PackageImportantObjects.Client;
 
 import javax.swing.*;
 import java.awt.*;

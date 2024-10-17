@@ -1,7 +1,7 @@
 package GeneralServices;
 
-import PackageActors.Client;
-import PackageActors.Instructor;
+import PackageImportantObjects.Client;
+import PackageImportantObjects.Instructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,9 +23,9 @@ public class RegisterService {
             return null;
         }
 
-        String[] citiesArray = cities.split(",\\s*"); // Split cities by comma and trim whitespace
+        String[] citiesArray = cities.split(",\\s*");
 
-        String query= "INSERT INTO \"public\".\"instructors\" (\"name\", \"phone_number\", \"specialty\", \"cities\") VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO \"public\".\"instructors\" (\"name\", \"phone_number\", \"specialty\", \"cities\") VALUES (?, ?, ?, ?) RETURNING \"id\"";
 
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -34,14 +34,22 @@ public class RegisterService {
             stmt.setString(2, phoneNumber);
             stmt.setString(3, specialty);
             stmt.setArray(4, connection.createArrayOf("text", citiesArray));
-            stmt.executeUpdate();
-            Instructor a = new Instructor(name, phoneNumber, specialty, citiesArray);
-            return a;
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+
+                Instructor a = new Instructor(id, name, phoneNumber, specialty, citiesArray);
+                return a;
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
     }
+
     public static Client registerClient(String name, String phoneNumber, String age) throws SQLException {
 
         if (name == null || name.trim().isEmpty()) {
@@ -53,9 +61,10 @@ public class RegisterService {
         if (!age.trim().matches("\\d+") || Integer.parseInt(age) <= 0) {
             return null;
         }
+
         int ageInt = Integer.parseInt(age);
 
-        String query= "INSERT INTO \"public\".\"clients\" (\"name\", \"phone_number\", \"age\") VALUES (?, ?, ?)";
+        String query = "INSERT INTO \"public\".\"clients\" (\"name\", \"phone_number\", \"age\") VALUES (?, ?, ?) RETURNING \"id\"";
 
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -63,14 +72,22 @@ public class RegisterService {
             stmt.setString(1, name);
             stmt.setString(2, phoneNumber);
             stmt.setInt(3, ageInt);
-            stmt.executeUpdate();
-            Client c = new Client(name, phoneNumber, ageInt);
-            return c;
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+
+                Client c = new Client(id, name, phoneNumber, ageInt);
+                return c;
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
         }
     }
+
     private static boolean isPhoneNumberUnique(String phoneNumber, String typeOfActor) {
         String query = typeOfActor == "client" ? "SELECT COUNT(*) FROM \"public\".\"clients\" WHERE \"phone_number\" = ?" :
                 "SELECT COUNT(*) FROM \"public\".\"instructors\" WHERE \"phone_number\" = ?";

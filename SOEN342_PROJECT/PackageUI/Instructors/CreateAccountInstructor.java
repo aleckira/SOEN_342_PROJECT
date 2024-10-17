@@ -1,7 +1,7 @@
 package PackageUI.Instructors;
 
 import GeneralServices.RegisterService;
-import PackageActors.Instructor;
+import PackageImportantObjects.Instructor;
 
 import javax.swing.*;
 import java.awt.*;

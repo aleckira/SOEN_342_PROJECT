@@ -1,6 +1,6 @@
 package GeneralServices;
 
-import PackageActors.Admin;
+import PackageImportantObjects.Admin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -81,12 +81,7 @@ public class Offering {
         }
         return sb.toString();
     }
-    public void setInstructor(Instructor instructor) {
-        //should have code to associate an instructor with this booking via an ID
-        //this is called when an instructor chooses to teach a particular offering
-        int instructorId = instructor.getId();
-        this.instructor = instructor;
-    }
+
     private Instructor fetchInstructor(int instructorId) {
         PreparedStatement stmt = null;
         ResultSet rs = null;

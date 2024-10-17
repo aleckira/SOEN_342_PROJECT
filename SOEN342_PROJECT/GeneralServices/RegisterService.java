@@ -1,12 +1,14 @@
 package GeneralServices;
 
-import PackageImportantObjects.Client;
-import PackageImportantObjects.Instructor;
+import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Instructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static GeneralServices.DbConnectionService.connectToDb;
 
@@ -37,9 +39,9 @@ public class RegisterService {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+                ArrayList<String> citiesArrList = new ArrayList<>(Arrays.asList(citiesArray));
                 int id = rs.getInt("id");
-
-                Instructor a = new Instructor(id, name, phoneNumber, specialty, citiesArray);
+                Instructor a = new Instructor(id, name, phoneNumber, specialty, citiesArrList);
                 return a;
             } else {
                 return null;

@@ -1,6 +1,6 @@
 package PackageUI.Instructors;
 
-import PackageImportantObjects.Instructor;
+import PackageActorsAndObjects.Instructor;
 
 import javax.swing.*;
 import java.awt.*;

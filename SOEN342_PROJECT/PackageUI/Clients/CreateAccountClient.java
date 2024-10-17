@@ -1,7 +1,7 @@
 package PackageUI.Clients;
 
 import GeneralServices.RegisterService;
-import PackageImportantObjects.Client;
+import PackageActorsAndObjects.Client;
 
 import javax.swing.*;
 import java.awt.*;

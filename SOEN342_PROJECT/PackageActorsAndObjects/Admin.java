@@ -1,4 +1,4 @@
-package PackageImportantObjects;
+package PackageActorsAndObjects;
 
 public class Admin extends Actor {
     private final String password;

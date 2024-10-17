@@ -1,9 +1,9 @@
 package PackageUI;
 
 import GeneralServices.LoginService;
-import PackageImportantObjects.Admin;
-import PackageImportantObjects.Client;
-import PackageImportantObjects.Instructor;
+import PackageActorsAndObjects.Admin;
+import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Instructor;
 import PackageUI.Admins.AdminPage;
 import PackageUI.Clients.ClientPage;
 import PackageUI.Clients.CreateAccountClient;
@@ -99,16 +99,17 @@ public class LoginForm extends JFrame {
                 if (userType.equals("client")) {
                     Client c = LoginService.loginClient(name, secondFieldString);
                     if (c != null) {
+                        System.out.println(c.toString());
                         new ClientPage(c);
                         dispose();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
                     }
-
                 }
                 if (userType.equals("instructor")) {
                     Instructor i = LoginService.loginInstructor(name, secondFieldString);
+                    System.out.println(i.toString());
                     if (i != null) {
                         new InstructorPage(i);
                         dispose();
@@ -118,9 +119,7 @@ public class LoginForm extends JFrame {
                     }
                 }
             }
-
         });
-
         setVisible(true);
     }
 }

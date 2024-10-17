@@ -1,4 +1,4 @@
-package PackageImportantObjects;
+package PackageActorsAndObjects;
 
 public abstract class Actor {
     private String name;

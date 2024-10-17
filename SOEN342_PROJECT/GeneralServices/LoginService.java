@@ -1,13 +1,15 @@
 package GeneralServices;
 
-import PackageImportantObjects.Admin;
-import PackageImportantObjects.Client;
-import PackageImportantObjects.Instructor;
+import PackageActorsAndObjects.Admin;
+import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Instructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static GeneralServices.DbConnectionService.connectToDb;
 
@@ -61,9 +63,9 @@ public class LoginService {
                 String instructorPhoneNumber = rs.getString("phone_number");
                 String specialty = rs.getString("specialty");
                 String cities = rs.getString("cities");
-
+                ArrayList<String> citiesArrList = new ArrayList<>(Arrays.asList(cities.split(",\\s*")));
                 // Create and return an Instructor object
-                return new Instructor(id, instructorName, instructorPhoneNumber, specialty, cities.split(",\\s*")); // Assuming cities are stored as a comma-separated string
+                return new Instructor(id, instructorName, instructorPhoneNumber, specialty, citiesArrList); // Assuming cities are stored as a comma-separated string
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,8 +102,13 @@ public class LoginService {
                 for (int i = 0; i < bookingIdsArray.length; i++) {
                     bookingIds[i] = bookingIdsArray[i];
                 }
+                ArrayList<Integer> bookingIdArrList = new ArrayList<>();
 
-                return new Client(id, clientName, clientPhoneNumber, age, bookingIds);
+                for (int bookingId : bookingIds) {
+                    bookingIdArrList.add(bookingId); // Add each int to the ArrayList
+                }
+
+                return new Client(id, clientName, clientPhoneNumber, age, bookingIdArrList);
             }
         } catch (SQLException e) {
             e.printStackTrace();

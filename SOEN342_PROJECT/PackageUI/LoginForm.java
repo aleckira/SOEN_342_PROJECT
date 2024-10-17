@@ -1,9 +1,14 @@
 package PackageUI;
 
-import PackageActors.Admin;
-import PackageActors.Client;
-import PackageActors.Instructor;
-import src.project342.GeneralDBFunctions;
+import GeneralServices.LoginService;
+import PackageActorsAndObjects.Admin;
+import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Instructor;
+import PackageUI.Admins.AdminPage;
+import PackageUI.Clients.ClientPage;
+import PackageUI.Clients.CreateAccountClient;
+import PackageUI.Instructors.CreateAccountInstructor;
+import PackageUI.Instructors.InstructorPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +88,7 @@ public class LoginForm extends JFrame {
                 String name = firstField.getText();
                 String secondFieldString = secondField.getText();
                 if (userType.equals("admin")) {
-                    Admin a = GeneralDBFunctions.getAdmin(name, secondFieldString);
+                    Admin a = LoginService.loginAdmin(name, secondFieldString);
                     if (a != null) {
                         new AdminPage();
                         dispose();
@@ -92,21 +97,29 @@ public class LoginForm extends JFrame {
                     }
                 }
                 if (userType.equals("client")) {
-                    Client c = new Client("1","2",3); // need to get client and send it in ClientPage
-                    new ClientPage(c);
-                    dispose();
-
+                    Client c = LoginService.loginClient(name, secondFieldString);
+                    if (c != null) {
+                        System.out.println(c.toString());
+                        new ClientPage(c);
+                        dispose();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 if (userType.equals("instructor")) {
-                    String[] mockCities = {"mtl"};
-                    Instructor i = new Instructor("1","2","judo", mockCities); // need to get client
-                    new InstructorPage(i);
-                    dispose();
+                    Instructor i = LoginService.loginInstructor(name, secondFieldString);
+                    System.out.println(i.toString());
+                    if (i != null) {
+                        new InstructorPage(i);
+                        dispose();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
-
         });
-
         setVisible(true);
     }
 }

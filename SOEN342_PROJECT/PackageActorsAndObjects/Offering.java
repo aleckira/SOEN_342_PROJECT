@@ -52,7 +52,7 @@ public class Offering {
         this.startTime = startTime;
         this.endTime = endTime;
         this.instructor = fetchInstructor(instructorId);
-        //this.clients = fetchClients(clientIds); //need to fix this, it's screwing with connections for some reason
+        this.clients = fetchClients(clientIds); //need to fix this, it's screwing with connections for some reason
         this.available = this.capacity > this.clients.size();
     }
     public String toString() {
@@ -123,7 +123,7 @@ public class Offering {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Connection connection = null; // Declare the connection variable
-        String query = "SELECT \"id\", \"name\", \"phone_number\", \"age\", \"booking_ids\" FROM \"public\".\"clients\" WHERE \"id\" = ?";
+        String query = "SELECT \"id\", \"name\", \"phone_number\", \"age\" FROM \"public\".\"clients\" WHERE \"id\" = ?";
 
         try {
             connection = DbConnectionService.connectToDb(); // Establish the connection
@@ -139,11 +139,7 @@ public class Offering {
                     String phoneNumber = rs.getString("phone_number");
                     int age = rs.getInt("age");
 
-                    // Retrieve booking_ids as an Array and convert to a List
-                    Integer[] bookingIds = (Integer[]) rs.getArray("booking_ids").getArray();
-                    ArrayList<Integer> bookingIdArrList = new ArrayList<>(Arrays.asList(bookingIds)); // Convert to ArrayList
-
-                    Client client = new Client(id, name, phoneNumber, age, bookingIdArrList);
+                    Client client = new Client(id, name, phoneNumber, age);
                     clients.add(client);
                 }
             }

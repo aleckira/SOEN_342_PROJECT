@@ -1,6 +1,6 @@
 package src.project342;
 
-import PackageUI.LoginPage;
+import PackageUI.GeneralUI.LoginPage;
 import java.sql.SQLException;
 
 public class Main {

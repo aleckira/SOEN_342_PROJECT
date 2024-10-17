@@ -1,20 +1,17 @@
-package PackageUI.Clients;
-
-import PackageActorsAndObjects.Client;
+package PackageUI.GeneralUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-public class ClientPage extends JFrame {
+public class LoginPage extends JFrame {
 
     // Constructor for LoginPage
-    public ClientPage(Client c) {
+    public LoginPage() {
         // Set up the frame
-        setTitle("Client Page");
-        setSize(500, 400);
+        setTitle("Login Page");
+        setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
@@ -23,51 +20,52 @@ public class ClientPage extends JFrame {
         panel.setLayout(new GridLayout(4, 1, 10, 10)); // 4 rows, 1 column, with spacing
 
         // Create the label for login selection
-        JLabel loginLabel = new JLabel("Select among the following options", JLabel.CENTER);
+        JLabel loginLabel = new JLabel("Select Login Type", JLabel.CENTER);
         loginLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(loginLabel);
 
         // Create buttons for User, Instructor, and Admin logins
-        JButton viewAllAvailableOfferings = new JButton("View available offerings");
-        JButton viewBookingsBtn = new JButton("View your bookings");
-        JButton logout = new JButton("Logout");
+        JButton userLoginBtn = new JButton("Client Login");
+        JButton instructorLoginBtn = new JButton("Instructor Login");
+        JButton adminLoginBtn = new JButton("Admin Login");
 
         // Add action listeners for each button
-        viewAllAvailableOfferings.addActionListener(new ActionListener() {
+        userLoginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("client");
+                //handleLogin("user"); // Call method for User login
+                new LoginForm("client");
                 dispose();
 
             }
         });
 
-        viewBookingsBtn.addActionListener(new ActionListener() {
+        instructorLoginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("instructor");
+                //handleLogin("instructor"); // Call method for Instructor login
+                new LoginForm("instructor");
                 dispose();
             }
         });
 
-        logout.addActionListener(new ActionListener() {
+        adminLoginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("admin");
+                new LoginForm("admin");
                 dispose();
             }
         });
 
-
-        // Add buttons to the panel
-        panel.add(viewAllAvailableOfferings);
-        panel.add(viewBookingsBtn);
-        panel.add(logout);
-        // Add panel to the frame
+        panel.add(userLoginBtn);
+        panel.add(instructorLoginBtn);
+        panel.add(adminLoginBtn);
         add(panel);
+        // Add panel to the frame
 
-        // Make the frame visible
         setVisible(true);
     }
+
+
 
 }

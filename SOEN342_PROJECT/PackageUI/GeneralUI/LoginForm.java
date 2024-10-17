@@ -1,14 +1,14 @@
-package PackageUI;
+package PackageUI.GeneralUI;
 
-import GeneralServices.LoginService;
+import Services.LoginService;
 import PackageActorsAndObjects.Admin;
 import PackageActorsAndObjects.Client;
 import PackageActorsAndObjects.Instructor;
-import PackageUI.Admins.AdminPage;
-import PackageUI.Clients.ClientPage;
-import PackageUI.Clients.CreateAccountClient;
-import PackageUI.Instructors.CreateAccountInstructor;
-import PackageUI.Instructors.InstructorPage;
+import PackageUI.AdminUI.AdminPage;
+import PackageUI.ClientUI.ClientPage;
+import PackageUI.ClientUI.CreateAccountClient;
+import PackageUI.InstructorsUI.CreateAccountInstructor;
+import PackageUI.InstructorsUI.InstructorPage;
 
 import javax.swing.*;
 import java.awt.*;

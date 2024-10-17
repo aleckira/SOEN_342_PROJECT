@@ -1,4 +1,4 @@
-package GeneralServices;
+package Services;
 
 import PackageActorsAndObjects.Client;
 import PackageActorsAndObjects.Instructor;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static GeneralServices.DbConnectionService.connectToDb;
+import static Services.DbConnectionService.connectToDb;
 
 public class RegisterService {
     public static Instructor registerInstructor(String name, String phoneNumber, String specialty, String cities) throws SQLException {

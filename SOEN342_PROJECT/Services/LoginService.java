@@ -1,4 +1,4 @@
-package GeneralServices;
+package Services;
 
 import PackageActorsAndObjects.Admin;
 import PackageActorsAndObjects.Client;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static GeneralServices.DbConnectionService.connectToDb;
+import static Services.DbConnectionService.connectToDb;
 
 public class LoginService {
     public static Admin loginAdmin(String name, String password) {

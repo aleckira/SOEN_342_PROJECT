@@ -1,6 +1,6 @@
 package PackageActorsAndObjects;
 
-import GeneralServices.DbConnectionService;
+import Services.DbConnectionService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

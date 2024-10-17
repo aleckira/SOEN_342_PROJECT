@@ -1,4 +1,4 @@
-package PackageUI.Instructors;
+package PackageUI.InstructorsUI;
 
 import PackageActorsAndObjects.Instructor;
 

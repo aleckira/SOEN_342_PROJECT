@@ -1,6 +1,7 @@
 package PackageUI.ClientUI;
 
 import PackageActorsAndObjects.Client;
+import PackageUI.GeneralUI.LoginPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,6 +56,7 @@ public class ClientPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("admin");
                 dispose();
+                new LoginPage(); // Create and display the login page
             }
         });
 

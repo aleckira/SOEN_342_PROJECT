@@ -1,6 +1,7 @@
 package PackageUI.InstructorsUI;
 
 import PackageActorsAndObjects.Instructor;
+import PackageUI.GeneralUI.LoginPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +47,7 @@ public class InstructorPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("instructor");
                 dispose();
+                new LoginPage(); // Create and display the login page
             }
         });
         // Add buttons to the panel

@@ -1,5 +1,6 @@
 package PackageUI.GeneralUI;
 
+import PackageActorsAndObjects.Client;
 import PackageActorsAndObjects.Instructor;
 import Services.DbConnectionService;
 import Services.UserSession;
@@ -13,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static Services.DbConnectionService.connectToDb;
 
@@ -21,7 +23,6 @@ public class Offering extends JFrame {
     // Check user role
     String role = UserSession.getCurrentUserRole();
     Object user = UserSession.getCurrentUser();
-
 
     private JTable offeringsTable; // Table to display current offerings
     private DefaultTableModel tableModel;
@@ -35,13 +36,12 @@ public class Offering extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
-        // Create the table model with column headers, and make it non-editable
-        tableModel = new DefaultTableModel(new String[]{"id", "Class Type", "Location", "City", "Capacity", "Start Time", "End Time", "Instructor ID", "Client IDs"}, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Disable editing for all cells
-            }
-        };
+        // Create the table model with column headers based on user role
+        if ("client".equals(role)) {
+            tableModel = new DefaultTableModel(new String[]{"id", "Class Type", "Location", "City", "Status"}, 0);
+        } else {
+            tableModel = new DefaultTableModel(new String[]{"id", "Class Type", "Location", "City", "Capacity", "Start Time", "End Time", "Instructor ID", "Client IDs"}, 0);
+        }
 
         // Create the table and assign the model to it
         offeringsTable = new JTable(tableModel);
@@ -71,17 +71,15 @@ public class Offering extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout()); // Use FlowLayout for the panel
 
+        // Create action button based on user role
         if ("admin".equals(role)) {
-            // Button to perform actions based on selected row
             actionButton = new JButton("Edit");
             actionButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        // Perform action based on the selected row
                         String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        // Add your action logic here
                         JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
                     } else {
                         JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
@@ -96,9 +94,7 @@ public class Offering extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        // Perform action based on the selected row
                         String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        // Add your action logic here
                         JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
                     } else {
                         JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
@@ -161,6 +157,9 @@ public class Offering extends JFrame {
         }
 
         if ("client".equals(role)) {
+            Client client = (Client) user;
+            int id = client.getId();
+
             // Button to perform actions based on selected row
             actionButton = new JButton("Reserve");
             actionButton.addActionListener(new ActionListener() {
@@ -169,13 +168,25 @@ public class Offering extends JFrame {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
                         // Perform action based on the selected row
-                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        // Add your action logic here
-                        JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
-                    } else {
-                        JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
-                    }
-                }
+                        String status = (String) tableModel.getValueAt(selectedRow, 4);
+                        int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
+
+                        if (Objects.equals(status, "Available")) {
+
+                            // Reserve the lesson
+                            JOptionPane.showMessageDialog(Offering.this, "Lesson booked successfully.");
+
+                            // Update the database with the client ID for this class
+                            updateClientIdInDatabase(id, offeringID); // Call the method to update the database
+
+                        } else if (Objects.equals(status, "Full")){
+
+                        JOptionPane.showMessageDialog(Offering.this, "Lesson fully booked already.");
+
+                        } else {
+                            JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
+                        }
+                }}
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
         }
@@ -198,7 +209,16 @@ public class Offering extends JFrame {
         // Clear the table before fetching new data
         tableModel.setRowCount(0);
 
-        String query = "SELECT * FROM offerings"; // Query to fetch all offerings
+        String query;
+
+        // Modify query based on user role
+        if ("client".equals(role)) {
+            // For clients, filter out offerings with instructor_id equal to 0
+            query = "SELECT * FROM offerings WHERE instructor_id != 0"; // Exclude offerings with instructor_id = 0
+        } else {
+            query = "SELECT * FROM offerings"; // Query to fetch all offerings for admins and instructors
+        }
+
         try (Connection connection = DbConnectionService.connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
@@ -218,8 +238,17 @@ public class Offering extends JFrame {
                 Integer[] clientIds = (Integer[]) clientIdsArray.getArray(); // Convert Array to Integer[]
                 String clientIdsStr = formatClientIds(clientIds);
 
+                // Check if offering is full
+                String status = (clientIds.length >= capacity) ? "Full" : "Available";
+
                 // Add the data to the table row by row
-                tableModel.addRow(new Object[]{id, classType, location, city, capacity, startTime, endTime, instructorId, clientIdsStr});
+                if ("client".equals(role)) {
+                    // For clients, only add necessary columns
+                    tableModel.addRow(new Object[]{id, classType, location, city, status});
+                } else {
+                    // For admins and instructors, add all columns
+                    tableModel.addRow(new Object[]{id, classType, location, city, capacity, startTime, endTime, instructorId, clientIdsStr});
+                }
             }
 
         } catch (SQLException e) {
@@ -258,6 +287,27 @@ public class Offering extends JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error updating instructor ID in the database.");
+        }
+    }
+
+    // Method to update the client ID in the database
+    private void updateClientIdInDatabase(int clientId, int offeringId) {
+        String query = "UPDATE offerings SET client_ids = array_append(client_ids, ?) WHERE id = ?"; // Use array_append for PostgreSQL
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, clientId);
+            stmt.setInt(2, offeringId); // Set the offering ID
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Client ID added successfully.");
+            } else {
+                System.out.println("No matching offering found to update.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating client ID in the database.");
         }
     }
 }

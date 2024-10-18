@@ -16,5 +16,6 @@ public class UserSession {
     public static Object getCurrentUser() {
         return currentUser;
     }
+
 }
 

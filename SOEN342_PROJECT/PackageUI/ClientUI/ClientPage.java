@@ -1,6 +1,7 @@
 package PackageUI.ClientUI;
 
 import PackageActorsAndObjects.Client;
+import PackageUI.GeneralUI.BookedLessons;
 import PackageUI.GeneralUI.LoginPage;
 import PackageUI.GeneralUI.Offering;
 
@@ -50,6 +51,7 @@ public class ClientPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("instructor");
                 dispose();
+                new BookedLessons(); // Create and display booked lessons
             }
         });
 

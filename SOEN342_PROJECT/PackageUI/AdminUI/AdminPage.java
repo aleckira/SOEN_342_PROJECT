@@ -1,8 +1,7 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.Admin;
-import PackageUI.GeneralUI.LoginPage;
-import PackageUI.GeneralUI.Offering;
+import PackageUI.GeneralUI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +41,7 @@ public class AdminPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("client");
                 dispose();
+                new AddOffering();
 
             }
         });
@@ -51,6 +51,7 @@ public class AdminPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("instructor");
                 dispose();
+                new Accounts();
             }
         });
 
@@ -67,6 +68,7 @@ public class AdminPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("admin");
                 dispose();
+                new BookedLessons();
             }
         });
         logout.addActionListener(new ActionListener() {

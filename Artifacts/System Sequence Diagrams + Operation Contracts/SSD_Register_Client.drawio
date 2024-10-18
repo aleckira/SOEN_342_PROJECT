@@ -1,0 +1,111 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.8.0">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel dx="989" dy="514" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-8" value="-We are assuming that the actor is a Client from the start, interacting with the UI/System" style="shape=note;size=20;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="550" y="80" width="170" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-14" value="CreateAccountClient()" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="134.92857142857144" y="220" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225" y="220" />
+            </Array>
+            <mxPoint x="419.5" y="220" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-15" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" parent="1" vertex="1">
+          <mxGeometry x="125" y="80" width="20" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-16" value="&lt;u&gt;:Client&lt;/u&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="105" y="50" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-17" value="&lt;u&gt;:System&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="370" y="80" width="100" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-19" value="registerClient(name, phoneNumber, age)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="0.0018" relative="1" as="geometry">
+            <mxPoint x="135" y="280" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225" y="280" />
+            </Array>
+            <mxPoint x="420" y="280" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-20" value="LoginForm(&quot;client&quot;)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="0.0003" relative="1" as="geometry">
+            <mxPoint x="134.99857142857144" y="160" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225.07" y="160" />
+            </Array>
+            <mxPoint x="419.57" y="160" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-21" value="&amp;nbsp;not null c" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420.29" y="372" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225.79" y="372" />
+            </Array>
+            <mxPoint x="135.71857142857144" y="372" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-22" value="new LoginForm(&quot;client&quot;)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="0.0003" relative="1" as="geometry">
+            <mxPoint x="419.57" y="190" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225.07" y="190" />
+            </Array>
+            <mxPoint x="134.99857142857144" y="190" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-23" value="new CreateAccountClient" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="0.0003" relative="1" as="geometry">
+            <mxPoint x="419.57" y="244.71000000000004" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225.07" y="244.71000000000004" />
+            </Array>
+            <mxPoint x="134.99857142857144" y="244.71000000000004" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-24" value="new ClientPage(c)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420" y="400" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225.5" y="400" />
+            </Array>
+            <mxPoint x="135.42857142857144" y="400" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-25" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="70" y="260" width="375" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-26" value="[until valid name, phoneNumber, age provided]" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="145" y="288" width="270" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="htdySBDz2JRL37HmXuP0-27" value="registerClient will return c (a new Client). c is null if either the name, phoneNumber or age are invalid. If c is not null, the system will add it to the DB, then return a new ClientPage(c). Otherwise, an error message appears. The user is prompted to retry until a valid name, phoneNumber and age are provided.&amp;nbsp;" style="shape=note;size=20;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="230" width="330" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="JcoQUyHxXL0XQkZXMBOL-1" value="add client c to DB" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420.29" y="340" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="225.79" y="340" />
+            </Array>
+            <mxPoint x="135.71857142857144" y="340" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

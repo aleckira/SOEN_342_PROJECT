@@ -18,7 +18,7 @@ import java.util.Objects;
 
 import static Services.DbConnectionService.connectToDb;
 
-public class Offering extends JFrame {
+public class OfferingsPage extends JFrame {
 
     // Check user role
     String role = UserSession.getCurrentUserRole();
@@ -29,7 +29,7 @@ public class Offering extends JFrame {
     private JButton actionButton; // Button to perform actions based on selected row
     private JButton refreshButton; // Button to refresh offerings display
 
-    public Offering() {
+    public OfferingsPage() {
         // Set up the frame
         setTitle("Offerings");
         setSize(800, 400);
@@ -80,9 +80,9 @@ public class Offering extends JFrame {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
                         String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Action performed on: " + classType);
                     } else {
-                        JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
                     }
                 }
             });
@@ -95,9 +95,9 @@ public class Offering extends JFrame {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
                         String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Action performed on: " + classType);
                     } else {
-                        JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
                     }
                 }
             });
@@ -136,20 +136,20 @@ public class Offering extends JFrame {
                         }
                         if (cityMatch && instructorID == 0) {
                             // City matches; perform the reservation action
-                            JOptionPane.showMessageDialog(Offering.this, "Reservation successful for class type: " + classType);
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Reservation successful for class type: " + classType);
 
                             // Update the database with the instructor ID for this class
                             updateInstructorIdInDatabase(id, offeringID); // Call the method to update the database
 
                         } else if (!cityMatch && instructorID == 0) {
                             // No match found
-                            JOptionPane.showMessageDialog(Offering.this, "No matching city found for reservation.");
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "No matching city found for reservation.");
                         } else if (instructorID != 0) {
-                            JOptionPane.showMessageDialog(Offering.this, "Lesson already booked by an instructor.");
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson already booked by an instructor.");
                         }
                     } else {
                         // No row selected
-                        JOptionPane.showMessageDialog(Offering.this, "Please select a row to reserve.");
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row to reserve.");
                     }
                 }
             });
@@ -174,17 +174,17 @@ public class Offering extends JFrame {
                         if (Objects.equals(status, "Available")) {
 
                             // Reserve the lesson
-                            JOptionPane.showMessageDialog(Offering.this, "Lesson booked successfully.");
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson booked successfully.");
 
                             // Update the database with the client ID for this class
                             updateClientIdInDatabase(id, offeringID); // Call the method to update the database
 
                         } else if (Objects.equals(status, "Full")){
 
-                        JOptionPane.showMessageDialog(Offering.this, "Lesson fully booked already.");
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson fully booked already.");
 
                         } else {
-                            JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
                         }
                 }}
             });

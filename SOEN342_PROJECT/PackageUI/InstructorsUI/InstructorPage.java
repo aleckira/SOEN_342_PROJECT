@@ -2,7 +2,7 @@ package PackageUI.InstructorsUI;
 
 import PackageActorsAndObjects.Instructor;
 import PackageUI.GeneralUI.LoginPage;
-import PackageUI.GeneralUI.Offering;
+import PackageUI.GeneralUI.OfferingsPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ public class InstructorPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new Offering(); // Create and display the offerings page
+                new OfferingsPage(); // Create and display the offerings page
 
             }
         });

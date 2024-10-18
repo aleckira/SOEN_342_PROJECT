@@ -60,7 +60,7 @@ public class AdminPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("admin");
                 dispose();
-                new Offering();
+                new OfferingsPage();
             }
         });
         viewBookingsBtn.addActionListener(new ActionListener() {

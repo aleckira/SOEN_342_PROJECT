@@ -1,0 +1,80 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.8.0">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel dx="989" dy="514" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-2" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" parent="1" vertex="1">
+          <mxGeometry x="80" y="50" width="20" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-3" value="&lt;u&gt;:Instructor&lt;/u&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="50" y="20" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-4" value="&lt;u&gt;:System&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="325" y="50" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-8" value="-We are assuming that the actor is a Instructor from the start, interacting with the UI/System" style="shape=note;size=20;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="460" y="90" width="170" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-14" value="loginInstructor(name, phoneNumber)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="90" y="210" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180" y="210" />
+            </Array>
+            <mxPoint x="375" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-15" value="LoginForm(&quot;instructor&quot;)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="0.0003" relative="1" as="geometry">
+            <mxPoint x="89.99857142857144" y="130" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="130" />
+            </Array>
+            <mxPoint x="374.57" y="130" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-16" value="i" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="374.57" y="270" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="270" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="270" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-17" value="new LoginForm(&quot;instructor&quot;)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry x="0.0003" relative="1" as="geometry">
+            <mxPoint x="374.57" y="160" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="160" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="160" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-19" value="new InstructorPage(i)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="374.57" y="300" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="300" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="300" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yyHUzbSpZ9JDn9Qdpaiw-2" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="25" y="180" width="375" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="yyHUzbSpZ9JDn9Qdpaiw-3" value="[until existing client credentials are provided]" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="95" y="220" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yyHUzbSpZ9JDn9Qdpaiw-4" value="loginInstructor will return i (a new Instructor). i is null if the specified instructor doesn&#39;t exist in the DB. If i is not null, the system will then return a new InstructorPage(i). Otherwise, an error message appears. The user is prompted to retry until they provide credentials (a name and phoneNumber) for a instructor that exists in the DB.&amp;nbsp;" style="shape=note;size=20;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="450" y="240" width="330" height="140" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

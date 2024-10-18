@@ -1,0 +1,78 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.8.0">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel dx="1195" dy="622" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-2" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" parent="1" vertex="1">
+          <mxGeometry x="80" y="50" width="20" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-3" value="&lt;u&gt;:Admin&lt;/u&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="60" y="20" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-4" value="&lt;u&gt;:System&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="420" y="60" width="100" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-15" value="EnterNewOfferingPage(admin)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" parent="1" edge="1" target="QT0idfkxXLzTyoDSYEQH-4">
+          <mxGeometry x="-0.0015" relative="1" as="geometry">
+            <mxPoint x="89.99857142857144" y="130" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="130" />
+            </Array>
+            <mxPoint x="374.57" y="130" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-17" value="new EnterNewOfferingPage(admin)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1" source="QT0idfkxXLzTyoDSYEQH-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="160" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="160" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="160" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wPXZ8VNcLeqiLXzsY5N9-1" value="&lt;div&gt;-EnterNewOfferingPage is a UI class that takes an Admin instance&lt;/div&gt;-EnterNewOfferingPage will have a form including inputs for city, location, capacity, start time, end time and class type&lt;div&gt;-An Admin can enter all the required information. If all form inputs are correctly inputted, the system will add the new Offering to the database and send a confirmation to the Admin. Otherwise, it will send an error message until all inputs have been correctly filled.&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
+          <mxGeometry x="630" y="115" width="360" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="9VZ1k0ZcQNu3xWcckRNs-1" value="enterNewOffering(city, location, capacity, startTime, endTime, classType)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1">
+          <mxGeometry x="-0.0026" relative="1" as="geometry">
+            <mxPoint x="90.99857142857144" y="194.66" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="181.07" y="194.66" />
+            </Array>
+            <mxPoint x="470" y="194.66" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9VZ1k0ZcQNu3xWcckRNs-2" value="confirmation" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="470" y="290" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="290" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="290" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9VZ1k0ZcQNu3xWcckRNs-3" value="add Offering o to DB" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="470" y="255" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="255" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="255" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9VZ1k0ZcQNu3xWcckRNs-6" value="loop" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="20" y="170" width="560" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9VZ1k0ZcQNu3xWcckRNs-7" value="[until city, location, capacity, startTime, endTime and classType correctly inputted]" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="90" y="200" width="450" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -41,7 +41,7 @@ public class LoginService {
             }
         }
         if (adminName != null && adminPassword != null && name.equals(adminName) && password.equals(adminPassword)) {
-            return new Admin(name, password);
+            return Admin.getInstance(name, password);
         }
         return null;
     }

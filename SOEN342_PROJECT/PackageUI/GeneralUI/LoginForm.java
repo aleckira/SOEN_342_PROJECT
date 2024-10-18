@@ -90,7 +90,7 @@ public class LoginForm extends JFrame {
                 if (userType.equals("admin")) {
                     Admin a = LoginService.loginAdmin(name, secondFieldString);
                     if (a != null) {
-                        new AdminPage();
+                        new AdminPage(a);
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);

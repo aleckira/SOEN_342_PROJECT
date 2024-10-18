@@ -1,5 +1,7 @@
 package PackageUI.AdminUI;
 
+import PackageActorsAndObjects.Admin;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +11,7 @@ import java.awt.event.ActionListener;
 public class AdminPage extends JFrame {
 
     // Constructor for LoginPage
-    public AdminPage() {
+    public AdminPage(Admin a) {
         // Set up the frame
         setTitle("Admin Page");
         setSize(500, 400);

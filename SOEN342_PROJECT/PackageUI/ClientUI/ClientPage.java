@@ -2,6 +2,7 @@ package PackageUI.ClientUI;
 
 import PackageActorsAndObjects.Client;
 import PackageUI.GeneralUI.LoginPage;
+import PackageUI.GeneralUI.Offering;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class ClientPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //new LoginForm("client");
                 dispose();
+                new Offering(); // Create and display offerings page
 
             }
         });

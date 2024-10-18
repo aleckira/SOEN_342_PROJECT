@@ -2,6 +2,7 @@ package PackageUI.InstructorsUI;
 
 import PackageActorsAndObjects.Instructor;
 import PackageUI.GeneralUI.LoginPage;
+import PackageUI.GeneralUI.Offering;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,8 +37,8 @@ public class InstructorPage extends JFrame {
         viewAllOfferings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("client");
                 dispose();
+                new Offering(); // Create and display the offerings page
 
             }
         });
@@ -45,7 +46,6 @@ public class InstructorPage extends JFrame {
         logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("instructor");
                 dispose();
                 new LoginPage(); // Create and display the login page
             }

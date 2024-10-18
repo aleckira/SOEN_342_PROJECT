@@ -41,10 +41,13 @@ public class LoginService {
             }
         }
         if (adminName != null && adminPassword != null && name.equals(adminName) && password.equals(adminPassword)) {
-            return Admin.getInstance(name, password);
+            Admin admin = Admin.getInstance(name, password);
+            UserSession.setCurrentUserRole("admin", admin); // Store the role and admin instance
+            return admin;
         }
         return null;
     }
+
     public static Instructor loginInstructor(String name, String phoneNumber) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -64,8 +67,10 @@ public class LoginService {
                 String specialty = rs.getString("specialty");
                 String cities = rs.getString("cities");
                 ArrayList<String> citiesArrList = new ArrayList<>(Arrays.asList(cities.split(",\\s*")));
-                // Create and return an Instructor object
-                return new Instructor(id, instructorName, instructorPhoneNumber, specialty, citiesArrList); // Assuming cities are stored as a comma-separated string
+
+                Instructor instructor = new Instructor(id, instructorName, instructorPhoneNumber, specialty, citiesArrList);
+                UserSession.setCurrentUserRole("instructor", instructor); // Store the role and instructor instance
+                return instructor;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,6 +84,7 @@ public class LoginService {
         }
         return null;
     }
+
     public static Client loginClient(String name, String phoneNumber) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -103,12 +109,13 @@ public class LoginService {
                     bookingIds[i] = bookingIdsArray[i];
                 }
                 ArrayList<Integer> bookingIdArrList = new ArrayList<>();
-
                 for (int bookingId : bookingIds) {
                     bookingIdArrList.add(bookingId); // Add each int to the ArrayList
                 }
 
-                return new Client(id, clientName, clientPhoneNumber, age, bookingIdArrList);
+                Client client = new Client(id, clientName, clientPhoneNumber, age, bookingIdArrList);
+                UserSession.setCurrentUserRole("client", client); // Store the role and client instance
+                return client;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,8 +129,4 @@ public class LoginService {
         }
         return null; // Return null if no client was found
     }
-
-
-
-
 }

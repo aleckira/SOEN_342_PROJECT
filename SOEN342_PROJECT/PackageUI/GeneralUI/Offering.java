@@ -1,91 +1,191 @@
 package PackageUI.GeneralUI;
 
+import PackageActorsAndObjects.Instructor;
 import Services.DbConnectionService;
+import Services.UserSession;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
-
+import static Services.DbConnectionService.connectToDb;
 
 public class Offering extends JFrame {
 
-    private JTextArea offeringsDisplay; // To display current offerings
-    private JTextField classTypeField, locationField, cityField, capacityField, startTimeField, endTimeField, instructorIdField, clientIdsField; // Fields for adding new offering
+    // Check user role
+    String role = UserSession.getCurrentUserRole();
+    Object user = UserSession.getCurrentUser();
+
+
+    private JTable offeringsTable; // Table to display current offerings
+    private DefaultTableModel tableModel;
+    private JButton actionButton; // Button to perform actions based on selected row
+    private JButton refreshButton; // Button to refresh offerings display
 
     public Offering() {
-
         // Set up the frame
         setTitle("Offerings");
-        setSize(600, 500);
+        setSize(800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
-        // Panel for displaying current offerings
-        JPanel displayPanel = new JPanel();
-        displayPanel.setLayout(new BorderLayout());
-
-        offeringsDisplay = new JTextArea(10, 50);
-        offeringsDisplay.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(offeringsDisplay);
-        displayPanel.add(scrollPane, BorderLayout.CENTER);
-
-        JButton refreshButton = new JButton("Refresh Offerings");
-        refreshButton.addActionListener(new ActionListener() {
+        // Create the table model with column headers, and make it non-editable
+        tableModel = new DefaultTableModel(new String[]{"id", "Class Type", "Location", "City", "Capacity", "Start Time", "End Time", "Instructor ID", "Client IDs"}, 0) {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                displayOfferings();
+            public boolean isCellEditable(int row, int column) {
+                return false; // Disable editing for all cells
             }
-        });
-        displayPanel.add(refreshButton, BorderLayout.SOUTH);
+        };
 
-        // Panel for adding new offerings
-        JPanel addPanel = new JPanel();
-        addPanel.setLayout(new GridLayout(9, 2, 10, 10)); // Adjusted grid for 9 fields
+        // Create the table and assign the model to it
+        offeringsTable = new JTable(tableModel);
+        offeringsTable.setFillsViewportHeight(true);
 
-        classTypeField = new JTextField();
-        locationField = new JTextField();
-        cityField = new JTextField();
-        capacityField = new JTextField();
-        startTimeField = new JTextField();
-        endTimeField = new JTextField();
-        instructorIdField = new JTextField();
-        clientIdsField = new JTextField(); // Field to input client IDs
-
-        addPanel.add(new JLabel("Class Type:"));
-        addPanel.add(classTypeField);
-        addPanel.add(new JLabel("Location:"));
-        addPanel.add(locationField);
-        addPanel.add(new JLabel("City:"));
-        addPanel.add(cityField);
-        addPanel.add(new JLabel("Capacity:"));
-        addPanel.add(capacityField);
-        addPanel.add(new JLabel("Start Time (YYYY-MM-DD HH:MM:SS):"));
-        addPanel.add(startTimeField);
-        addPanel.add(new JLabel("End Time (YYYY-MM-DD HH:MM:SS):"));
-        addPanel.add(endTimeField);
-        addPanel.add(new JLabel("Instructor ID:"));
-        addPanel.add(instructorIdField);
-        addPanel.add(new JLabel("Client IDs (comma-separated):"));
-        addPanel.add(clientIdsField); // Add field to input client IDs
-
-        JButton addButton = new JButton("Add Offering");
-        addButton.addActionListener(new ActionListener() {
+        // Add mouse listener for row selection
+        offeringsTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                addOffering();
+            public void mouseClicked(MouseEvent e) {
+                int row = offeringsTable.rowAtPoint(e.getPoint());
+                if (row >= 0) {
+                    offeringsTable.setRowSelectionInterval(row, row); // Select the clicked row
+                }
             }
         });
 
-        addPanel.add(addButton);
+        // Style the table for a better appearance
+        offeringsTable.setRowHeight(25); // Set row height
+        offeringsTable.setFont(new Font("SansSerif", Font.PLAIN, 14)); // Set font for table
+        offeringsTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14)); // Set font for headers
 
-        // Add panels to the frame
-        add(displayPanel, BorderLayout.NORTH);
-        add(addPanel, BorderLayout.SOUTH);
+        // Scroll pane for table
+        JScrollPane scrollPane = new JScrollPane(offeringsTable);
+        add(scrollPane, BorderLayout.CENTER); // Add scroll pane to frame
+
+        // Create a panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout()); // Use FlowLayout for the panel
+
+        if ("admin".equals(role)) {
+            // Button to perform actions based on selected row
+            actionButton = new JButton("Edit");
+            actionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = offeringsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        // Perform action based on the selected row
+                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
+                        // Add your action logic here
+                        JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
+                    } else {
+                        JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
+                    }
+                }
+            });
+            buttonPanel.add(actionButton); // Add the action button to the panel
+
+            actionButton = new JButton("Delete");
+            actionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = offeringsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        // Perform action based on the selected row
+                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
+                        // Add your action logic here
+                        JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
+                    } else {
+                        JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
+                    }
+                }
+            });
+            buttonPanel.add(actionButton); // Add the action button to the panel
+        }
+
+        if ("instructor".equals(role)) {
+            Instructor instructor = (Instructor) user;
+            ArrayList<String> instructorCities = instructor.getCities();
+            int id = instructor.getId();
+            // Button to perform actions based on selected row
+            actionButton = new JButton("Reserve");
+            actionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = offeringsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        // Perform action based on the selected row
+                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
+                        String cityFromRow = (String) tableModel.getValueAt(selectedRow, 3);
+                        int instructorID = (int) tableModel.getValueAt(selectedRow, 7);
+                        int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
+
+                        // Remove any curly braces and trim the location
+                        String formattedLocation = cityFromRow.replaceAll("[{}]", "").trim();
+
+                        // Check if any of the instructor's cities match the selected location
+                        boolean cityMatch = false; // Initialize cityMatch as false
+                        for (String city : instructorCities) {
+                            // Remove any curly braces and trim the city
+                            String formattedCity = city.replaceAll("[{}]", "").trim();
+                            if (formattedCity.equalsIgnoreCase(formattedLocation)) {
+                                cityMatch = true; // Set to true if a match is found
+                                break; // Exit the loop as we found a match
+                            }
+                        }
+                        if (cityMatch && instructorID == 0) {
+                            // City matches; perform the reservation action
+                            JOptionPane.showMessageDialog(Offering.this, "Reservation successful for class type: " + classType);
+
+                            // Update the database with the instructor ID for this class
+                            updateInstructorIdInDatabase(id, offeringID); // Call the method to update the database
+
+                        } else if (!cityMatch && instructorID == 0) {
+                            // No match found
+                            JOptionPane.showMessageDialog(Offering.this, "No matching city found for reservation.");
+                        } else if (instructorID != 0) {
+                            JOptionPane.showMessageDialog(Offering.this, "Lesson already booked by an instructor.");
+                        }
+                    } else {
+                        // No row selected
+                        JOptionPane.showMessageDialog(Offering.this, "Please select a row to reserve.");
+                    }
+                }
+            });
+            buttonPanel.add(actionButton); // Add the action button to the panel
+        }
+
+        if ("client".equals(role)) {
+            // Button to perform actions based on selected row
+            actionButton = new JButton("Reserve");
+            actionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = offeringsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        // Perform action based on the selected row
+                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
+                        // Add your action logic here
+                        JOptionPane.showMessageDialog(Offering.this, "Action performed on: " + classType);
+                    } else {
+                        JOptionPane.showMessageDialog(Offering.this, "Please select a row first.");
+                    }
+                }
+            });
+            buttonPanel.add(actionButton); // Add the action button to the panel
+        }
+
+        // Button to refresh the offerings display
+        refreshButton = new JButton("Refresh Offerings");
+        refreshButton.addActionListener(e -> displayOfferings());
+        buttonPanel.add(refreshButton); // Add refresh button to the panel
+
+        add(buttonPanel, BorderLayout.SOUTH); // Add the button panel to the bottom
 
         // Initial display of offerings
         displayOfferings();
@@ -93,15 +193,18 @@ public class Offering extends JFrame {
         setVisible(true);
     }
 
-    // Method to display all offerings from the database
+    // Method to display all offerings from the database in the table
     private void displayOfferings() {
-        offeringsDisplay.setText(""); // Clear the text area
+        // Clear the table before fetching new data
+        tableModel.setRowCount(0);
+
         String query = "SELECT * FROM offerings"; // Query to fetch all offerings
         try (Connection connection = DbConnectionService.connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String classType = rs.getString("class_type");
                 String location = rs.getString("location");
                 String city = rs.getString("city");
@@ -110,9 +213,13 @@ public class Offering extends JFrame {
                 String endTime = rs.getString("end_time");
                 int instructorId = rs.getInt("instructor_id");
 
-                offeringsDisplay.append("Class Type: " + classType + ", Location: " + location + ", City: " + city +
-                        ", Capacity: " + capacity + ", Start Time: " + startTime + ", End Time: " + endTime +
-                        ", Instructor ID: " + instructorId + "\n");
+                // Assuming client_ids is an integer array (PostgreSQL integer[])
+                Array clientIdsArray = rs.getArray("client_ids");
+                Integer[] clientIds = (Integer[]) clientIdsArray.getArray(); // Convert Array to Integer[]
+                String clientIdsStr = formatClientIds(clientIds);
+
+                // Add the data to the table row by row
+                tableModel.addRow(new Object[]{id, classType, location, city, capacity, startTime, endTime, instructorId, clientIdsStr});
             }
 
         } catch (SQLException e) {
@@ -120,123 +227,37 @@ public class Offering extends JFrame {
         }
     }
 
-    // Method to add offerings
-    private void addOffering() {
-        String classType = classTypeField.getText();
-        String location = locationField.getText();
-        String city = cityField.getText();
-        int capacity;
-        try {
-            capacity = Integer.parseInt(capacityField.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Capacity must be a number", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+    // Helper method to format client IDs as a comma-separated string
+    private String formatClientIds(Integer[] clientIds) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < clientIds.length; i++) {
+            sb.append(clientIds[i]);
+            if (i < clientIds.length - 1) {
+                sb.append(", ");
+            }
         }
+        return sb.toString();
+    }
 
-        // Parse the start and end times as Timestamps
-        String startTimeInput = startTimeField.getText();
-        String endTimeInput = endTimeField.getText();
-        Timestamp startTime;
-        Timestamp endTime;
-        try {
-            startTime = parseTimestamp(startTimeInput);
-            endTime = parseTimestamp(endTimeInput);
-        } catch (ParseException e) {
-            JOptionPane.showMessageDialog(this, "Invalid date format. Please use YYYY-MM-DD HH:MM:SS", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int instructorId;
-        try {
-            instructorId = Integer.parseInt(instructorIdField.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Instructor ID must be a number", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Parse client_ids field as a comma-separated string of integers
-        String clientIdsInput = clientIdsField.getText();
-        int[] clientIds;
-        try {
-            clientIds = parseClientIds(clientIdsInput);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Client IDs must be a comma-separated list of numbers", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (classType.isEmpty() || location.isEmpty() || city.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String query = "INSERT INTO offerings (class_type, location, city, capacity, start_time, end_time, instructor_id, client_ids) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection connection = DbConnectionService.connectToDb();
+    // Method to update the instructor ID in the database
+    private void updateInstructorIdInDatabase(int instructorId, int offeringId) {
+        String query = "UPDATE offerings SET instructor_id = ? WHERE id = ?"; // Update based on offering ID
+        try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            stmt.setString(1, classType);
-            stmt.setString(2, location);
-            stmt.setString(3, city);
-            stmt.setInt(4, capacity);
-            stmt.setTimestamp(5, startTime);  // Use Timestamp for start_time
-            stmt.setTimestamp(6, endTime);    // Use Timestamp for end_time
-            stmt.setInt(7, instructorId);
+            stmt.setInt(1, instructorId);
+            stmt.setInt(2, offeringId); // Set the offering ID
+            int rowsUpdated = stmt.executeUpdate();
 
-            // Convert clientIds to Integer[] and then to a PostgreSQL array
-            Array clientIdsArray = connection.createArrayOf("INTEGER", toIntegerArray(clientIds));
-            stmt.setArray(8, clientIdsArray);  // Set client_ids as an array
-
-            stmt.executeUpdate();
-
-            JOptionPane.showMessageDialog(this, "Offering added successfully!");
-            displayOfferings(); // Refresh offerings display
-            clearFields();
-
+            if (rowsUpdated > 0) {
+                System.out.println("Instructor ID updated successfully.");
+                System.out.println("Updating instructor ID: " + instructorId + " for offering ID: " + offeringId);
+            } else {
+                System.out.println("No matching offering found to update.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating instructor ID in the database.");
         }
-    }
-
-    // Helper method to convert int[] to Integer[]
-    private Integer[] toIntegerArray(int[] intArray) {
-        Integer[] result = new Integer[intArray.length];
-        for (int i = 0; i < intArray.length; i++) {
-            result[i] = Integer.valueOf(intArray[i]);
-        }
-        return result;
-    }
-
-    // Helper method to parse the timestamp from a string
-    private Timestamp parseTimestamp(String timestampStr) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        java.util.Date parsedDate = dateFormat.parse(timestampStr);
-        return new Timestamp(parsedDate.getTime());
-    }
-
-    // Helper method to parse client IDs from a comma-separated string into an integer array
-    private int[] parseClientIds(String clientIdsInput) throws NumberFormatException {
-        if (clientIdsInput.isEmpty()) {
-            return new int[0]; // Return empty array if no client IDs are provided
-        }
-        String[] clientIdsStrArray = clientIdsInput.split(",");
-        int[] clientIds = new int[clientIdsStrArray.length];
-        for (int i = 0; i < clientIdsStrArray.length; i++) {
-            clientIds[i] = Integer.parseInt(clientIdsStrArray[i].trim());
-        }
-        return clientIds;
-    }
-
-
-
-    // Method to clear the input fields after adding an offering
-    private void clearFields() {
-        classTypeField.setText("");
-        locationField.setText("");
-        cityField.setText("");
-        capacityField.setText("");
-        startTimeField.setText("");
-        endTimeField.setText("");
-        instructorIdField.setText("");
-        clientIdsField.setText(""); // Clear clientIdsField
     }
 }

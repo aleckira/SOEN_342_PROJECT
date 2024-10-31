@@ -39,10 +39,7 @@ public class Instructor extends Actor {
     public ArrayList<Offering> getOfferingsForViewing() {
         return null;
     }
-    public void takeOffering(Offering offering) {
-        //should have code to associate an instructor with this offering via an ID
-        //this is called when an instructor chooses to teach a particular offering
-        int instructorId = this.id;
+    public void takeOffering(int offeringId) {
     }
 
     public int getId() {

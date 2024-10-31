@@ -119,7 +119,8 @@ public class Offering {
         }
         return null;
     }
-    private ArrayList<Client> fetchClients(ArrayList<Integer> clientIds) { //this should go in Booking
+    //this should go in Booking
+    private ArrayList<Client> fetchClients(ArrayList<Integer> clientIds) {
         ArrayList<Client> clients = new ArrayList<>();
         PreparedStatement stmt = null;
         ResultSet rs = null;

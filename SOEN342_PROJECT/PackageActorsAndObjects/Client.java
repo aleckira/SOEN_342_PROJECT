@@ -57,14 +57,10 @@ public class Client extends Actor {
     public ArrayList<Booking> getBookingsForViewing() {
         return null;
     }
-    public void makeBooking() {
+    public void makeBooking(int offeringId) {
 
     }
-    //???
-    public void makeBookingAsLegalGuardian() {
-
-    }
-    public void cancelBooking() {
+    public void cancelBooking(int bookingId) {
 
     }
     private ArrayList<Offering> fetchBookings(ArrayList<Integer> bookingIds) {

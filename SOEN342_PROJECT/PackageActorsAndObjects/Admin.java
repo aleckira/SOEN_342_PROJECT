@@ -31,15 +31,15 @@ public class Admin extends Actor {
     }
     public void deleteOffering(int offeringId) {
     }
+    public void deleteBooking(int bookingId) {
+    }
     public void deleteInstructor(int instructorId) {
     }
     public void deleteClient(int clientId) {
     }
-    public void editOffering(int offeringId, Offering o) {
+    public void editOffering(Offering o) {
     }
-    public void deleteBooking(int bookingId) {
-    }
-    public void editBooking(int bookingId, Booking b) {
+    public void editBooking(Booking b) {
     }
     public String getPassword() {
         return password;

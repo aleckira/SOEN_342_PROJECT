@@ -1,4 +1,6 @@
-package PackageActorsAndObjects;
+package SOEN342_PROJECT.PackageActorsAndObjects;
+
+import java.util.ArrayList;
 
 public class Admin extends Actor {
     private final String password;
@@ -18,6 +20,27 @@ public class Admin extends Actor {
         return instance;
     }
 
+    @Override
+    public ArrayList<Offering> getOfferingsForViewing() {
+        return null;
+    }
+    public ArrayList<Booking> getAllBookingsForViewing() {
+        return null;
+    }
+    public void enterNewOffering(Offering o) {
+    }
+    public void deleteOffering(int offeringId) {
+    }
+    public void deleteInstructor(int instructorId) {
+    }
+    public void deleteClient(int clientId) {
+    }
+    public void editOffering(int offeringId, Offering o) {
+    }
+    public void deleteBooking(int bookingId) {
+    }
+    public void editBooking(int bookingId, Booking b) {
+    }
     public String getPassword() {
         return password;
     }

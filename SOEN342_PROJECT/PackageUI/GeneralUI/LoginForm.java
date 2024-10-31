@@ -1,14 +1,14 @@
-package PackageUI.GeneralUI;
+package SOEN342_PROJECT.PackageUI.GeneralUI;
 
-import Services.LoginService;
-import PackageActorsAndObjects.Admin;
-import PackageActorsAndObjects.Client;
-import PackageActorsAndObjects.Instructor;
-import PackageUI.AdminUI.AdminPage;
-import PackageUI.ClientUI.ClientPage;
-import PackageUI.ClientUI.CreateAccountClient;
-import PackageUI.InstructorsUI.CreateAccountInstructor;
-import PackageUI.InstructorsUI.InstructorPage;
+import SOEN342_PROJECT.PackageActorsAndObjects.*;
+import SOEN342_PROJECT.PackageActorsAndObjects.Client;
+import SOEN342_PROJECT.PackageActorsAndObjects.Instructor;
+import SOEN342_PROJECT.PackageUI.AdminUI.AdminPage;
+import SOEN342_PROJECT.PackageUI.ClientUI.ClientPage;
+import SOEN342_PROJECT.PackageUI.ClientUI.CreateAccountClient;
+import SOEN342_PROJECT.PackageUI.InstructorsUI.CreateAccountInstructor;
+import SOEN342_PROJECT.PackageUI.InstructorsUI.InstructorPage;
+import SOEN342_PROJECT.Services.LoginService;
 
 import javax.swing.*;
 import java.awt.*;

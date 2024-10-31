@@ -1,4 +1,4 @@
-package PackageUI.GeneralUI;
+package SOEN342_PROJECT.PackageUI.GeneralUI;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,10 +1,12 @@
-package Services;
+package SOEN342_PROJECT.Services;
+
+import SOEN342_PROJECT.PackageActorsAndObjects.Actor;
 
 public class UserSession {
     private static String currentUserRole;
-    private static Object currentUser; // This can hold an instance of Admin, Instructor, or Client
+    private static Actor currentUser; // This can hold an instance of Admin, Instructor, or Client
 
-    public static void setCurrentUserRole(String role, Object user) {
+    public static void setCurrentUserRole(String role, Actor user) {
         currentUserRole = role;
         currentUser = user;
     }

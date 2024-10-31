@@ -1,8 +1,7 @@
-package PackageUI.InstructorsUI;
+package SOEN342_PROJECT.PackageUI.InstructorsUI;
 
-import PackageActorsAndObjects.Instructor;
-import PackageUI.GeneralUI.LoginPage;
-import PackageUI.GeneralUI.OfferingsPage;
+import SOEN342_PROJECT.PackageActorsAndObjects.Instructor;
+import SOEN342_PROJECT.PackageUI.GeneralUI.OfferingsPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +11,6 @@ import java.awt.event.ActionListener;
 
 public class InstructorPage extends JFrame {
 
-    // Constructor for LoginPage
     public InstructorPage(Instructor i) {
         // Set up the frame
         setTitle("Instructor Page");
@@ -31,7 +29,6 @@ public class InstructorPage extends JFrame {
 
         // Create buttons for User, Instructor, and Admin logins
         JButton viewAllOfferings = new JButton("View all offerings");
-        JButton logout = new JButton("Logout");
 
         // Add action listeners for each button
         viewAllOfferings.addActionListener(new ActionListener() {
@@ -43,16 +40,9 @@ public class InstructorPage extends JFrame {
             }
         });
 
-        logout.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new LoginPage(); // Create and display the login page
-            }
-        });
+
         // Add buttons to the panel
         panel.add(viewAllOfferings);
-        panel.add(logout);
         // Add panel to the frame
         add(panel);
 

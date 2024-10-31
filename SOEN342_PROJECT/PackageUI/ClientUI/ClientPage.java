@@ -1,9 +1,10 @@
-package PackageUI.ClientUI;
+package SOEN342_PROJECT.PackageUI.ClientUI;
 
-import PackageActorsAndObjects.Client;
-import PackageUI.GeneralUI.BookedLessons;
-import PackageUI.GeneralUI.LoginPage;
-import PackageUI.GeneralUI.OfferingsPage;
+
+import SOEN342_PROJECT.PackageActorsAndObjects.Client;
+import SOEN342_PROJECT.PackageUI.GeneralUI.BookedLessons;
+import SOEN342_PROJECT.PackageUI.GeneralUI.LoginPage;
+import SOEN342_PROJECT.PackageUI.GeneralUI.OfferingsPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,9 +32,8 @@ public class ClientPage extends JFrame {
         panel.add(loginLabel);
 
         // Create buttons for User, Instructor, and Admin logins
-        JButton viewAllAvailableOfferings = new JButton("View available offerings");
+        JButton viewAllAvailableOfferings = new JButton("View available offerings and make bookings");
         JButton viewBookingsBtn = new JButton("View your bookings");
-        JButton logout = new JButton("Logout");
 
         // Add action listeners for each button
         viewAllAvailableOfferings.addActionListener(new ActionListener() {
@@ -54,13 +54,13 @@ public class ClientPage extends JFrame {
                 new BookedLessons(); // Create and display booked lessons
             }
         });
-
-        logout.addActionListener(new ActionListener() {
+        viewBookingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("admin");
+                //new LoginForm("instructor");
                 dispose();
-                new LoginPage(); // Create and display the login page
+                //new BookedLessons(); refactor this into the below
+                new ViewClientBookings();
             }
         });
 
@@ -68,7 +68,6 @@ public class ClientPage extends JFrame {
         // Add buttons to the panel
         panel.add(viewAllAvailableOfferings);
         panel.add(viewBookingsBtn);
-        panel.add(logout);
         // Add panel to the frame
         add(panel);
 

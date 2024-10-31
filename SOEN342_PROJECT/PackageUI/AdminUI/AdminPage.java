@@ -1,7 +1,8 @@
-package PackageUI.AdminUI;
+package SOEN342_PROJECT.PackageUI.AdminUI;
 
-import PackageActorsAndObjects.Admin;
-import PackageUI.GeneralUI.*;
+
+import SOEN342_PROJECT.PackageActorsAndObjects.Admin;
+import SOEN342_PROJECT.PackageUI.GeneralUI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,35 +31,33 @@ public class AdminPage extends JFrame {
 
         // Create buttons for User, Instructor, and Admin logins
         JButton enterOfferingsBtn = new JButton("Enter organization offerings");
-        JButton deleteAccBtn = new JButton("Delete an account");
-        JButton viewOfferingsBtn = new JButton("View all offerings");
-        JButton viewBookingsBtn = new JButton("View all bookings");
-        JButton logout = new JButton("Logout");
+//        JButton deleteAccBtn = new JButton("Delete an account");
+        JButton viewOfferingsBtn = new JButton("View, edit and delete offerings");
+        JButton viewBookingsBtn = new JButton("View, edit and delete all bookings");
+        JButton deleteInstructorBtn = new JButton("View and delete instructors");
+        JButton deleteClientBtn = new JButton("View and delete clients");
 
         // Add action listeners for each button
         enterOfferingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("client");
                 dispose();
                 new AddOffering();
 
             }
         });
 
-        deleteAccBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //new LoginForm("instructor");
-                dispose();
-                new Accounts();
-            }
-        });
+//        deleteAccBtn.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                dispose();
+//                new Accounts();
+//            }
+//        });
 
         viewOfferingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("admin");
                 dispose();
                 new OfferingsPage();
             }
@@ -66,27 +65,33 @@ public class AdminPage extends JFrame {
         viewBookingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("admin");
                 dispose();
                 new BookedLessons();
             }
         });
-        logout.addActionListener(new ActionListener() {
+        deleteInstructorBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("admin");
                 dispose();
-                new LoginPage(); // Create and display the login page
+                new ViewAndDeleteInstructors();
+            }
+        });
+        deleteClientBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new ViewAndDeleteClients();
             }
         });
 
+
         // Add buttons to the panel
-        panel.add(enterOfferingsBtn);
-        panel.add(deleteAccBtn);
         panel.add(viewOfferingsBtn);
         panel.add(viewBookingsBtn);
-        panel.add(logout);
-
+        panel.add(enterOfferingsBtn);
+        //panel.add(deleteAccBtn); separate this into the two below
+        panel.add(deleteInstructorBtn);
+        panel.add(deleteClientBtn);
         // Add panel to the frame
         add(panel);
 

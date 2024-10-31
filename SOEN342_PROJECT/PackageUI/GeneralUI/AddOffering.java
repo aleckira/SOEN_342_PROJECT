@@ -1,6 +1,4 @@
-package PackageUI.GeneralUI;
-
-import Services.DbConnectionService;
+package SOEN342_PROJECT.PackageUI.GeneralUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +8,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
 
 
 public class AddOffering extends JFrame {
@@ -97,7 +96,7 @@ public class AddOffering extends JFrame {
     private void displayOfferings() {
         offeringsDisplay.setText(""); // Clear the text area
         String query = "SELECT * FROM offerings"; // Query to fetch all offerings
-        try (Connection connection = DbConnectionService.connectToDb();
+        try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -171,7 +170,7 @@ public class AddOffering extends JFrame {
 
         String query = "INSERT INTO offerings (class_type, location, city, capacity, start_time, end_time, instructor_id, client_ids) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DbConnectionService.connectToDb();
+        try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, classType);

@@ -1,6 +1,4 @@
-package PackageActorsAndObjects;
-
-import Services.DbConnectionService;
+package SOEN342_PROJECT.PackageActorsAndObjects;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +7,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
 
 public class Client extends Actor {
     private int id;
@@ -51,7 +50,23 @@ public class Client extends Actor {
         sb.append("]");
         return sb.toString();
     }
+    @Override
+    public ArrayList<Offering> getOfferingsForViewing() {
+        return null;
+    }
+    public ArrayList<Booking> getBookingsForViewing() {
+        return null;
+    }
+    public void makeBooking() {
 
+    }
+    //???
+    public void makeBookingAsLegalGuardian() {
+
+    }
+    public void cancelBooking() {
+
+    }
     private ArrayList<Offering> fetchBookings(ArrayList<Integer> bookingIds) {
         ArrayList<Offering> bookings = new ArrayList<>();
         PreparedStatement stmt = null;
@@ -59,7 +74,7 @@ public class Client extends Actor {
         String query = "SELECT * FROM public.offerings WHERE id = ?"; // Adjust this query as needed
         Connection connection = null;
         try {
-            connection = DbConnectionService.connectToDb();
+            connection = connectToDb();
             stmt = connection.prepareStatement(query);
 
             for (int bookingId : bookingIds) {

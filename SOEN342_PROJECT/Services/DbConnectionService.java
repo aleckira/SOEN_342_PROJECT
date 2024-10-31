@@ -1,4 +1,4 @@
-package Services;
+package SOEN342_PROJECT.Services;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

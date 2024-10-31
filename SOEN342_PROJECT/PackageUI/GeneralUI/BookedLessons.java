@@ -1,18 +1,22 @@
-package PackageUI.GeneralUI;
+package SOEN342_PROJECT.PackageUI.GeneralUI;
 
-import PackageActorsAndObjects.Client;
-import Services.DbConnectionService;
-import Services.UserSession;
+import SOEN342_PROJECT.PackageActorsAndObjects.Client;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.*;
 
+import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
+import static SOEN342_PROJECT.Services.UserSession.getCurrentUser;
+import static SOEN342_PROJECT.Services.UserSession.getCurrentUserRole;
+//This should be separated into two, one in the AdminUI Package and another in ClientUI Package
+//Clients get THEIR bookings, while Admins get ALL available bookings
+//use the appropriate methods in Client and Admin to get them
 public class BookedLessons extends JFrame {
 
-    String role = UserSession.getCurrentUserRole(); // Get the current user role
-    Object user = UserSession.getCurrentUser(); // Get the current user
+    String role = getCurrentUserRole(); // Get the current user role
+    Object user = getCurrentUser(); // Get the current user
 
     private JTable bookedLessonsTable; // Table to display booked lessons
     private BookedLessonsTableModel tableModel; // Use custom model
@@ -51,7 +55,7 @@ public class BookedLessons extends JFrame {
 
             String query = "SELECT class_type, location, city, start_time, end_time " +
                     "FROM offerings WHERE client_ids @> ?"; // Use PostgreSQL array containment operator
-            try (Connection connection = DbConnectionService.connectToDb();
+            try (Connection connection = connectToDb();
                  PreparedStatement stmt = connection.prepareStatement(query)) {
                 stmt.setArray(1, connection.createArrayOf("integer", new Integer[]{id})); // Set the client ID as an array
 
@@ -75,7 +79,7 @@ public class BookedLessons extends JFrame {
             // For admin: select all offerings with at least one client ID
             String query = "SELECT class_type, location, city, start_time, end_time " +
                     "FROM offerings WHERE array_length(client_ids, 1) > 0"; // Check for non-empty client_ids array
-            try (Connection connection = DbConnectionService.connectToDb();
+            try (Connection connection = connectToDb();
                  PreparedStatement stmt = connection.prepareStatement(query)) {
 
                 ResultSet rs = stmt.executeQuery();

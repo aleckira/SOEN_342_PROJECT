@@ -1,6 +1,4 @@
-package PackageActorsAndObjects;
-
-import Services.DbConnectionService;
+package SOEN342_PROJECT.PackageActorsAndObjects;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,21 +9,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
+
 public class Offering {
     private int id;
     private String city;
     private String location;
     private String classType;
     private int capacity;
-    private boolean available;
+    private boolean available; //this should go in Booking
     private String mode;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Instructor instructor; //an offering could be without an instructor, specifically when it is first created
-    private ArrayList<Client> clients = new ArrayList<Client>();
+    private ArrayList<Client> clients = new ArrayList<Client>(); //this should go in Booking
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
+    public Offering() {}
     // when Admin creates a new offering, it has no instructor nor clients
     public Offering(int id, String city, String location, String classType, int capacity, LocalDateTime startTime, LocalDateTime endTime) {
         this.id = id;
@@ -42,6 +42,7 @@ public class Offering {
     //We know if we can't find an instructor upon calling fetchInstructor(), it doesn't have an instructor yet (public can't see it)
     //We know if we can't find clients upon calling fetchClients(), we have no clients
     //We know if the capacity is above the current number of clients, the offering is no longer available (public can't reserve it)
+    //this should go in Booking
     public Offering(int id, String city, String location, String classType, int capacity, LocalDateTime startTime, LocalDateTime endTime, int instructorId, ArrayList<Integer> clientIds) {
         this.id = id;
         this.city = city;
@@ -89,7 +90,7 @@ public class Offering {
         String query = "SELECT \"id\", \"name\", \"phone_number\", \"specialty\", \"cities\" FROM \"public\".\"instructors\" WHERE \"id\" = ?";
 
         try {
-            connection = DbConnectionService.connectToDb();
+            connection = connectToDb();
             stmt = connection.prepareStatement(query);
             stmt.setInt(1, instructorId);
             rs = stmt.executeQuery();
@@ -118,7 +119,7 @@ public class Offering {
         }
         return null;
     }
-    private ArrayList<Client> fetchClients(ArrayList<Integer> clientIds) {
+    private ArrayList<Client> fetchClients(ArrayList<Integer> clientIds) { //this should go in Booking
         ArrayList<Client> clients = new ArrayList<>();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -126,7 +127,7 @@ public class Offering {
         String query = "SELECT \"id\", \"name\", \"phone_number\", \"age\" FROM \"public\".\"clients\" WHERE \"id\" = ?";
 
         try {
-            connection = DbConnectionService.connectToDb(); // Establish the connection
+            connection = connectToDb(); // Establish the connection
             stmt = connection.prepareStatement(query);
 
             for (int clientId : clientIds) {

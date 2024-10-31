@@ -1,4 +1,4 @@
-package PackageActorsAndObjects;
+package SOEN342_PROJECT.PackageActorsAndObjects;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,11 @@ public class Instructor extends Actor {
         sb.append("]");
         return sb.toString();
     }
-    public void setInstructor(Offering offering) {
+    @Override
+    public ArrayList<Offering> getOfferingsForViewing() {
+        return null;
+    }
+    public void takeOffering(Offering offering) {
         //should have code to associate an instructor with this offering via an ID
         //this is called when an instructor chooses to teach a particular offering
         int instructorId = this.id;

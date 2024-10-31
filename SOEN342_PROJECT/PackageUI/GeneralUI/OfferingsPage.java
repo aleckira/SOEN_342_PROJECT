@@ -1,9 +1,8 @@
-package PackageUI.GeneralUI;
+package SOEN342_PROJECT.PackageUI.GeneralUI;
 
-import PackageActorsAndObjects.Client;
-import PackageActorsAndObjects.Instructor;
-import Services.DbConnectionService;
-import Services.UserSession;
+import SOEN342_PROJECT.PackageActorsAndObjects.Client;
+import SOEN342_PROJECT.PackageActorsAndObjects.Instructor;
+import SOEN342_PROJECT.Services.UserSession;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,7 +15,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static Services.DbConnectionService.connectToDb;
+import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
 
 public class OfferingsPage extends JFrame {
 
@@ -205,6 +204,7 @@ public class OfferingsPage extends JFrame {
     }
 
     // Method to display all offerings from the database in the table
+    //the logic to get the appropriate offerings should be written in Client, Instructor and Admin
     private void displayOfferings() {
         // Clear the table before fetching new data
         tableModel.setRowCount(0);
@@ -219,7 +219,7 @@ public class OfferingsPage extends JFrame {
             query = "SELECT * FROM offerings"; // Query to fetch all offerings for admins and instructors
         }
 
-        try (Connection connection = DbConnectionService.connectToDb();
+        try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -269,6 +269,7 @@ public class OfferingsPage extends JFrame {
     }
 
     // Method to update the instructor ID in the database
+    //this should be rewritten into Instructor
     private void updateInstructorIdInDatabase(int instructorId, int offeringId) {
         String query = "UPDATE offerings SET instructor_id = ? WHERE id = ?"; // Update based on offering ID
         try (Connection connection = connectToDb();
@@ -291,6 +292,8 @@ public class OfferingsPage extends JFrame {
     }
 
     // Method to update the client ID in the database
+    //this should be rewritten into Client
+    //it should also have a check if the Client's age == minor... if it is, we need to prompt for another account with the right age
     private void updateClientIdInDatabase(int clientId, int offeringId) {
         String query = "UPDATE offerings SET client_ids = array_append(client_ids, ?) WHERE id = ?"; // Use array_append for PostgreSQL
         try (Connection connection = connectToDb();

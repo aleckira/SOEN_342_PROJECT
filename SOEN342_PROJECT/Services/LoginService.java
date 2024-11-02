@@ -90,7 +90,7 @@ public class LoginService {
     public static boolean loginClient(String name, String phoneNumber) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        String query = "SELECT \"id\", \"name\", \"phone_number\", \"age\", \"booking_ids\" FROM \"public\".\"clients\" WHERE \"name\" = ? AND \"phone_number\" = ?";
+        String query = "SELECT \"id\", \"name\", \"phone_number\", \"age\" FROM \"public\".\"clients\" WHERE \"name\" = ? AND \"phone_number\" = ?";
 
         try {
             Connection connection = connectToDb();
@@ -104,18 +104,9 @@ public class LoginService {
                 String clientName = rs.getString("name");
                 String clientPhoneNumber = rs.getString("phone_number");
                 int age = rs.getInt("age");
-                Integer[] bookingIdsArray = (Integer[]) rs.getArray("booking_ids").getArray();
 
-                int[] bookingIds = new int[bookingIdsArray.length];
-                for (int i = 0; i < bookingIdsArray.length; i++) {
-                    bookingIds[i] = bookingIdsArray[i];
-                }
-                ArrayList<Integer> bookingIdArrList = new ArrayList<>();
-                for (int bookingId : bookingIds) {
-                    bookingIdArrList.add(bookingId); // Add each int to the ArrayList
-                }
 
-                Client client = new Client(id, clientName, clientPhoneNumber, age, bookingIdArrList);
+                Client client = new Client(id, clientName, clientPhoneNumber, age);
                 UserSession.setCurrentUserRole("client", client); // Store the role and client instance
                 return true;
             }

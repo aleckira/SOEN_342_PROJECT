@@ -21,14 +21,6 @@ public class Client extends Actor {
         this.age = age;
 
     }
-    public Client(int id, String name, String phoneNumber, int age, ArrayList<Integer> bookingIds) { // if a Client logs in, we use bookingIds to find the ids
-        super(name);
-        this.id = id;
-        this.phoneNumber = phoneNumber;
-        this.age = age;
-
-    }
-
     @Override
     public ArrayList<Offering> getOfferingsForViewing() {
         ArrayList<Offering> offerings = new ArrayList<>();
@@ -58,12 +50,32 @@ public class Client extends Actor {
         return offerings;
     }
 
-    public ArrayList<Booking> getBookingsForViewing() {
+    public ArrayList<Offering> getBookingsForViewing() {
         return null;
     }
-    public void makeBooking(int offeringId) {
+    public boolean makeBooking(int offeringId) {
+        String query = "INSERT INTO public.bookings (client_id, offering_id) VALUES (?, ?)"; // Insert a new row
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
+            // Assuming client_ids is of type array and offering_id is the column for offering ID
+            stmt.setInt(1, this.getId()); // Set the client ID
+            stmt.setInt(2, offeringId); // Set the offering ID
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                System.out.println("Booking added successfully.");
+                return true; // Return true to indicate success
+            } else {
+                System.out.println("Failed to add booking.");
+                return false; // Return false to indicate failure
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false on exception
+        }
     }
+
     public void cancelBooking(int bookingId) {
 
     }

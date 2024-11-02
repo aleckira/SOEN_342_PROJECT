@@ -9,9 +9,8 @@ public class Main {
 	public static void main(String[] args) throws SQLException {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new LoginPage(); // Create and display the login page
+				new LoginPage();
 			}
-
 		});
 	}
 }

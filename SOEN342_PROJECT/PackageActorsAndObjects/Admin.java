@@ -51,7 +51,7 @@ public class Admin extends Actor {
         }
         return offerings;
     }
-    public ArrayList<Booking> getAllBookingsForViewing() {
+    public ArrayList<Offering> getAllBookingsForViewing() {
         return null;
     }
     public boolean isNewOfferingUnique(String location, String city, Timestamp startTime, Timestamp endTime) {
@@ -109,7 +109,7 @@ public class Admin extends Actor {
     }
     public void editOffering(Offering o) {
     }
-    public void editBooking(Booking b) {
+    public void editBooking(Offering b) {
     }
     public String getPassword() {
         return password;

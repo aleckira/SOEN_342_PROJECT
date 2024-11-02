@@ -39,7 +39,7 @@ public class CreateAccountInstructor extends JFrame {
         JCheckBox lavalCheckBox = new JCheckBox("Laval");
         JCheckBox quebecCityCheckBox = new JCheckBox("Quebec City");
         JCheckBox gatineauCheckBox = new JCheckBox("Gatineau");
-
+        JCheckBox sherbrookeCheckBox = new JCheckBox("Sherbrooke");
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(nameLabel, gbc);
@@ -72,6 +72,7 @@ public class CreateAccountInstructor extends JFrame {
         cityPanel.add(lavalCheckBox);
         cityPanel.add(quebecCityCheckBox);
         cityPanel.add(gatineauCheckBox);
+        cityPanel.add(sherbrookeCheckBox);
 
         panel.add(cityPanel, gbc);
 
@@ -103,7 +104,7 @@ public class CreateAccountInstructor extends JFrame {
                 if (lavalCheckBox.isSelected()) cities.append("Laval, ");
                 if (quebecCityCheckBox.isSelected()) cities.append("QuebecCity, ");
                 if (gatineauCheckBox.isSelected()) cities.append("Gatineau, ");
-
+                if (sherbrookeCheckBox.isSelected()) cities.append("Sherbrooke, ");
                 // Remove trailing comma and space
                 if (cities.length() > 0) {
                     cities.setLength(cities.length() - 2);

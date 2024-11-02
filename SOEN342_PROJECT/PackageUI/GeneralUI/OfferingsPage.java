@@ -34,12 +34,12 @@ public class OfferingsPage extends JFrame {
     public OfferingsPage() {
         // Set up the frame
         setTitle("Offerings");
-        setSize(800, 400);
+        setSize(1000, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
         // Create the table model with column headers based on user role
-        tableModel = new DefaultTableModel(new String[]{"Id", "Class Type", "Location", "City", "Start Time", "End Time", "Capacity", "Availability Status", "Instructor ID"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Id", "Class Type", "Location", "City", "Start Time", "End Time", "Availability", "Capacity", "Spots Left", "Instructor ID"}, 0);
 
 
         // Create the table and assign the model to it
@@ -188,7 +188,7 @@ public class OfferingsPage extends JFrame {
             buttonPanel.add(actionButton); // Add the action button to the panel
         }
 
-        if ("client".equals(role)) {
+        if (role.equals("client")) {
             Client client = (Client) user;
             int id = client.getId();
 
@@ -200,24 +200,26 @@ public class OfferingsPage extends JFrame {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
                         // Perform action based on the selected row
-                        String status = (String) tableModel.getValueAt(selectedRow, 4);
+                        int spotsLeft = (int) tableModel.getValueAt(selectedRow, 7);
                         int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
 
-                        if (Objects.equals(status, "Available")) {
-
-                            // Reserve the lesson
-                            JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson booked successfully.");
-
-                            // Update the database with the client ID for this class
-                            updateClientIdInDatabase(id, offeringID); // Call the method to update the database
-
-                        } else if (Objects.equals(status, "Full")){
-
-                            JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson fully booked already.");
-
-                        } else {
-                            JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
+                        if (spotsLeft != 0) {
+                            if (Offering.hasOfferingBeenBookedByClient(offeringID, ((Client) user).getId())) {
+                                JOptionPane.showMessageDialog(OfferingsPage.this, "You already booked this offering.");
+                            } else {
+                                boolean makeBookingSuccess = ((Client) user).makeBooking(offeringID);
+                                JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson booked successfully.");
+                                if (!makeBookingSuccess) {
+                                    JOptionPane.showMessageDialog(OfferingsPage.this, "Error adding booking to the database.");
+                                }
+                            }
                         }
+                        else {
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson fully booked already.");
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
                     }}
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
@@ -252,35 +254,15 @@ public class OfferingsPage extends JFrame {
             int capacity = offering.getCapacity();
             String startTime = offering.getStartTime().toString();
             String endTime = offering.getEndTime().toString();
-            boolean status = offering.isAvailable();
+            int spotsLeft = offering.getSpotsLeft();
+            String availability = spotsLeft == 0 ? "Not Available" : "Available";
             String instructorId = String.valueOf(offering.getInstructorId());
             if (instructorId.equals("0")) {
                 instructorId = "";
             }
-            tableModel.addRow(new Object[]{id, classType, location, city, startTime, endTime, capacity, status, instructorId});
+            tableModel.addRow(new Object[]{id, classType, location, city, startTime, endTime, availability, capacity, spotsLeft, instructorId});
 
         }
     }
 
-    // Method to update the client ID in the database
-    //this should be rewritten into Client
-    private void updateClientIdInDatabase(int clientId, int offeringId) {
-        String query = "UPDATE offerings SET client_ids = array_append(client_ids, ?) WHERE id = ?"; // Use array_append for PostgreSQL
-        try (Connection connection = connectToDb();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-
-            stmt.setInt(1, clientId);
-            stmt.setInt(2, offeringId); // Set the offering ID
-            int rowsUpdated = stmt.executeUpdate();
-
-            if (rowsUpdated > 0) {
-                System.out.println("Client ID added successfully.");
-            } else {
-                System.out.println("No matching offering found to update.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error updating client ID in the database.");
-        }
-    }
 }

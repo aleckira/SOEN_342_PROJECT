@@ -1,6 +1,8 @@
 package PackageUI.InstructorsUI;
 
 import PackageActorsAndObjects.Instructor;
+import PackageUI.GeneralUI.LoginForm;
+import PackageUI.GeneralUI.LoginPage;
 import Services.RegisterService;
 
 import javax.swing.*;
@@ -77,9 +79,16 @@ public class CreateAccountInstructor extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-
+        gbc.anchor = GridBagConstraints.EAST;
         panel.add(createAccountButton, gbc);
+
+        JButton backButton = new JButton("Back");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(backButton, gbc);
+
 
         createAccountButton.addActionListener(new ActionListener() {
             @Override
@@ -114,6 +123,13 @@ public class CreateAccountInstructor extends JFrame {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+            }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new LoginForm("instructor");
             }
         });
 

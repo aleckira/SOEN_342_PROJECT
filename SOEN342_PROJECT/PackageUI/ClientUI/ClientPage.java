@@ -4,6 +4,7 @@ package PackageUI.ClientUI;
 
 import PackageActorsAndObjects.Client;
 import PackageUI.GeneralUI.BookedLessons;
+import PackageUI.GeneralUI.LoginPage;
 import PackageUI.GeneralUI.OfferingsPage;
 import Services.UserSession;
 
@@ -36,7 +37,7 @@ public class ClientPage extends JFrame {
         // Create buttons for User, Instructor, and Admin logins
         JButton viewAllAvailableOfferings = new JButton("View available offerings and make bookings");
         JButton viewBookingsBtn = new JButton("View your bookings");
-
+        JButton logout = new JButton("Logout");
         // Add action listeners for each button
         viewAllAvailableOfferings.addActionListener(new ActionListener() {
             @Override
@@ -65,11 +66,20 @@ public class ClientPage extends JFrame {
                 new ViewClientBookings();
             }
         });
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserSession.setCurrentUserRole(null, null);
+                new LoginPage(); // Create and display the offerings page
+            }
+        });
 
 
         // Add buttons to the panel
         panel.add(viewAllAvailableOfferings);
         panel.add(viewBookingsBtn);
+        panel.add(logout);
         // Add panel to the frame
         add(panel);
 

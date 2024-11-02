@@ -1,6 +1,7 @@
 package PackageUI.ClientUI;
 
 
+import PackageUI.GeneralUI.LoginForm;
 import Services.RegisterService;
 
 import javax.swing.*;
@@ -59,9 +60,15 @@ public class CreateAccountClient extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-
+        gbc.anchor = GridBagConstraints.EAST;
         panel.add(createAccountButton, gbc);
+
+        JButton backButton = new JButton("Back");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        panel.add(backButton, gbc);
 
         createAccountButton.addActionListener(new ActionListener() {
             @Override
@@ -84,6 +91,13 @@ public class CreateAccountClient extends JFrame {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+            }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new LoginForm("client");
             }
         });
 

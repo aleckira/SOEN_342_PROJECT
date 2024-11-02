@@ -1,6 +1,7 @@
 package PackageUI.InstructorsUI;
 
 import PackageActorsAndObjects.Instructor;
+import PackageUI.GeneralUI.LoginPage;
 import PackageUI.GeneralUI.OfferingsPage;
 import Services.UserSession;
 
@@ -31,7 +32,7 @@ public class InstructorPage extends JFrame {
 
         // Create buttons for User, Instructor, and Admin logins
         JButton viewAllOfferings = new JButton("View all offerings");
-
+        JButton logout = new JButton("Logout");
         // Add action listeners for each button
         viewAllOfferings.addActionListener(new ActionListener() {
             @Override
@@ -41,10 +42,19 @@ public class InstructorPage extends JFrame {
 
             }
         });
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserSession.setCurrentUserRole(null, null);
+                new LoginPage(); // Create and display the offerings page
+            }
+        });
 
 
         // Add buttons to the panel
         panel.add(viewAllOfferings);
+        panel.add(logout);
         // Add panel to the frame
         add(panel);
 

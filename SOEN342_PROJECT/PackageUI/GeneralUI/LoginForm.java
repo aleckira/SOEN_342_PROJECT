@@ -17,7 +17,7 @@ public class LoginForm extends JFrame {
 
     public LoginForm(String userType) {
         setTitle("Login as " + Character.toUpperCase(userType.charAt(0)) + userType.substring(1));
-        setSize(450, 200);
+        setSize(450, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame on the screen
 
@@ -64,6 +64,18 @@ public class LoginForm extends JFrame {
         gbc.anchor = GridBagConstraints.EAST; // Align right
         panel.add(loginButton, gbc);
 
+        JButton backButton = new JButton("Back");
+        if (userType.equals("admin")) {
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.anchor = GridBagConstraints.WEST; // Align left
+        }
+        else {
+            gbc.gridx = 0; // Set to the first column (left side)
+            gbc.gridy = 3; // Set to the next row (below the other buttons)
+            gbc.anchor = GridBagConstraints.WEST; // Align left
+        }
+        panel.add(backButton, gbc);
         // Add the panel to the frame
         add(panel);
 
@@ -113,6 +125,13 @@ public class LoginForm extends JFrame {
                         JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
+            }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new LoginPage();
             }
         });
         setVisible(true);

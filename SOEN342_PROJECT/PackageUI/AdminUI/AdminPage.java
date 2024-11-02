@@ -2,6 +2,7 @@ package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.Admin;
 import PackageUI.GeneralUI.BookedLessons;
+import PackageUI.GeneralUI.LoginPage;
 import PackageUI.GeneralUI.OfferingsPage;
 import Services.UserSession;
 
@@ -37,7 +38,7 @@ public class AdminPage extends JFrame {
         JButton viewBookingsBtn = new JButton("View, edit and delete all bookings");
         JButton deleteInstructorBtn = new JButton("View and delete instructors");
         JButton deleteClientBtn = new JButton("View and delete clients");
-
+        JButton logout = new JButton("Logout");
 
 //        deleteAccBtn.addActionListener(new ActionListener() {
 //            @Override
@@ -75,6 +76,14 @@ public class AdminPage extends JFrame {
                 new ViewAndDeleteClients();
             }
         });
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserSession.setCurrentUserRole(null, null);
+                new LoginPage(); // Create and display the offerings page
+            }
+        });
 
 
         // Add buttons to the panel
@@ -83,6 +92,7 @@ public class AdminPage extends JFrame {
         //panel.add(deleteAccBtn); separate this into the two below
         panel.add(deleteInstructorBtn);
         panel.add(deleteClientBtn);
+        panel.add(logout);
         // Add panel to the frame
         add(panel);
 

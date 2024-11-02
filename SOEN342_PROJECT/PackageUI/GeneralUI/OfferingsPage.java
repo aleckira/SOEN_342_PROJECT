@@ -1,8 +1,8 @@
-package SOEN342_PROJECT.PackageUI.GeneralUI;
+package PackageUI.GeneralUI;
 
-import SOEN342_PROJECT.PackageActorsAndObjects.Client;
-import SOEN342_PROJECT.PackageActorsAndObjects.Instructor;
-import SOEN342_PROJECT.Services.UserSession;
+import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Instructor;
+import Services.UserSession;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,7 +15,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
+import static Services.DbConnectionService.connectToDb;
 
 public class OfferingsPage extends JFrame {
 

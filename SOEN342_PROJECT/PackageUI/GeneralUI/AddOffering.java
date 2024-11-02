@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.PackageUI.GeneralUI;
+package PackageUI.GeneralUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
+import static Services.DbConnectionService.connectToDb;
 
 
 public class AddOffering extends JFrame {

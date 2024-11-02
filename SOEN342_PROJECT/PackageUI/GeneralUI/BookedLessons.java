@@ -1,15 +1,20 @@
-package SOEN342_PROJECT.PackageUI.GeneralUI;
+package PackageUI.GeneralUI;
 
-import SOEN342_PROJECT.PackageActorsAndObjects.Client;
+
+import PackageActorsAndObjects.Client;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
-import static SOEN342_PROJECT.Services.UserSession.getCurrentUser;
-import static SOEN342_PROJECT.Services.UserSession.getCurrentUserRole;
+import static Services.DbConnectionService.connectToDb;
+import static Services.UserSession.getCurrentUser;
+import static Services.UserSession.getCurrentUserRole;
+
 //This should be separated into two, one in the AdminUI Package and another in ClientUI Package
 //Clients get THEIR bookings, while Admins get ALL available bookings
 //use the appropriate methods in Client and Admin to get them

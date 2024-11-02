@@ -1,7 +1,8 @@
-package SOEN342_PROJECT.PackageUI.GeneralUI;
+package PackageUI.GeneralUI;
 
 
-import SOEN342_PROJECT.Services.DbConnectionService;
+
+import Services.DbConnectionService;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

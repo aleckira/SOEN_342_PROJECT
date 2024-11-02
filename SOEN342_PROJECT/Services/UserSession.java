@@ -1,6 +1,7 @@
-package SOEN342_PROJECT.Services;
+package Services;
 
-import SOEN342_PROJECT.PackageActorsAndObjects.Actor;
+
+import PackageActorsAndObjects.Actor;
 
 public class UserSession {
     private static String currentUserRole;

@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.PackageActorsAndObjects;
+package PackageActorsAndObjects;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.PackageUI.ClientUI;
+package PackageUI.ClientUI;
 
 import javax.swing.*;
 

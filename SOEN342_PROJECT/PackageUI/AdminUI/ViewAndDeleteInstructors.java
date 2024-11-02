@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.PackageUI.AdminUI;
+package PackageUI.AdminUI;
 
 
 import javax.swing.*;

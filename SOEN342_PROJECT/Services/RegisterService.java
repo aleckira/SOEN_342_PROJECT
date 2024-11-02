@@ -1,8 +1,8 @@
-package SOEN342_PROJECT.Services;
+package Services;
 
 
-import SOEN342_PROJECT.PackageActorsAndObjects.Client;
-import SOEN342_PROJECT.PackageActorsAndObjects.Instructor;
+import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Instructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
+import static Services.DbConnectionService.connectToDb;
 
 
 public class RegisterService {

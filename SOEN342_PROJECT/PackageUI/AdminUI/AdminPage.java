@@ -1,8 +1,9 @@
-package SOEN342_PROJECT.PackageUI.AdminUI;
+package PackageUI.AdminUI;
 
-
-import SOEN342_PROJECT.PackageActorsAndObjects.Admin;
-import SOEN342_PROJECT.PackageUI.GeneralUI.*;
+import PackageActorsAndObjects.Admin;
+import PackageUI.GeneralUI.AddOffering;
+import PackageUI.GeneralUI.BookedLessons;
+import PackageUI.GeneralUI.OfferingsPage;
 
 import javax.swing.*;
 import java.awt.*;

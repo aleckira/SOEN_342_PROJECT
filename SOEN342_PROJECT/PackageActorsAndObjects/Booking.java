@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.PackageActorsAndObjects;
+package PackageActorsAndObjects;
 
 public class Booking extends Offering {
     //this should have the "available" attribute and the "clients" list

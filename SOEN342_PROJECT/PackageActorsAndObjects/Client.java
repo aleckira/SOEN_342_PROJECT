@@ -1,4 +1,4 @@
-package SOEN342_PROJECT.PackageActorsAndObjects;
+package PackageActorsAndObjects;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import static SOEN342_PROJECT.Services.DbConnectionService.connectToDb;
+
+import static Services.DbConnectionService.connectToDb;
 
 public class Client extends Actor {
     private int id;

@@ -1,7 +1,7 @@
-package SOEN342_PROJECT.PackageUI.InstructorsUI;
+package PackageUI.InstructorsUI;
 
-import SOEN342_PROJECT.PackageActorsAndObjects.Instructor;
-import SOEN342_PROJECT.Services.RegisterService;
+import PackageActorsAndObjects.Instructor;
+import Services.RegisterService;
 
 import javax.swing.*;
 import java.awt.*;

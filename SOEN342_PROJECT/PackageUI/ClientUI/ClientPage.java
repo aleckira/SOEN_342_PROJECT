@@ -1,10 +1,10 @@
-package SOEN342_PROJECT.PackageUI.ClientUI;
+package PackageUI.ClientUI;
 
 
-import SOEN342_PROJECT.PackageActorsAndObjects.Client;
-import SOEN342_PROJECT.PackageUI.GeneralUI.BookedLessons;
-import SOEN342_PROJECT.PackageUI.GeneralUI.LoginPage;
-import SOEN342_PROJECT.PackageUI.GeneralUI.OfferingsPage;
+
+import PackageActorsAndObjects.Client;
+import PackageUI.GeneralUI.BookedLessons;
+import PackageUI.GeneralUI.OfferingsPage;
 
 import javax.swing.*;
 import java.awt.*;

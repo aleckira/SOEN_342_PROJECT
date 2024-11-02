@@ -1,8 +1,8 @@
-package SOEN342_PROJECT.PackageUI.ClientUI;
+package PackageUI.ClientUI;
 
 
-import SOEN342_PROJECT.PackageActorsAndObjects.Client;
-import SOEN342_PROJECT.Services.RegisterService;
+import PackageActorsAndObjects.Client;
+import Services.RegisterService;
 
 import javax.swing.*;
 import java.awt.*;

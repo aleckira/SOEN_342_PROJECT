@@ -145,7 +145,7 @@ public class OfferingsPage extends JFrame {
                         // Perform action based on the selected row
                         String classType = (String) tableModel.getValueAt(selectedRow, 1);
                         String cityFromRow = (String) tableModel.getValueAt(selectedRow, 3);
-                        int instructorID = (int) tableModel.getValueAt(selectedRow, 7);
+                        String instructorIdString = (String) tableModel.getValueAt(selectedRow, 8);
                         int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
 
                         // Remove any curly braces and trim the location
@@ -161,7 +161,7 @@ public class OfferingsPage extends JFrame {
                                 break; // Exit the loop as we found a match
                             }
                         }
-                        if (cityMatch && instructorID == 0) {
+                        if (cityMatch && Objects.equals(instructorIdString, "")) {
                             boolean takeOfferingSuccess = ((Instructor) user).takeOffering(offeringID); // Call the method to update the database
                             if (!takeOfferingSuccess) {
                                 JOptionPane.showMessageDialog(OfferingsPage.this, "Error updating instructor ID in the database.");
@@ -173,10 +173,10 @@ public class OfferingsPage extends JFrame {
                             // Update the database with the instructor ID for this class
 
 
-                        } else if (!cityMatch && instructorID == 0) {
+                        } else if (!cityMatch && instructorIdString.isEmpty()) {
                             // No match found
                             JOptionPane.showMessageDialog(OfferingsPage.this, "No matching city found for reservation.");
-                        } else if (instructorID != 0) {
+                        } else if (!instructorIdString.isEmpty()) {
                             JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson already booked by an instructor.");
                         }
                     } else {

@@ -25,7 +25,7 @@ public class CreateAccountInstructor extends JFrame {
         JLabel nameLabel = new JLabel("Name:");
         JLabel phoneNumberLabel = new JLabel("Phone number:");
         JLabel specialtyLabel = new JLabel("Specialty:");
-        JLabel cityLabel = new JLabel("Cities (comma separated):");
+        JLabel cityLabel = new JLabel("Cities:");
 
         JTextField nameField = new JTextField(15);
         JTextField phoneNumberField = new JTextField(15);
@@ -33,8 +33,10 @@ public class CreateAccountInstructor extends JFrame {
         String[] specialties = {"Swimming", "Judo", "MMA", "Basketball", "Soccer", "Yoga"};
         JComboBox<String> specialtyDropdown = new JComboBox<>(specialties);
 
-        JTextArea citiesArea = new JTextArea(3, 15);
-        JScrollPane scrollPane = new JScrollPane(citiesArea);
+        JCheckBox montrealCheckBox = new JCheckBox("Montreal");
+        JCheckBox lavalCheckBox = new JCheckBox("Laval");
+        JCheckBox quebecCityCheckBox = new JCheckBox("Quebec City");
+        JCheckBox gatineauCheckBox = new JCheckBox("Gatineau");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -62,7 +64,14 @@ public class CreateAccountInstructor extends JFrame {
         panel.add(cityLabel, gbc);
 
         gbc.gridx = 1;
-        panel.add(scrollPane, gbc);
+        JPanel cityPanel = new JPanel();
+        cityPanel.setLayout(new BoxLayout(cityPanel, BoxLayout.Y_AXIS));
+        cityPanel.add(montrealCheckBox);
+        cityPanel.add(lavalCheckBox);
+        cityPanel.add(quebecCityCheckBox);
+        cityPanel.add(gatineauCheckBox);
+
+        panel.add(cityPanel, gbc);
 
         JButton createAccountButton = new JButton("Create Account");
         gbc.gridx = 0;
@@ -78,10 +87,21 @@ public class CreateAccountInstructor extends JFrame {
                 String name = nameField.getText().trim();
                 String phoneNumber = phoneNumberField.getText().trim();
                 String specialty = (String) specialtyDropdown.getSelectedItem();
-                String citiesInput = citiesArea.getText().trim();
+
+                // Collect selected cities
+                StringBuilder cities = new StringBuilder();
+                if (montrealCheckBox.isSelected()) cities.append("Montreal, ");
+                if (lavalCheckBox.isSelected()) cities.append("Laval, ");
+                if (quebecCityCheckBox.isSelected()) cities.append("QuebecCity, ");
+                if (gatineauCheckBox.isSelected()) cities.append("Gatineau, ");
+
+                // Remove trailing comma and space
+                if (cities.length() > 0) {
+                    cities.setLength(cities.length() - 2);
+                }
 
                 try {
-                    boolean registerSuccess = RegisterService.registerInstructor(name, phoneNumber, specialty, citiesInput);
+                    boolean registerSuccess = RegisterService.registerInstructor(name, phoneNumber, specialty, cities.toString());
                     if (registerSuccess) {
                         new InstructorPage();
                         dispose();

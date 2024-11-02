@@ -1,7 +1,7 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.Admin;
-import PackageUI.GeneralUI.BookedLessons;
+import PackageUI.GeneralUI.BookingsPage;
 import PackageUI.GeneralUI.LoginPage;
 import PackageUI.GeneralUI.OfferingsPage;
 import Services.UserSession;
@@ -59,7 +59,7 @@ public class AdminPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new BookedLessons();
+                new BookingsPage();
             }
         });
         deleteInstructorBtn.addActionListener(new ActionListener() {

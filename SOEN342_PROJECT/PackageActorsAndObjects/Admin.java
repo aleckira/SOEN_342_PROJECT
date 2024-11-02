@@ -50,8 +50,36 @@ public class Admin extends Actor {
         return offerings;
     }
     public ArrayList<Offering> getAllBookingsForViewing() {
-        return null;
+        ArrayList<Offering> offerings = new ArrayList<>();
+        String query = """
+            SELECT DISTINCT o.*
+            FROM public.offerings o
+            INNER JOIN public.bookings b ON o.id = b.offering_id
+        """;
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String city = rs.getString("city");
+                String location = rs.getString("location");
+                String classType = rs.getString("class_type");
+                int capacity = rs.getInt("capacity");
+                int instructorId = rs.getInt("instructor_id");
+                LocalDateTime startTime = rs.getObject("start_time", LocalDateTime.class);
+                LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
+
+                Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId, false);
+                offerings.add(offering);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return offerings;
     }
+
     public boolean isNewOfferingUnique(String location, String city, Timestamp startTime, Timestamp endTime) {
         String query = "SELECT COUNT(*) FROM public.offerings " +
                 "WHERE city = ? AND location = ? AND start_time = ? AND end_time = ?";

@@ -90,6 +90,7 @@ public class OfferingsPage extends JFrame {
             }
         });
         buttonPanel.add(actionButton); // Add the action button to the panel
+        //for now just doing names but we should be able to see everything probably
         // Create action button based on user role
         if ("admin".equals(role)) {
             actionButton = new JButton("Add");

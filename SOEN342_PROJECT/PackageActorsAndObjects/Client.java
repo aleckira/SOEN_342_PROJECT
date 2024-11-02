@@ -50,8 +50,42 @@ public class Client extends Actor {
     }
 
     public ArrayList<Offering> getBookingsForViewing() {
-        return null;
+        ArrayList<Offering> offerings = new ArrayList<>();
+        String query = """
+        SELECT o.*
+        FROM public.offerings o
+        INNER JOIN public.bookings b ON o.id = b.offering_id
+        WHERE b.client_id = ? AND o.instructor_id IS NOT NULL
+        """;
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, this.getId());  // Set the client ID in the query
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String city = rs.getString("city");
+                    String location = rs.getString("location");
+                    String classType = rs.getString("class_type");
+                    int capacity = rs.getInt("capacity");
+                    int instructorId = rs.getInt("instructor_id");
+                    LocalDateTime startTime = rs.getObject("start_time", LocalDateTime.class);
+                    LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
+
+                    // Create an Offering object and add it to the list
+                    Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId, false);
+                    offerings.add(offering);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return offerings;
     }
+
+
     public boolean makeBooking(int offeringId) {
         String query = "INSERT INTO public.bookings (client_id, offering_id) VALUES (?, ?)"; // Insert a new row
         try (Connection connection = connectToDb();

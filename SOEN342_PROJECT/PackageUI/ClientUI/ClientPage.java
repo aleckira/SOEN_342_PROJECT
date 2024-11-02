@@ -3,7 +3,7 @@ package PackageUI.ClientUI;
 
 
 import PackageActorsAndObjects.Client;
-import PackageUI.GeneralUI.BookedLessons;
+import PackageUI.GeneralUI.BookingsPage;
 import PackageUI.GeneralUI.LoginPage;
 import PackageUI.GeneralUI.OfferingsPage;
 import Services.UserSession;
@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
 
 public class ClientPage extends JFrame {
 
-    // Constructor for LoginPage
     public ClientPage() {
         Client c = (Client) UserSession.getCurrentUser();
         // Set up the frame
@@ -52,18 +51,8 @@ public class ClientPage extends JFrame {
         viewBookingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new LoginForm("instructor");
                 dispose();
-                new BookedLessons(); // Create and display booked lessons
-            }
-        });
-        viewBookingsBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //new LoginForm("instructor");
-                dispose();
-                //new BookedLessons(); refactor this into the below
-                new ViewClientBookings();
+                new BookingsPage();
             }
         });
         logout.addActionListener(new ActionListener() {

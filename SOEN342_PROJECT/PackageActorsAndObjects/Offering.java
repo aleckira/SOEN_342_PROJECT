@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import static Services.DbConnectionService.connectToDb;
 
@@ -79,6 +80,36 @@ public class Offering {
         }
         return false;
     }
+    public static ArrayList<Client> fetchClientsForBooking(int offeringId) {
+        ArrayList<Client> clients = new ArrayList<>();
+        String query = """
+            SELECT c.id, c.name, c.phone_number, c.age
+            FROM public.clients c
+            INNER JOIN public.bookings b ON c.id = b.client_id
+            WHERE b.offering_id = ?
+        """;
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, offeringId);  // Set the offering ID in the query
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int clientId = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String phoneNumber = rs.getString("phone_number");
+                    int age = rs.getInt("age");
+                    Client client = new Client(clientId, name, phoneNumber, age);
+                    clients.add(client);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return clients;
+    }
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

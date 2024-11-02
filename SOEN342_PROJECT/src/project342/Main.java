@@ -1,5 +1,6 @@
 package src.project342;
 
+import PackageActorsAndObjects.Client;
 import PackageUI.GeneralUI.LoginPage;
 
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ public class Main {
 			public void run() {
 				new LoginPage(); // Create and display the login page
 			}
+
 		});
 	}
 }

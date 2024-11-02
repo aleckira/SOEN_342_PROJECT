@@ -1,6 +1,15 @@
 package PackageActorsAndObjects;
 
+import javax.swing.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static Services.DbConnectionService.connectToDb;
 
 public class Instructor extends Actor {
     private int id;
@@ -15,32 +24,91 @@ public class Instructor extends Actor {
         this.specialty = specialty;
         this.cities = cities;
     }
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Instructor ID: ").append(id)
-                .append(", Name: ").append(getName()) // Assuming getName() is defined in the Actor class
-                .append(", Phone Number: ").append(phoneNumber)
-                .append(", Specialty: ").append(specialty)
-                .append(", Cities: [");
 
-        for (String city : cities) {
-            sb.append(city).append(", ");
-        }
-
-        // Remove the last comma and space if cities are not empty
-        if (!cities.isEmpty()) {
-            sb.setLength(sb.length() - 2);
-        }
-
-        sb.append("]");
-        return sb.toString();
-    }
     @Override
     public ArrayList<Offering> getOfferingsForViewing() {
+        ArrayList<Offering> offerings = new ArrayList<>();
+        String query = "SELECT * FROM public.offerings";
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            // Process each row in the result set
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String city = rs.getString("city");
+                String location = rs.getString("location");
+                String classType = rs.getString("class_type");
+                int capacity = rs.getInt("capacity");
+                int instructorId = rs.getInt("instructor_id");
+                LocalDateTime startTime = rs.getObject("start_time", LocalDateTime.class);
+                LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
+
+                // Create an Offering object and add it to the list
+                Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId, false);
+                offerings.add(offering);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return offerings;
+    }
+    public static Instructor fetchInstructorById(int instructorId) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Connection connection = null;
+        String query = "SELECT \"id\", \"name\", \"phone_number\", \"specialty\", \"cities\" FROM \"public\".\"instructors\" WHERE \"id\" = ?";
+
+        try {
+            connection = connectToDb();
+            stmt = connection.prepareStatement(query);
+            stmt.setInt(1, instructorId);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String phoneNumber = rs.getString("phone_number");
+                String specialty = rs.getString("specialty");
+                String cities = rs.getString("cities");
+
+                ArrayList<String> citiesArrList = new ArrayList<>(Arrays.asList(cities.split(",")));
+
+                return new Instructor(id, name, phoneNumber, specialty, citiesArrList);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return null;
     }
-    public void takeOffering(int offeringId) {
+    public boolean takeOffering(int offeringId) {
+        String query = "UPDATE offerings SET instructor_id = ? WHERE id = ?"; // Update based on offering ID
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, this.getId());
+            stmt.setInt(2, offeringId); // Set the offering ID
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
 
     public int getId() {
         return id;

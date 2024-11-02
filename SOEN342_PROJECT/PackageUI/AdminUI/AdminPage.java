@@ -1,8 +1,6 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.Admin;
-import PackageActorsAndObjects.Instructor;
-import PackageUI.GeneralUI.AddOffering;
 import PackageUI.GeneralUI.BookedLessons;
 import PackageUI.GeneralUI.OfferingsPage;
 import Services.UserSession;
@@ -34,22 +32,12 @@ public class AdminPage extends JFrame {
         panel.add(loginLabel);
 
         // Create buttons for User, Instructor, and Admin logins
-        JButton enterOfferingsBtn = new JButton("Enter organization offerings");
 //        JButton deleteAccBtn = new JButton("Delete an account");
-        JButton viewOfferingsBtn = new JButton("View, edit and delete offerings");
+        JButton viewOfferingsBtn = new JButton("View, add, edit and delete offerings");
         JButton viewBookingsBtn = new JButton("View, edit and delete all bookings");
         JButton deleteInstructorBtn = new JButton("View and delete instructors");
         JButton deleteClientBtn = new JButton("View and delete clients");
 
-        // Add action listeners for each button
-        enterOfferingsBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new AddOffering();
-
-            }
-        });
 
 //        deleteAccBtn.addActionListener(new ActionListener() {
 //            @Override
@@ -92,7 +80,6 @@ public class AdminPage extends JFrame {
         // Add buttons to the panel
         panel.add(viewOfferingsBtn);
         panel.add(viewBookingsBtn);
-        panel.add(enterOfferingsBtn);
         //panel.add(deleteAccBtn); separate this into the two below
         panel.add(deleteInstructorBtn);
         panel.add(deleteClientBtn);

@@ -1,8 +1,5 @@
 package PackageUI.GeneralUI;
 
-import PackageActorsAndObjects.Admin;
-import PackageActorsAndObjects.Client;
-import PackageActorsAndObjects.Instructor;
 import PackageUI.AdminUI.AdminPage;
 import PackageUI.ClientUI.ClientPage;
 import PackageUI.ClientUI.CreateAccountClient;

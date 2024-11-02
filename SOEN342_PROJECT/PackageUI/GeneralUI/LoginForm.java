@@ -27,7 +27,7 @@ public class LoginForm extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10); // Padding for components
         JLabel firstFieldLabel = new JLabel("Name:");
-        JLabel secondFieldLabel = new JLabel("Phone number:");
+        JLabel secondFieldLabel = new JLabel("Phone number: (123456789012345)");
         JTextField firstField = new JTextField();
         JTextField secondField = new JTextField();
         if (userType.equals("admin")) {

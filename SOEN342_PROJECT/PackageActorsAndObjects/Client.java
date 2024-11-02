@@ -29,7 +29,6 @@ public class Client extends Actor {
              PreparedStatement stmt = connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
-            // Process each row in the result set
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String city = rs.getString("city");
@@ -58,21 +57,20 @@ public class Client extends Actor {
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            // Assuming client_ids is of type array and offering_id is the column for offering ID
-            stmt.setInt(1, this.getId()); // Set the client ID
-            stmt.setInt(2, offeringId); // Set the offering ID
+            stmt.setInt(1, this.getId());
+            stmt.setInt(2, offeringId);
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
                 System.out.println("Booking added successfully.");
-                return true; // Return true to indicate success
+                return true;
             } else {
                 System.out.println("Failed to add booking.");
-                return false; // Return false to indicate failure
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Return false on exception
+            return false;
         }
     }
 

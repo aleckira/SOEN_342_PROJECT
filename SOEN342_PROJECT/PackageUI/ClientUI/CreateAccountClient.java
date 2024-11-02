@@ -24,14 +24,12 @@ public class CreateAccountClient extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel nameLabel = new JLabel("Name:");
-        JLabel phoneNumberLabel = new JLabel("Phone number:");
-        JLabel ageLabel = new JLabel("Age:");
+        JLabel phoneNumberLabel = new JLabel("Phone number: (123456789012345)");
+        JLabel ageLabel = new JLabel("Age: (18+)");
 
         JTextField nameField = new JTextField(15);
         JTextField phoneNumberField = new JTextField(15);
         JTextField ageField = new JTextField(15);
-        String[] specialties = {"Swimming", "Judo", "MMA", "Basketball", "Soccer", "Yoga"};
-        JComboBox<String> specialtyDropdown = new JComboBox<>(specialties);
 
 
         gbc.gridx = 0;

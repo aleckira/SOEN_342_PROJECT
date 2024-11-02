@@ -1,8 +1,6 @@
 package PackageUI.InstructorsUI;
 
-import PackageActorsAndObjects.Instructor;
 import PackageUI.GeneralUI.LoginForm;
-import PackageUI.GeneralUI.LoginPage;
 import Services.RegisterService;
 
 import javax.swing.*;
@@ -25,7 +23,7 @@ public class CreateAccountInstructor extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel nameLabel = new JLabel("Name:");
-        JLabel phoneNumberLabel = new JLabel("Phone number:");
+        JLabel phoneNumberLabel = new JLabel("Phone number: (123456789012345)");
         JLabel specialtyLabel = new JLabel("Specialty:");
         JLabel cityLabel = new JLabel("Cities:");
 
@@ -106,10 +104,9 @@ public class CreateAccountInstructor extends JFrame {
                 if (gatineauCheckBox.isSelected()) cities.append("Gatineau, ");
                 if (sherbrookeCheckBox.isSelected()) cities.append("Sherbrooke, ");
                 // Remove trailing comma and space
-                if (cities.length() > 0) {
+                if (!cities.isEmpty()) {
                     cities.setLength(cities.length() - 2);
                 }
-
                 try {
                     boolean registerSuccess = RegisterService.registerInstructor(name, phoneNumber, specialty, cities.toString());
                     if (registerSuccess) {

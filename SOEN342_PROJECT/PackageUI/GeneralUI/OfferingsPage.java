@@ -190,9 +190,7 @@ public class OfferingsPage extends JFrame {
 
         if (role.equals("client")) {
             Client client = (Client) user;
-            int id = client.getId();
 
-            // Button to perform actions based on selected row
             actionButton = new JButton("Reserve");
             actionButton.addActionListener(new ActionListener() {
                 @Override
@@ -200,10 +198,10 @@ public class OfferingsPage extends JFrame {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
                         // Perform action based on the selected row
-                        int spotsLeft = (int) tableModel.getValueAt(selectedRow, 7);
-                        int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
+                        String availability = (String) tableModel.getValueAt(selectedRow, 6);
 
-                        if (spotsLeft != 0) {
+                        if (Objects.equals(availability, "Available")) {
+                            int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
                             if (Offering.hasOfferingBeenBookedByClient(offeringID, ((Client) user).getId())) {
                                 JOptionPane.showMessageDialog(OfferingsPage.this, "You already booked this offering.");
                             } else {
@@ -247,20 +245,29 @@ public class OfferingsPage extends JFrame {
 
         // Iterate over each offering in the list and add it to the table model
         for (Offering offering : displayedOfferings) {
-            int id = offering.getId();
-            String classType = offering.getClassType();
+            int spotsLeft = offering.getSpotsLeft();
             String location = offering.getLocation();
             String city = offering.getCity();
-            int capacity = offering.getCapacity();
             String startTime = offering.getStartTime().toString();
             String endTime = offering.getEndTime().toString();
-            int spotsLeft = offering.getSpotsLeft();
             String availability = spotsLeft == 0 ? "Not Available" : "Available";
-            String instructorId = String.valueOf(offering.getInstructorId());
-            if (instructorId.equals("0")) {
-                instructorId = "";
+            //A client should only be able to see all Offering details for offerings that are not at capacity. They can see their bookings in another page
+            //An instructor can't see Offering details for offerings that are at capacity, period.
+            //A client should only be able to see all Offering details for offerings that are not at capacity. They can see ALL bookings in another page
+            if (spotsLeft == 0) {
+                tableModel.addRow(new Object[]{"N/A", "N/A", location, city, startTime, endTime, availability, "N/A", "N/A", "N/A"});
             }
-            tableModel.addRow(new Object[]{id, classType, location, city, startTime, endTime, availability, capacity, spotsLeft, instructorId});
+            else {
+                int id = offering.getId();
+                String classType = offering.getClassType();
+                int capacity = offering.getCapacity();
+                String instructorId = String.valueOf(offering.getInstructorId());
+                if (instructorId.equals("0")) {
+                    instructorId = "";
+                }
+                tableModel.addRow(new Object[]{id, classType, location, city, startTime, endTime, availability, capacity, spotsLeft, instructorId});
+            }
+
 
         }
     }

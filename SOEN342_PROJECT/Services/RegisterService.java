@@ -63,7 +63,7 @@ public class RegisterService {
         if (!phoneNumber.matches("\\d{15}") || !isPhoneNumberUnique(phoneNumber, "client")) {
             return false;
         }
-        if (!age.trim().matches("\\d+") || Integer.parseInt(age) <= 0) {
+        if (!age.trim().matches("\\d+") || Integer.parseInt(age) <= 0 || Integer.parseInt(age) < 18) {
             return false;
         }
 

@@ -81,9 +81,9 @@ public class CreateAccountInstructor extends JFrame {
                 String citiesInput = citiesArea.getText().trim();
 
                 try {
-                    Instructor i = RegisterService.registerInstructor(name, phoneNumber, specialty, citiesInput);
-                    if (i != null) {
-                        new InstructorPage(i);
+                    boolean registerSuccess = RegisterService.registerInstructor(name, phoneNumber, specialty, citiesInput);
+                    if (registerSuccess) {
+                        new InstructorPage();
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(CreateAccountInstructor.this,

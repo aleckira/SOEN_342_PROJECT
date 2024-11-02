@@ -1,7 +1,6 @@
 package PackageUI.ClientUI;
 
 
-import PackageActorsAndObjects.Client;
 import Services.RegisterService;
 
 import javax.swing.*;
@@ -72,9 +71,9 @@ public class CreateAccountClient extends JFrame {
                 String age = ageField.getText().trim();
 
                 try {
-                    Client c = RegisterService.registerClient(name, phoneNumber, age);
-                    if (c != null) {
-                        new ClientPage(c);
+                    boolean registerSuccess = RegisterService.registerClient(name, phoneNumber, age);
+                    if (registerSuccess) {
+                        new ClientPage();
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(CreateAccountClient.this,

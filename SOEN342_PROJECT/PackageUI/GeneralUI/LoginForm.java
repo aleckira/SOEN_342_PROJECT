@@ -88,19 +88,18 @@ public class LoginForm extends JFrame {
                 String name = firstField.getText();
                 String secondFieldString = secondField.getText();
                 if (userType.equals("admin")) {
-                    Admin a = LoginService.loginAdmin(name, secondFieldString);
-                    if (a != null) {
-                        new AdminPage(a);
+                    boolean loginSuccess = LoginService.loginAdmin(name, secondFieldString);
+                    if (loginSuccess) {
+                        new AdminPage();
                         dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 if (userType.equals("client")) {
-                    Client c = LoginService.loginClient(name, secondFieldString);
-                    if (c != null) {
-                        System.out.println(c.toString());
-                        new ClientPage(c);
+                    boolean loginSuccess = LoginService.loginClient(name, secondFieldString);
+                    if (loginSuccess) {
+                        new ClientPage();
                         dispose();
                     }
                     else {
@@ -108,10 +107,9 @@ public class LoginForm extends JFrame {
                     }
                 }
                 if (userType.equals("instructor")) {
-                    Instructor i = LoginService.loginInstructor(name, secondFieldString);
-                    System.out.println(i.toString());
-                    if (i != null) {
-                        new InstructorPage(i);
+                    boolean loginSuccess = LoginService.loginInstructor(name, secondFieldString);
+                    if (loginSuccess) {
+                        new InstructorPage();
                         dispose();
                     }
                     else {

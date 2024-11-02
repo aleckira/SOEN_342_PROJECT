@@ -16,7 +16,7 @@ public class UserSession {
         return currentUserRole;
     }
 
-    public static Object getCurrentUser() {
+    public static Actor getCurrentUser() {
         return currentUser;
     }
 

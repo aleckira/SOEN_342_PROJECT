@@ -16,7 +16,7 @@ import static Services.DbConnectionService.connectToDb;
 
 
 public class LoginService {
-    public static Admin loginAdmin(String name, String password) {
+    public static boolean loginAdmin(String name, String password) {
         PreparedStatement stmt = null;
         String query = "SELECT \"name\", \"password\" FROM \"admin\" LIMIT 1";
         ResultSet rs = null;
@@ -45,12 +45,12 @@ public class LoginService {
         if (adminName != null && adminPassword != null && name.equals(adminName) && password.equals(adminPassword)) {
             Admin admin = Admin.getInstance(name, password);
             UserSession.setCurrentUserRole("admin", admin); // Store the role and admin instance
-            return admin;
+            return true;
         }
-        return null;
+        return false;
     }
 
-    public static Instructor loginInstructor(String name, String phoneNumber) {
+    public static boolean loginInstructor(String name, String phoneNumber) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String query = "SELECT \"id\", \"name\", \"phone_number\", \"specialty\", \"cities\" FROM \"public\".\"instructors\" WHERE \"name\" = ? AND \"phone_number\" = ?";
@@ -72,7 +72,7 @@ public class LoginService {
 
                 Instructor instructor = new Instructor(id, instructorName, instructorPhoneNumber, specialty, citiesArrList);
                 UserSession.setCurrentUserRole("instructor", instructor); // Store the role and instructor instance
-                return instructor;
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,10 +84,10 @@ public class LoginService {
                 e.printStackTrace();
             }
         }
-        return null;
+        return false;
     }
 
-    public static Client loginClient(String name, String phoneNumber) {
+    public static boolean loginClient(String name, String phoneNumber) {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String query = "SELECT \"id\", \"name\", \"phone_number\", \"age\", \"booking_ids\" FROM \"public\".\"clients\" WHERE \"name\" = ? AND \"phone_number\" = ?";
@@ -117,7 +117,7 @@ public class LoginService {
 
                 Client client = new Client(id, clientName, clientPhoneNumber, age, bookingIdArrList);
                 UserSession.setCurrentUserRole("client", client); // Store the role and client instance
-                return client;
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -129,6 +129,6 @@ public class LoginService {
                 e.printStackTrace();
             }
         }
-        return null; // Return null if no client was found
+        return false;
     }
 }

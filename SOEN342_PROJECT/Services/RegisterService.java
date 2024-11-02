@@ -15,16 +15,16 @@ import static Services.DbConnectionService.connectToDb;
 
 
 public class RegisterService {
-    public static Instructor registerInstructor(String name, String phoneNumber, String specialty, String cities) throws SQLException {
+    public static boolean registerInstructor(String name, String phoneNumber, String specialty, String cities) throws SQLException {
 
         if (name == null || name.trim().isEmpty()) {
-            return null;
+            return false;
         }
         if (!phoneNumber.matches("\\d{15}") || !isPhoneNumberUnique(phoneNumber, "instructor")) {
-            return null;
+            return false;
         }
         if (cities.trim().isEmpty()) {
-            return null;
+            return false;
         }
 
         String[] citiesArray = cities.split(",\\s*");
@@ -43,10 +43,11 @@ public class RegisterService {
             if (rs.next()) {
                 ArrayList<String> citiesArrList = new ArrayList<>(Arrays.asList(citiesArray));
                 int id = rs.getInt("id");
-                Instructor a = new Instructor(id, name, phoneNumber, specialty, citiesArrList);
-                return a;
+                Instructor i = new Instructor(id, name, phoneNumber, specialty, citiesArrList);
+                UserSession.setCurrentUserRole("instructor", i);
+                return true;
             } else {
-                return null;
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,16 +55,16 @@ public class RegisterService {
         }
     }
 
-    public static Client registerClient(String name, String phoneNumber, String age) throws SQLException {
+    public static boolean registerClient(String name, String phoneNumber, String age) throws SQLException {
 
         if (name == null || name.trim().isEmpty()) {
-            return null;
+            return false;
         }
         if (!phoneNumber.matches("\\d{15}") || !isPhoneNumberUnique(phoneNumber, "client")) {
-            return null;
+            return false;
         }
         if (!age.trim().matches("\\d+") || Integer.parseInt(age) <= 0) {
-            return null;
+            return false;
         }
 
         int ageInt = Integer.parseInt(age);
@@ -82,9 +83,10 @@ public class RegisterService {
                 int id = rs.getInt("id");
 
                 Client c = new Client(id, name, phoneNumber, ageInt);
-                return c;
+                UserSession.setCurrentUserRole("client", c);
+                return true;
             } else {
-                return null;
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();

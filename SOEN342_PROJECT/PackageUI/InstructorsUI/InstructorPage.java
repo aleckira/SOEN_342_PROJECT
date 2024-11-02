@@ -2,6 +2,7 @@ package PackageUI.InstructorsUI;
 
 import PackageActorsAndObjects.Instructor;
 import PackageUI.GeneralUI.OfferingsPage;
+import Services.UserSession;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +12,9 @@ import java.awt.event.ActionListener;
 
 public class InstructorPage extends JFrame {
 
-    public InstructorPage(Instructor i) {
+    public InstructorPage() {
         // Set up the frame
+        Instructor i = (Instructor )UserSession.getCurrentUser();
         setTitle("Instructor Page");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -5,6 +5,7 @@ package PackageUI.ClientUI;
 import PackageActorsAndObjects.Client;
 import PackageUI.GeneralUI.BookedLessons;
 import PackageUI.GeneralUI.OfferingsPage;
+import Services.UserSession;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,8 @@ import java.awt.event.ActionListener;
 public class ClientPage extends JFrame {
 
     // Constructor for LoginPage
-    public ClientPage(Client c) {
+    public ClientPage() {
+        Client c = (Client) UserSession.getCurrentUser();
         // Set up the frame
         setTitle("Client Page");
         setSize(500, 400);

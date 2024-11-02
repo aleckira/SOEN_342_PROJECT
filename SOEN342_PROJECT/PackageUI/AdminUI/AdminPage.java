@@ -1,9 +1,11 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.Admin;
+import PackageActorsAndObjects.Instructor;
 import PackageUI.GeneralUI.AddOffering;
 import PackageUI.GeneralUI.BookedLessons;
 import PackageUI.GeneralUI.OfferingsPage;
+import Services.UserSession;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +16,8 @@ import java.awt.event.ActionListener;
 public class AdminPage extends JFrame {
 
     // Constructor for LoginPage
-    public AdminPage(Admin a) {
+    public AdminPage() {
+        Admin a = (Admin)UserSession.getCurrentUser();
         // Set up the frame
         setTitle("Admin Page");
         setSize(500, 400);

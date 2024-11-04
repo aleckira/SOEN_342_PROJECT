@@ -45,7 +45,7 @@ public class Instructor extends Actor {
                 LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
 
                 // Create an Offering object and add it to the list
-                Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId, false);
+                Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId);
                 offerings.add(offering);
             }
         } catch (SQLException e) {

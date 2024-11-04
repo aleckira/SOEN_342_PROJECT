@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static Services.DbConnectionService.connectToDb;
 
@@ -40,7 +42,7 @@ public class Client extends Actor {
                 LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
 
                 // Create an Offering object and add it to the list
-                Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId, false);
+                Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId);
                 offerings.add(offering);
             }
         } catch (SQLException e) {
@@ -49,10 +51,10 @@ public class Client extends Actor {
         return offerings;
     }
 
-    public ArrayList<Offering> getBookingsForViewing() {
-        ArrayList<Offering> offerings = new ArrayList<>();
+    public Map<Offering, Integer> getBookingsForViewing() {
+        Map<Offering, Integer> offerings = new HashMap<>();
         String query = """
-        SELECT o.*
+        SELECT o.*, b.id AS booking_id
         FROM public.offerings o
         INNER JOIN public.bookings b ON o.id = b.offering_id
         WHERE b.client_id = ? AND o.instructor_id IS NOT NULL
@@ -73,10 +75,13 @@ public class Client extends Actor {
                     int instructorId = rs.getInt("instructor_id");
                     LocalDateTime startTime = rs.getObject("start_time", LocalDateTime.class);
                     LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
+                    int bookingId = rs.getInt("booking_id");  // Retrieve booking ID
 
-                    // Create an Offering object and add it to the list
-                    Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId, false);
-                    offerings.add(offering);
+                    // Create an Offering object
+                    Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId);
+
+                    // Add the Offering and bookingId to the map
+                    offerings.put(offering, bookingId);
                 }
             }
         } catch (SQLException e) {
@@ -108,8 +113,8 @@ public class Client extends Actor {
         }
     }
 
-    public void cancelBooking(int bookingId) {
-
+    public boolean cancelBooking(int bookingId) {
+        return true;
     }
 
     public int getId() {return id;}

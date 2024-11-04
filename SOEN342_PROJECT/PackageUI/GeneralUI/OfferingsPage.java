@@ -1,10 +1,8 @@
 package PackageUI.GeneralUI;
 
-import PackageActorsAndObjects.Actor;
-import PackageActorsAndObjects.Client;
-import PackageActorsAndObjects.Instructor;
-import PackageActorsAndObjects.Offering;
+import PackageActorsAndObjects.*;
 import PackageUI.AdminUI.AddOffering;
+import PackageUI.AdminUI.EditOfferingPage;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -93,6 +91,7 @@ public class OfferingsPage extends JFrame {
         //for now just doing names but we should be able to see everything probably
         // Create action button based on user role
         if ("admin".equals(role)) {
+            Admin a = (Admin) user;
             actionButton = new JButton("Add");
             actionButton.addActionListener(new ActionListener() {
                 @Override
@@ -107,8 +106,8 @@ public class OfferingsPage extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        JOptionPane.showMessageDialog(OfferingsPage.this, "Action performed on: " + classType);
+                        int offeringId = (int) tableModel.getValueAt(selectedRow, 0);
+                        new EditOfferingPage(offeringId);
                     } else {
                         JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
                     }
@@ -122,8 +121,14 @@ public class OfferingsPage extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     int selectedRow = offeringsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        JOptionPane.showMessageDialog(OfferingsPage.this, "Action performed on: " + classType);
+                        int offeringId = (int) tableModel.getValueAt(selectedRow, 0);
+                        boolean deleteOfferingSuccess = a.deleteOffering(offeringId);
+                        if (deleteOfferingSuccess) {
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Offer deleted successfully.");
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Offer could not be deleted.");
+                        }
                     } else {
                         JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
                     }
@@ -190,8 +195,6 @@ public class OfferingsPage extends JFrame {
         }
 
         if (role.equals("client")) {
-            Client client = (Client) user;
-
             actionButton = new JButton("Reserve");
             actionButton.addActionListener(new ActionListener() {
                 @Override

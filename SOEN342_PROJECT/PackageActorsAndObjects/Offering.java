@@ -25,7 +25,7 @@ public class Offering {
     private Instructor instructor;
     public Offering() {}
 
-    public Offering(int id, String city, String location, String classType, int capacity, LocalDateTime startTime, LocalDateTime endTime, int instructorId, boolean getInstructor) {
+    public Offering(int id, String city, String location, String classType, int capacity, LocalDateTime startTime, LocalDateTime endTime, int instructorId) {
         this.id = id;
         this.city = city;
         this.location = location;
@@ -36,11 +36,6 @@ public class Offering {
         this.endTime = endTime;
         this.spotsLeft = isOfferingAvailable(id, capacity);
         this.instructorId = instructorId;
-        //sometimes we don't want to get the instructor because it's "extra" info
-        //and, it can significantly slow things down
-        if (getInstructor) {
-            this.instructor = Instructor.fetchInstructorById(instructorId);
-        }
     }
     private static int isOfferingAvailable(int offeringId, int capacity) {
         String query = "SELECT COUNT(*) FROM public.bookings WHERE offering_id = ?"; // Count rows with the given offering_id
@@ -80,35 +75,35 @@ public class Offering {
         }
         return false;
     }
-    public static ArrayList<Client> fetchClientsForBooking(int offeringId) {
-        ArrayList<Client> clients = new ArrayList<>();
+    public static Client fetchClientForBooking(int bookingId) {
+        Client client = null;  // Initialize client as null
         String query = """
-            SELECT c.id, c.name, c.phone_number, c.age
-            FROM public.clients c
-            INNER JOIN public.bookings b ON c.id = b.client_id
-            WHERE b.offering_id = ?
-        """;
+        SELECT c.id, c.name, c.phone_number, c.age
+        FROM public.clients c
+        INNER JOIN public.bookings b ON c.id = b.client_id
+        WHERE b.id = ?  
+    """;
 
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            stmt.setInt(1, offeringId);  // Set the offering ID in the query
+            stmt.setInt(1, bookingId);  // Set the booking ID in the query
 
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
+                if (rs.next()) {  // Check if a result is returned
                     int clientId = rs.getInt("id");
                     String name = rs.getString("name");
                     String phoneNumber = rs.getString("phone_number");
                     int age = rs.getInt("age");
-                    Client client = new Client(clientId, name, phoneNumber, age);
-                    clients.add(client);
+                    client = new Client(clientId, name, phoneNumber, age);  // Create Client object
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return clients;
+        return client;  // Return the single Client or null if not found
     }
+
 
 
     public int getId() { return id; }

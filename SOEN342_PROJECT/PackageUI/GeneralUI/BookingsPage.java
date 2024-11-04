@@ -2,6 +2,7 @@ package PackageUI.GeneralUI;
 
 import PackageActorsAndObjects.*;
 import PackageUI.AdminUI.AddOffering;
+import PackageUI.AdminUI.EditBookingPage;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -12,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class BookingsPage extends JFrame {
@@ -33,7 +36,7 @@ public class BookingsPage extends JFrame {
         setLocationRelativeTo(null); // Center the frame
 
         // Create the table model with column headers based on user role
-        tableModel = new DefaultTableModel(new String[]{"Id", "Class Type", "Location", "City", "Start Time", "End Time", "Capacity", "Spots Left", "Instructor ID"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Id", "Offering Id", "Class Type", "Location", "City", "Start Time", "End Time", "Capacity", "Spots Left", "Instructor ID"}, 0);
 
 
         // Create the table and assign the model to it
@@ -69,7 +72,7 @@ public class BookingsPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = bookingsTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    String instructorIdString = (String) tableModel.getValueAt(selectedRow, 8);
+                    String instructorIdString = (String) tableModel.getValueAt(selectedRow, 9);
                     if (Objects.equals(instructorIdString, "")) {
                         JOptionPane.showMessageDialog(BookingsPage.this, "No instructor for this offering.");
                     }
@@ -84,36 +87,27 @@ public class BookingsPage extends JFrame {
             }
         });
         buttonPanel.add(actionButton); // Add the action button to the panel
-        actionButton = new JButton("View clients");
-        actionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = bookingsTable.getSelectedRow();
-                if (selectedRow != -1) {
-                    int offeringId = (int) tableModel.getValueAt(selectedRow, 0);
-                    ArrayList<Client> clients = Offering.fetchClientsForBooking(offeringId);
-                    StringBuilder message = new StringBuilder("Client names: " );
-                    for (Client client : clients) {
-                        message.append("\n- ").append(client.getName());
-                    }
-                    JOptionPane.showMessageDialog(BookingsPage.this, message.toString());
 
-                } else {
-                    JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
-                }
-            }
-        });
-        buttonPanel.add(actionButton); // Add the action button to the panel
+
         // Create action button based on user role
         if ("admin".equals(role)) {
-            actionButton = new JButton("Add");
+            actionButton = new JButton("View client for booking");
             actionButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new AddOffering();
+                    int selectedRow = bookingsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
+                        Client c = Offering.fetchClientForBooking(bookingId);
+                        JOptionPane.showMessageDialog(BookingsPage.this, "Client ID and name: " + c.getId() + " - " + c.getName());
+                    } else {
+                        JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
+                    }
                 }
+
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
+            Admin a = (Admin) user;
             actionButton = new JButton("Edit");
             actionButton.addActionListener(new ActionListener() {
                 @Override
@@ -121,6 +115,8 @@ public class BookingsPage extends JFrame {
                     int selectedRow = bookingsTable.getSelectedRow();
                     if (selectedRow != -1) {
                         String classType = (String) tableModel.getValueAt(selectedRow, 1);
+                        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
+                        new EditBookingPage(bookingId);
                         JOptionPane.showMessageDialog(BookingsPage.this, "Action performed on: " + classType);
                     } else {
                         JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
@@ -135,8 +131,14 @@ public class BookingsPage extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     int selectedRow = bookingsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        JOptionPane.showMessageDialog(BookingsPage.this, "Action performed on: " + classType);
+                        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
+                        boolean deleteBookingSuccess = a.deleteBooking(bookingId);
+                        if (deleteBookingSuccess) {
+                            JOptionPane.showMessageDialog(BookingsPage.this, "Booking deleted.");
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(BookingsPage.this, "Error deleting booking.");
+                        }
                     } else {
                         JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
                     }
@@ -147,34 +149,25 @@ public class BookingsPage extends JFrame {
 
 
         if (role.equals("client")) {
-            actionButton = new JButton("Reserve");
+            actionButton = new JButton("Cancel");
             actionButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int selectedRow = bookingsTable.getSelectedRow();
                     if (selectedRow != -1) {
-                        // Perform action based on the selected row
-                        String availability = (String) tableModel.getValueAt(selectedRow, 6);
-
-                        if (Objects.equals(availability, "Available")) {
-                            int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
-                            if (Offering.hasOfferingBeenBookedByClient(offeringID, ((Client) user).getId())) {
-                                JOptionPane.showMessageDialog(BookingsPage.this, "You already booked this offering.");
-                            } else {
-                                boolean makeBookingSuccess = ((Client) user).makeBooking(offeringID);
-                                JOptionPane.showMessageDialog(BookingsPage.this, "Lesson booked successfully.");
-                                if (!makeBookingSuccess) {
-                                    JOptionPane.showMessageDialog(BookingsPage.this, "Error adding booking to the database.");
-                                }
-                            }
+                        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
+                        Client c = (Client) user;
+                        boolean cancelSuccess = c.cancelBooking(bookingId);
+                        if (cancelSuccess) {
+                            JOptionPane.showMessageDialog(BookingsPage.this, "Booking canceled.");
                         }
                         else {
-                            JOptionPane.showMessageDialog(BookingsPage.this, "Lesson fully booked already.");
+                            JOptionPane.showMessageDialog(BookingsPage.this, "Booking cancel failed.");
                         }
-                    }
-                    else {
+                    } else {
                         JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
-                    }}
+                    }
+                }
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
         }
@@ -196,28 +189,34 @@ public class BookingsPage extends JFrame {
         // Clear the table before displaying new data
         tableModel.setRowCount(0);
 
-        ArrayList<Offering> displayedBookings = new ArrayList<Offering>();
+        Map<Offering, Integer> displayedBookings = new HashMap<>();
         if (role.equals("client")) {
             Client c = (Client) user;
             displayedBookings = c.getBookingsForViewing();
-        }
-        else if (role.equals("admin")) {
+        } else if (role.equals("admin")) {
             Admin a = (Admin) user;
             displayedBookings = a.getAllBookingsForViewing();
         }
 
-        for (Offering offering : displayedBookings) {
+        for (Map.Entry<Offering, Integer> entry : displayedBookings.entrySet()) {
+            Offering offering = entry.getKey();
+            int bookingId = entry.getValue();  // Retrieve bookingId from the map
+
+            // Retrieve offering details
             String location = offering.getLocation();
             String city = offering.getCity();
             String startTime = offering.getStartTime().toString();
             String endTime = offering.getEndTime().toString();
             int spotsLeft = offering.getSpotsLeft();
-            int id = offering.getId();
+            int offeringId = offering.getId();  // Original offering ID
             String classType = offering.getClassType();
             int capacity = offering.getCapacity();
             String instructorId = String.valueOf(offering.getInstructorId());
-            tableModel.addRow(new Object[]{id, classType, location, city, startTime, endTime, capacity, spotsLeft, instructorId});
+
+            // Add the row with bookingId as `id` and offeringId as `offeringId`
+            tableModel.addRow(new Object[]{bookingId, offeringId, classType, location, city, startTime, endTime, capacity, spotsLeft, instructorId});
         }
     }
+
 
 }

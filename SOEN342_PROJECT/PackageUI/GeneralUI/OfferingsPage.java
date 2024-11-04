@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -223,17 +225,33 @@ public class OfferingsPage extends JFrame {
                     if (selectedRow != -1) {
                         // Perform action based on the selected row
                         String availability = (String) tableModel.getValueAt(selectedRow, 6);
+                        String startTimeStr = (String) tableModel.getValueAt(selectedRow, 4);
+                        String endTimeStr = (String) tableModel.getValueAt(selectedRow, 5);
+
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+                        LocalDateTime startLocalDateTime = LocalDateTime.parse(startTimeStr, formatter);
+                        LocalDateTime endLocalDateTime = LocalDateTime.parse(endTimeStr, formatter);
+
+                        Timestamp startTime = Timestamp.valueOf(startLocalDateTime);
+                        Timestamp endTime = Timestamp.valueOf(endLocalDateTime);
 
                         if (Objects.equals(availability, "Available")) {
                             int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
                             if (Offering.hasOfferingBeenBookedByClient(offeringID, ((Client) user).getId())) {
                                 JOptionPane.showMessageDialog(OfferingsPage.this, "You already booked this offering.");
                             } else {
-                                boolean makeBookingSuccess = ((Client) user).makeBooking(offeringID);
-                                JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson booked successfully.");
-                                if (!makeBookingSuccess) {
-                                    JOptionPane.showMessageDialog(OfferingsPage.this, "Error adding booking to the database.");
+                                if (((Client) user).isThereBookingTimeConflict(startTime, endTime)) {
+                                    JOptionPane.showMessageDialog(OfferingsPage.this, "You already have booked an offering at this time and day.");
                                 }
+                                else {
+                                    boolean makeBookingSuccess = ((Client) user).makeBooking(offeringID);
+                                    if (!makeBookingSuccess) {
+                                        JOptionPane.showMessageDialog(OfferingsPage.this, "Error adding booking to the database.");
+                                    }
+                                    JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson booked successfully.");
+                                }
+
                             }
                         }
                         else {

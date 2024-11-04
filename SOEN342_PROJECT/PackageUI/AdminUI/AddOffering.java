@@ -145,7 +145,7 @@ public class AddOffering extends JFrame {
             return;
         }
 
-        boolean isUnique = admin.isNewOfferingUnique(city, location, startTime, endTime);
+        boolean isUnique = Admin.isNewOfferingUnique(city, location, startTime, endTime);
         if (!isUnique) {
             JOptionPane.showMessageDialog(this, "Offering not unique", "Error", JOptionPane.ERROR_MESSAGE);
         } else {

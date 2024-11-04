@@ -33,20 +33,13 @@ public class AdminPage extends JFrame {
         panel.add(loginLabel);
 
         // Create buttons for User, Instructor, and Admin logins
-//        JButton deleteAccBtn = new JButton("Delete an account");
         JButton viewOfferingsBtn = new JButton("View, add, edit and delete offerings");
-        JButton viewBookingsBtn = new JButton("View, edit and delete all bookings");
+        JButton viewBookingsBtn = new JButton("View, and delete all bookings");
         JButton deleteInstructorBtn = new JButton("View and delete instructors");
         JButton deleteClientBtn = new JButton("View and delete clients");
         JButton logout = new JButton("Logout");
 
-//        deleteAccBtn.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                dispose();
-//                new Accounts();
-//            }
-//        });
+
 
         viewOfferingsBtn.addActionListener(new ActionListener() {
             @Override

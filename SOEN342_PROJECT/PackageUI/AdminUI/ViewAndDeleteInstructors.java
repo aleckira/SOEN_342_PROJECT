@@ -93,7 +93,7 @@ public class ViewAndDeleteInstructors extends JFrame {
         buttonPanel.add(actionButton); // Add the action button to the panel
 
         // Button to refresh the offerings display
-        refreshButton = new JButton("Refresh Clients");
+        refreshButton = new JButton("Refresh Instructors");
         refreshButton.addActionListener(e -> displayInstructors());
         buttonPanel.add(refreshButton); // Add refresh button to the panel
 

@@ -87,7 +87,7 @@ public class Admin extends Actor {
     }
 
 
-    public boolean isNewOfferingUnique(String location, String city, Timestamp startTime, Timestamp endTime) {
+    public static boolean isNewOfferingUnique(String location, String city, Timestamp startTime, Timestamp endTime) {
         String query = "SELECT COUNT(*) FROM public.offerings " +
                 "WHERE city = ? AND location = ? AND start_time = ? AND end_time = ?";
 

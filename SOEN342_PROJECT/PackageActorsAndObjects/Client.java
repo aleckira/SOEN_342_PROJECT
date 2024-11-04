@@ -1,9 +1,6 @@
 package PackageActorsAndObjects;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,10 +110,48 @@ public class Client extends Actor {
         }
     }
 
+
     public boolean cancelBooking(int bookingId) {
         //should ONLY delete one booking in the bookings table
         //return true if it worked, else return false
         return true;
+    }
+    public boolean isThereBookingTimeConflict(Timestamp startTime, Timestamp endTime) {
+        String offeringQuery = "SELECT id FROM public.offerings WHERE start_time = ? AND end_time = ?";
+        String bookingQuery = "SELECT COUNT(*) FROM public.bookings WHERE client_id = ? AND offering_id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement offeringStmt = connection.prepareStatement(offeringQuery)) {
+
+            // Set parameters for the offering query
+            offeringStmt.setTimestamp(1, startTime);
+            offeringStmt.setTimestamp(2, endTime);
+
+            // Execute the offering query
+            try (ResultSet offeringRs = offeringStmt.executeQuery()) {
+                while (offeringRs.next()) {
+                    int offeringId = offeringRs.getInt("id");
+
+                    // Check if there’s a booking for this client with the found offering_id
+                    try (PreparedStatement bookingStmt = connection.prepareStatement(bookingQuery)) {
+                        bookingStmt.setInt(1, this.getId());
+                        bookingStmt.setInt(2, offeringId);
+
+                        try (ResultSet bookingRs = bookingStmt.executeQuery()) {
+                            if (bookingRs.next() && bookingRs.getInt(1) > 0) {
+                                // Conflict found: a booking exists for the client with this time slot
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // No conflict found
+        return false;
     }
 
     public int getId() {return id;}

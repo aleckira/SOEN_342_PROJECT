@@ -1,7 +1,7 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.*;
-import PackageUI.GeneralUI.BookingsPage;
+import PackageUI.ClientUI.ClientPage;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -61,7 +61,16 @@ public class ViewAndDeleteClients extends JFrame {
         // Create a panel for buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
-        actionButton = new JButton("Delete Clients");
+        actionButton = new JButton("Back");
+        actionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new AdminPage();
+            }
+        });
+        buttonPanel.add(actionButton); // Add the action button to the panel
+        actionButton = new JButton("Delete Client");
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

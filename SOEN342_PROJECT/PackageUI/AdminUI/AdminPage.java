@@ -89,11 +89,9 @@ public class AdminPage extends JFrame {
         // Add buttons to the panel
         panel.add(viewOfferingsBtn);
         panel.add(viewBookingsBtn);
-        //panel.add(deleteAccBtn); separate this into the two below
         panel.add(deleteInstructorBtn);
         panel.add(deleteClientBtn);
         panel.add(logout);
-        // Add panel to the frame
         add(panel);
 
         // Make the frame visible

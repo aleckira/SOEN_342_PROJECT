@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.sql.Connection;
-import java.util.ArrayList;
 
 import static Services.DbConnectionService.connectToDb;
 
@@ -22,7 +21,6 @@ public class Offering {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int instructorId;
-    private Instructor instructor;
     public Offering() {}
 
     public Offering(int id, String city, String location, String classType, int capacity, LocalDateTime startTime, LocalDateTime endTime, int instructorId) {
@@ -126,8 +124,6 @@ public class Offering {
     public void setClassType(String classType) { this.classType = classType; }
     public int getInstructorId() { return instructorId; }
     public void setInstructorId(int instructorId) { this.instructorId = instructorId; }
-    public Instructor getInstructor() { return instructor; }
-    public void setInstructor(Instructor i) { this.instructor = i; }
 
 
 }

@@ -2,7 +2,10 @@ package PackageUI.GeneralUI;
 
 import PackageActorsAndObjects.*;
 import PackageUI.AdminUI.AddOffering;
+import PackageUI.AdminUI.AdminPage;
 import PackageUI.AdminUI.EditOfferingPage;
+import PackageUI.ClientUI.ClientPage;
+import PackageUI.InstructorsUI.InstructorPage;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -67,6 +70,23 @@ public class OfferingsPage extends JFrame {
         // Create a panel for buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout()); // Use FlowLayout for the panel
+        actionButton = new JButton("Back");
+        actionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                if (role.equals("admin")) {
+                    new AdminPage();
+                }
+                if (role.equals("client")) {
+                    new ClientPage();
+                }
+                if (role.equals("instructor")) {
+                    new InstructorPage();
+                }
+            }
+        });
+        buttonPanel.add(actionButton); // Add the action button to the panel
         actionButton = new JButton("View instructor name");
         actionButton.addActionListener(new ActionListener() {
             @Override

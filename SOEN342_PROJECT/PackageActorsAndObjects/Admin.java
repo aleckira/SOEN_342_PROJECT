@@ -215,10 +215,5 @@ public class Admin extends Actor {
         //return true if it worked, else return false
         return true;
     }
-    public boolean editBooking(int bookingdId, int clientId, int offeringId) {
-        //edit bookings should...
 
-        //return true if it worked, else return false
-        return true;
-    }
 }

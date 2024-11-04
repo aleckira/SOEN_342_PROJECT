@@ -1,8 +1,9 @@
 package PackageUI.GeneralUI;
 
 import PackageActorsAndObjects.*;
-import PackageUI.AdminUI.AddOffering;
-import PackageUI.AdminUI.EditBookingPage;
+import PackageUI.AdminUI.AdminPage;
+import PackageUI.ClientUI.ClientPage;
+import PackageUI.InstructorsUI.InstructorPage;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -12,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -66,6 +66,20 @@ public class BookingsPage extends JFrame {
         // Create a panel for buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout()); // Use FlowLayout for the panel
+        actionButton = new JButton("Back");
+        actionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                if (role.equals("admin")) {
+                    new AdminPage();
+                }
+                if (role.equals("client")) {
+                    new ClientPage();
+                }
+            }
+        });
+        buttonPanel.add(actionButton); // Add the action button to the panel
         actionButton = new JButton("View instructor name");
         actionButton.addActionListener(new ActionListener() {
             @Override
@@ -108,22 +122,6 @@ public class BookingsPage extends JFrame {
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
             Admin a = (Admin) user;
-            actionButton = new JButton("Edit");
-            actionButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    int selectedRow = bookingsTable.getSelectedRow();
-                    if (selectedRow != -1) {
-                        String classType = (String) tableModel.getValueAt(selectedRow, 1);
-                        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
-                        new EditBookingPage(bookingId);
-                        JOptionPane.showMessageDialog(BookingsPage.this, "Action performed on: " + classType);
-                    } else {
-                        JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
-                    }
-                }
-            });
-            buttonPanel.add(actionButton); // Add the action button to the panel
 
             actionButton = new JButton("Delete");
             actionButton.addActionListener(new ActionListener() {

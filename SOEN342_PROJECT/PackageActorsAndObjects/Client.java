@@ -114,6 +114,8 @@ public class Client extends Actor {
     }
 
     public boolean cancelBooking(int bookingId) {
+        //should ONLY delete one booking in the bookings table
+        //return true if it worked, else return false
         return true;
     }
 

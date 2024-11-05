@@ -182,38 +182,129 @@ public class Admin extends Actor {
         return instructors;
     }
     public boolean deleteOffering(int offeringId) {
-        //delete offering should...
-        //1. Delete the offering in the offerings table
-        //2. Delete ALL bookings associated to this (for clients AND minors, but it's all in the bookings table anyway)
-        //return true if it worked, else return false
-        return true;
+        String deleteBookingsQuery = "DELETE FROM bookings WHERE offering_id = ?";
+        String deleteOfferingQuery = "DELETE FROM offerings WHERE id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement deleteBookingsStmt = connection.prepareStatement(deleteBookingsQuery);
+             PreparedStatement deleteOfferingStmt = connection.prepareStatement(deleteOfferingQuery)) {
+
+            // Delete bookings associated with the offering
+            deleteBookingsStmt.setInt(1, offeringId);
+            deleteBookingsStmt.executeUpdate();
+
+            // Delete the offering itself
+            deleteOfferingStmt.setInt(1, offeringId);
+            int rowsDeleted = deleteOfferingStmt.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     public boolean deleteBooking(int bookingId) {
-        //should ONLY delete one booking in the bookings table
-        //return true if it worked, else return false
-        return true;
+        String query = "DELETE FROM bookings WHERE id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, bookingId);
+            int rowsDeleted = stmt.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     public boolean deleteInstructor(int instructorId) {
-        //delete instructor should...
-        //1. delete the instructor in the instructors table
-        //2. set the "instructor_id" column to [null] in the offerings table for all offerings with instructor_id for that instructor
-        //3. should delete ALL bookings associated to that instructor i.e. delete all bookings for all offerings in 2. (you can't have a class without an instructor)
-        //return true if it worked, else return false
-        return true;
+        String deleteBookingsQuery = "DELETE FROM bookings WHERE offering_id IN (SELECT id FROM offerings WHERE instructor_id = ?)";
+        String updateOfferingsQuery = "UPDATE offerings SET instructor_id = NULL WHERE instructor_id = ?";
+        String deleteInstructorQuery = "DELETE FROM instructors WHERE id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement deleteBookingsStmt = connection.prepareStatement(deleteBookingsQuery);
+             PreparedStatement updateOfferingsStmt = connection.prepareStatement(updateOfferingsQuery);
+             PreparedStatement deleteInstructorStmt = connection.prepareStatement(deleteInstructorQuery)) {
+
+            // Delete bookings for the instructor's offerings
+            deleteBookingsStmt.setInt(1, instructorId);
+            deleteBookingsStmt.executeUpdate();
+
+            // Set instructor_id to NULL for offerings
+            updateOfferingsStmt.setInt(1, instructorId);
+            updateOfferingsStmt.executeUpdate();
+
+            // Delete the instructor
+            deleteInstructorStmt.setInt(1, instructorId);
+            int rowsDeleted = deleteInstructorStmt.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     public boolean deleteClient(int clientId) {
-        //delete client should...
-        //1. delete the client in the clients table
-        //2. delete ALL bookings associated to that client in the bookings table
-        //return true if it worked, else return false
-        return true;
+        String deleteBookingsQuery = "DELETE FROM bookings WHERE client_id = ?";
+        String deleteClientQuery = "DELETE FROM clients WHERE id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement deleteBookingsStmt = connection.prepareStatement(deleteBookingsQuery);
+             PreparedStatement deleteClientStmt = connection.prepareStatement(deleteClientQuery)) {
+
+            // Delete bookings for the client
+            deleteBookingsStmt.setInt(1, clientId);
+            deleteBookingsStmt.executeUpdate();
+
+            // Delete the client
+            deleteClientStmt.setInt(1, clientId);
+            int rowsDeleted = deleteClientStmt.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     public boolean editOffering(int offeringId, String city, String location, String classType, int capacity, Timestamp startTime, Timestamp endTime, int instructor_id) {
-        //edit offering should...
-        //find the offering in the offerings table via id
-        //replace ALL values of that offering with the new offering info
-        //return true if it worked, else return false
-        return true;
+        String query = "UPDATE offerings SET city = ?, location = ?, class_type = ?, capacity = ?, start_time = ?, end_time = ?, instructor_id = ? WHERE id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, city);
+            stmt.setString(2, location);
+            stmt.setString(3, classType);
+            stmt.setInt(4, capacity);
+            stmt.setTimestamp(5, startTime);
+            stmt.setTimestamp(6, endTime);
+            stmt.setInt(7, instructor_id);
+            stmt.setInt(8, offeringId);
+            int rowsUpdated = stmt.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean isInstructorValid(int instructorId) {
+        String query = "SELECT COUNT(*) FROM instructors WHERE id = ?";
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, instructorId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

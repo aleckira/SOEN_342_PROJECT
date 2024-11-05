@@ -3,6 +3,7 @@ package PackageUI.GeneralUI;
 import PackageActorsAndObjects.*;
 import PackageUI.AdminUI.AdminPage;
 import PackageUI.ClientUI.ClientPage;
+import PackageUI.GuardianUI.GuardianPage;
 import PackageUI.InstructorsUI.InstructorPage;
 import Services.UserSession;
 
@@ -76,6 +77,9 @@ public class BookingsPage extends JFrame {
                 }
                 if (role.equals("client")) {
                     new ClientPage();
+                }
+                if (role.equals("guardian")) {
+                    new GuardianPage();
                 }
             }
         });
@@ -170,6 +174,30 @@ public class BookingsPage extends JFrame {
             buttonPanel.add(actionButton); // Add the action button to the panel
         }
 
+        if (role.equals("guardian")) {
+            actionButton = new JButton("Cancel");
+            actionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = bookingsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
+                        Guardian guardian = (Guardian) user;
+                        boolean cancelSuccess = guardian.cancelBooking(bookingId);
+                        if (cancelSuccess) {
+                            JOptionPane.showMessageDialog(BookingsPage.this, "Booking canceled.");
+                        } else {
+                            JOptionPane.showMessageDialog(BookingsPage.this, "Booking cancel failed.");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
+                    }
+                }
+            });
+            buttonPanel.add(actionButton); // Add the action button to the panel
+        }
+
+
         refreshButton = new JButton("Refresh Bookings");
         refreshButton.addActionListener(e -> displayBookings());
         buttonPanel.add(refreshButton); // Add refresh button to the panel
@@ -194,6 +222,10 @@ public class BookingsPage extends JFrame {
         } else if (role.equals("admin")) {
             Admin a = (Admin) user;
             displayedBookings = a.getAllBookingsForViewing();
+        }
+        else if (role.equals("guardian")) {
+            Guardian g = (Guardian) user;
+            displayedBookings = g.getBookingsForViewing();  // This method should fetch all bookings for minors
         }
 
         for (Map.Entry<Offering, Integer> entry : displayedBookings.entrySet()) {

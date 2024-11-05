@@ -3,6 +3,8 @@ package PackageUI.GeneralUI;
 import PackageUI.AdminUI.AdminPage;
 import PackageUI.ClientUI.ClientPage;
 import PackageUI.ClientUI.CreateAccountClient;
+import PackageUI.GuardianUI.CreateAccountGuardian;
+import PackageUI.GuardianUI.GuardianPage;
 import PackageUI.InstructorsUI.CreateAccountInstructor;
 import PackageUI.InstructorsUI.InstructorPage;
 import Services.LoginService;
@@ -88,6 +90,9 @@ public class LoginForm extends JFrame {
                 if (Objects.equals(userType, "instructor")) {
                     new CreateAccountInstructor();
                 }
+                if (Objects.equals(userType, "guardian")) {
+                    new CreateAccountGuardian();
+                }
                 dispose();
             }
         });
@@ -122,6 +127,15 @@ public class LoginForm extends JFrame {
                         dispose();
                     }
                     else {
+                        JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                if (userType.equals("guardian")) {
+                    boolean loginSuccess = LoginService. loginGuardian(name, secondFieldString);
+                    if (loginSuccess) {
+                        new GuardianPage();
+                        dispose();
+                    } else {
                         JOptionPane.showMessageDialog(null, "Incorrect login information. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }

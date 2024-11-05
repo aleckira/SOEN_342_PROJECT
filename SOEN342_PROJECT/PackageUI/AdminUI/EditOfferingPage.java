@@ -23,7 +23,7 @@ public class EditOfferingPage extends JFrame {
         JComboBox<String> cityDropdown = new JComboBox<>(new String[]{"Montreal", "Laval", "Quebec City", "Gatineau", "Sherbrooke"});
 
         // Class type dropdown options
-        JComboBox<String> classTypeDropdown = new JComboBox<>(new String[]{"Judo", "MMA", "Karate", "Swimming", "Soccer"});
+        JComboBox<String> classTypeDropdown = new JComboBox<>(new String[]{"Swimming", "Judo", "MMA", "Basketball", "Soccer", "Yoga"});
 
         // Other form fields
         JTextField locationField = new JTextField();

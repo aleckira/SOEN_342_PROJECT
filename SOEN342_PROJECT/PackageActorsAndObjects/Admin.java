@@ -1,6 +1,5 @@
 package PackageActorsAndObjects;
 
-import javax.swing.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ public class Admin extends Actor {
         return instance;
     }
 
-    @Override
     public ArrayList<Offering> getOfferingsForViewing() {
         ArrayList<Offering> offerings = new ArrayList<>();
         String query = "SELECT * FROM public.offerings";

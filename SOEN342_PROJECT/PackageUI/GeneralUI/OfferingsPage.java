@@ -99,8 +99,8 @@ public class OfferingsPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = offeringsTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    String instructorIdString = (String) tableModel.getValueAt(selectedRow, 8);
-                    if (Objects.equals(instructorIdString, "")) {
+                    String instructorIdString = (String) tableModel.getValueAt(selectedRow, 9);
+                    if (Objects.equals(instructorIdString, "") || Objects.equals(instructorIdString, "N/A")) {
                         JOptionPane.showMessageDialog(OfferingsPage.this, "No instructor for this offering.");
                     }
                     else {
@@ -380,7 +380,7 @@ public class OfferingsPage extends JFrame {
             String availability = spotsLeft == 0 ? "Not Available" : "Available";
             //A client should only be able to see all Offering details for offerings that are not at capacity. They can see their bookings in another page
             //An instructor can't see Offering details for offerings that are at capacity, period.
-            //A client should only be able to see all Offering details for offerings that are not at capacity. They can see ALL bookings in another page
+            //An admin should only be able to see all Offering details for offerings that are not at capacity. They can see ALL bookings in another page
             if (spotsLeft == 0) {
                 tableModel.addRow(new Object[]{"N/A", "N/A", location, city, startTime, endTime, availability, "N/A", "N/A", "N/A"});
             }

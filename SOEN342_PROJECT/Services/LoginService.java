@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class LoginService {
 
     public static boolean loginAdmin(String name, String password) {
-        String query = "SELECT * FROM admins WHERE name = ? AND password = ?";
+        String query = "SELECT * FROM admin WHERE name = ? AND password = ?";
         try (Connection connection = DbConnectionService.connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 

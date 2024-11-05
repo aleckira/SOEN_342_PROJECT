@@ -12,7 +12,7 @@ public class Admin extends Actor {
     private final String password;
     private static Admin instance;
 
-    private Admin(String name, String password) {
+    public Admin(String name, String password) {
         super(name);
         this.password = password;
     }

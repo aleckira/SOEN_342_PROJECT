@@ -11,39 +11,37 @@ public class LoginPage extends JFrame {
     public LoginPage() {
         // Set up the frame
         setTitle("Login Page");
-        setSize(400, 200);
+        setSize(400, 250);  // Increased height to accommodate extra button
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
         // Create the main panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 1, 10, 10)); // 4 rows, 1 column, with spacing
+        panel.setLayout(new GridLayout(5, 1, 10, 10)); // 5 rows, 1 column, with spacing
 
         // Create the label for login selection
         JLabel loginLabel = new JLabel("Select Login Type", JLabel.CENTER);
         loginLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(loginLabel);
 
-        // Create buttons for User, Instructor, and Admin logins
-        JButton userLoginBtn = new JButton("Client Login");
+        // Create buttons for Client, Instructor, Admin, and Guardian logins
+        JButton clientLoginBtn = new JButton("Client Login");
         JButton instructorLoginBtn = new JButton("Instructor Login");
         JButton adminLoginBtn = new JButton("Admin Login");
+        JButton guardianLoginBtn = new JButton("Guardian Login");
 
         // Add action listeners for each button
-        userLoginBtn.addActionListener(new ActionListener() {
+        clientLoginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //handleLogin("user"); // Call method for User login
                 new LoginForm("client");
                 dispose();
-
             }
         });
 
         instructorLoginBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //handleLogin("instructor"); // Call method for Instructor login
                 new LoginForm("instructor");
                 dispose();
             }
@@ -57,15 +55,23 @@ public class LoginPage extends JFrame {
             }
         });
 
-        panel.add(userLoginBtn);
+        guardianLoginBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new LoginForm("guardian");
+                dispose();
+            }
+        });
+
+        // Add buttons to the panel
+        panel.add(clientLoginBtn);
         panel.add(instructorLoginBtn);
         panel.add(adminLoginBtn);
-        add(panel);
+        panel.add(guardianLoginBtn);
+
         // Add panel to the frame
+        add(panel);
 
         setVisible(true);
     }
-
-
-
 }

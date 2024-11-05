@@ -8,18 +8,26 @@ import java.util.Map;
 
 import static Services.DbConnectionService.connectToDb;
 
-public class Client extends Actor {
+public class Guardian extends Actor {
     private int id;
     private String phoneNumber;
     private int age;
-    public Client() {}
-    public Client(int id, String name, String phoneNumber, int age) { // if a new Client Registers, also for the Offering class
+
+    public Guardian() {}
+
+    public Guardian(String name, String phoneNumber, int age) {
+        super(name);
+        this.phoneNumber = phoneNumber;
+        this.age = age;
+    }
+
+    public Guardian(int id, String name, String phoneNumber, int age) {
         super(name);
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.age = age;
-
     }
+
     public ArrayList<Offering> getOfferingsForViewing() {
         ArrayList<Offering> offerings = new ArrayList<>();
         String query = "SELECT * FROM public.offerings WHERE instructor_id IS NOT NULL";
@@ -37,7 +45,6 @@ public class Client extends Actor {
                 LocalDateTime startTime = rs.getObject("start_time", LocalDateTime.class);
                 LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
 
-                // Create an Offering object and add it to the list
                 Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId);
                 offerings.add(offering);
             }
@@ -50,16 +57,17 @@ public class Client extends Actor {
     public Map<Offering, Integer> getBookingsForViewing() {
         Map<Offering, Integer> offerings = new HashMap<>();
         String query = """
-        SELECT o.*, b.id AS booking_id
-        FROM public.offerings o
-        INNER JOIN public.bookings b ON o.id = b.offering_id
-        WHERE b.client_id = ? AND o.instructor_id IS NOT NULL
-        """;
+    SELECT o.*, b.id AS booking_id, m.name AS minor_name
+    FROM public.offerings o
+    INNER JOIN public.bookings b ON o.id = b.offering_id
+    INNER JOIN public.minors m ON b.minor_id = m.id
+    WHERE m.guardian_id = ? AND o.instructor_id IS NOT NULL
+    """;
 
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            stmt.setInt(1, this.getId());  // Set the client ID in the query
+            stmt.setInt(1, this.getId());  // Set the guardian ID in the query
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -87,103 +95,114 @@ public class Client extends Actor {
     }
 
 
-    public boolean makeBooking(int offeringId) {
-        String query = "INSERT INTO public.bookings (client_id, offering_id) VALUES (?, ?)"; // Insert a new row
+    public boolean makeBooking(int minorId, int offeringId) {
+        String query = "INSERT INTO public.bookings (minor_id, offering_id) VALUES (?, ?)";
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            stmt.setInt(1, this.getId());
+            stmt.setInt(1, minorId);
             stmt.setInt(2, offeringId);
             int rowsInserted = stmt.executeUpdate();
 
-            if (rowsInserted > 0) {
-                System.out.println("Booking added successfully.");
-                return true;
-            } else {
-                System.out.println("Failed to add booking.");
-                return false;
-            }
+            return rowsInserted > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-
-    public boolean cancelBooking(int bookingId) {
-        String query = "DELETE FROM public.bookings WHERE id = ?";
+    public ArrayList<Minor> getMinors() {
+        ArrayList<Minor> minors = new ArrayList<>();
+        String query = "SELECT id, name FROM minors WHERE guardian_id = ?";
 
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            stmt.setInt(1, bookingId);
-            int rowsDeleted = stmt.executeUpdate();
-
-            if (rowsDeleted > 0) {
-                System.out.println("Booking canceled successfully.");
-                return true;
-            } else {
-                System.out.println("Failed to cancel booking. Booking ID may not exist.");
-                return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    public boolean isThereBookingTimeConflict(Timestamp startTime, Timestamp endTime) {
-        String offeringQuery = "SELECT id FROM public.offerings WHERE start_time = ? AND end_time = ?";
-        String bookingQuery = "SELECT COUNT(*) FROM public.bookings WHERE client_id = ? AND offering_id = ?";
-
-        try (Connection connection = connectToDb();
-             PreparedStatement offeringStmt = connection.prepareStatement(offeringQuery)) {
-
-            // Set parameters for the offering query
-            offeringStmt.setTimestamp(1, startTime);
-            offeringStmt.setTimestamp(2, endTime);
-
-            // Execute the offering query
-            try (ResultSet offeringRs = offeringStmt.executeQuery()) {
-                while (offeringRs.next()) {
-                    int offeringId = offeringRs.getInt("id");
-
-                    // Check if there’s a booking for this client with the found offering_id
-                    try (PreparedStatement bookingStmt = connection.prepareStatement(bookingQuery)) {
-                        bookingStmt.setInt(1, this.getId());
-                        bookingStmt.setInt(2, offeringId);
-
-                        try (ResultSet bookingRs = bookingStmt.executeQuery()) {
-                            if (bookingRs.next() && bookingRs.getInt(1) > 0) {
-                                // Conflict found: a booking exists for the client with this time slot
-                                return true;
-                            }
-                        }
-                    }
+            stmt.setInt(1, this.id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    minors.add(new Minor(id, name, this.id));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        // No conflict found
-        return false;
+        return minors;
     }
 
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
+
+    public boolean cancelBooking(int bookingId) {
+        String query = "DELETE FROM public.bookings WHERE id = ?";
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, bookingId);
+            int rowsDeleted = stmt.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isThereBookingTimeConflict(int minorId, Timestamp startTime, Timestamp endTime) {
+        String query = """
+    SELECT COUNT(*)
+    FROM bookings b
+    JOIN offerings o ON b.offering_id = o.id
+    WHERE b.minor_id = ? AND (
+        (o.start_time < ? AND o.end_time > ?) OR
+        (o.start_time < ? AND o.end_time > ?) OR
+        (o.start_time >= ? AND o.end_time <= ?)
+    )
+    """;
+
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, minorId);
+            stmt.setTimestamp(2, endTime);
+            stmt.setTimestamp(3, startTime);
+            stmt.setTimestamp(4, startTime);
+            stmt.setTimestamp(5, endTime);
+            stmt.setTimestamp(6, startTime);
+            stmt.setTimestamp(7, endTime);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true; // Conflict found
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // No conflict
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
     public int getAge() {
         return age;
     }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     public void setAge(int age) {
         this.age = age;
     }
-
-
-
 }

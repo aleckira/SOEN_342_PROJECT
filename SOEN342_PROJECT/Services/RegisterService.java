@@ -94,6 +94,52 @@ public class RegisterService {
         }
     }
 
+    public static boolean registerGuardian(String name, String phoneNumber, int age, String minors) {
+        String query = "INSERT INTO guardians (name, phone_number, age) VALUES (?, ?, ?)";
+
+        try (Connection connection = DbConnectionService.connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, phoneNumber);
+            stmt.setInt(3, age);
+
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int guardianId = generatedKeys.getInt(1);
+                        return insertMinors(minors, guardianId);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static boolean insertMinors(String minors, int guardianId) {
+        String[] minorNames = minors.split(",");
+        String query = "INSERT INTO minors (name, guardian_id) VALUES (?, ?)";
+
+        try (Connection connection = DbConnectionService.connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            for (String minorName : minorNames) {
+                stmt.setString(1, minorName.trim());
+                stmt.setInt(2, guardianId);
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private static boolean isPhoneNumberUnique(String phoneNumber, String typeOfActor) {
         String query = typeOfActor == "client" ? "SELECT COUNT(*) FROM \"public\".\"clients\" WHERE \"phone_number\" = ?" :
                 "SELECT COUNT(*) FROM \"public\".\"instructors\" WHERE \"phone_number\" = ?";

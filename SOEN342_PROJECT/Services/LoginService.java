@@ -1,124 +1,97 @@
 package Services;
 
-
 import PackageActorsAndObjects.Admin;
 import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Guardian;
 import PackageActorsAndObjects.Instructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static Services.DbConnectionService.connectToDb;
-
 
 public class LoginService {
+
     public static boolean loginAdmin(String name, String password) {
-        PreparedStatement stmt = null;
-        String query = "SELECT \"name\", \"password\" FROM \"admin\" LIMIT 1";
-        ResultSet rs = null;
-        String adminName = null;
-        String adminPassword = null;
+        String query = "SELECT * FROM admins WHERE name = ? AND password = ?";
+        try (Connection connection = DbConnectionService.connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
-        try {
-            Connection connection = connectToDb();
-            stmt = connection.prepareStatement(query);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                adminName = rs.getString("name");
-                adminPassword = rs.getString("password");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (adminName != null && adminPassword != null && name.equals(adminName) && password.equals(adminPassword)) {
-            Admin admin = Admin.getInstance(name, password);
-            UserSession.setCurrentUserRole("admin", admin); // Store the role and admin instance
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean loginInstructor(String name, String phoneNumber) {
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        String query = "SELECT \"id\", \"name\", \"phone_number\", \"specialty\", \"cities\" FROM \"public\".\"instructors\" WHERE \"name\" = ? AND \"phone_number\" = ?";
-
-        try {
-            Connection connection = connectToDb();
-            stmt = connection.prepareStatement(query);
             stmt.setString(1, name);
-            stmt.setString(2, phoneNumber);
-            rs = stmt.executeQuery();
+            stmt.setString(2, password);
 
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String instructorName = rs.getString("name");
-                String instructorPhoneNumber = rs.getString("phone_number");
-                String specialty = rs.getString("specialty");
-                String cities = rs.getString("cities");
-                ArrayList<String> citiesArrList = new ArrayList<>(Arrays.asList(cities.split(",\\s*")));
-
-                Instructor instructor = new Instructor(id, instructorName, instructorPhoneNumber, specialty, citiesArrList);
-                UserSession.setCurrentUserRole("instructor", instructor); // Store the role and instructor instance
-                return true;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Admin admin = new Admin(rs.getString("name"), password);
+                    UserSession.setCurrentUserRole("admin", admin);
+                    return true;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return false;
     }
 
     public static boolean loginClient(String name, String phoneNumber) {
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        String query = "SELECT \"id\", \"name\", \"phone_number\", \"age\" FROM \"public\".\"clients\" WHERE \"name\" = ? AND \"phone_number\" = ?";
+        String query = "SELECT * FROM clients WHERE name = ? AND phone_number = ?";
+        try (Connection connection = DbConnectionService.connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
-        try {
-            Connection connection = connectToDb();
-            stmt = connection.prepareStatement(query);
             stmt.setString(1, name);
             stmt.setString(2, phoneNumber);
-            rs = stmt.executeQuery();
 
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String clientName = rs.getString("name");
-                String clientPhoneNumber = rs.getString("phone_number");
-                int age = rs.getInt("age");
-
-
-                Client client = new Client(id, clientName, clientPhoneNumber, age);
-                UserSession.setCurrentUserRole("client", client); // Store the role and client instance
-                return true;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Client client = new Client(rs.getInt("id"), rs.getString("name"), rs.getString("phone_number"), rs.getInt("age"));
+                    UserSession.setCurrentUserRole("client", client);
+                    return true;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean loginInstructor(String name, String phoneNumber) {
+        String query = "SELECT * FROM instructors WHERE name = ? AND phone_number = ?";
+        try (Connection connection = DbConnectionService.connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, phoneNumber);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Instructor instructor = new Instructor(rs.getInt("id"), rs.getString("name"), rs.getString("phone_number"), rs.getString("specialty"), null);
+                    UserSession.setCurrentUserRole("instructor", instructor);
+                    return true;
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean loginGuardian(String name, String phoneNumber) {
+        String query = "SELECT * FROM guardians WHERE name = ? AND phone_number = ?";
+        try (Connection connection = DbConnectionService.connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, phoneNumber);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Guardian guardian = new Guardian(rs.getInt("id"), rs.getString("name"), rs.getString("phone_number"), rs.getInt("age"));
+                    UserSession.setCurrentUserRole("guardian", guardian);
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }

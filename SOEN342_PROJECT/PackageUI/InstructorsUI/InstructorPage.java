@@ -31,7 +31,7 @@ public class InstructorPage extends JFrame {
         panel.add(loginLabel);
 
         // Create buttons for User, Instructor, and Admin logins
-        JButton viewAllOfferings = new JButton("View all offerings");
+        JButton viewAllOfferings = new JButton("View all offerings, select an offering to teach");
         JButton logout = new JButton("Logout");
         // Add action listeners for each button
         viewAllOfferings.addActionListener(new ActionListener() {

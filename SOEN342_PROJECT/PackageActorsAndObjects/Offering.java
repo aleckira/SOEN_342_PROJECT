@@ -14,7 +14,6 @@ public class Offering {
     private String classType;
     private int capacity;
     private int spotsLeft;
-    private String mode;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int instructorId;
@@ -25,14 +24,13 @@ public class Offering {
         this.city = city;
         this.location = location;
         this.classType = classType;
-        this.mode = capacity == 1 ? "private" : "group";
         this.capacity = capacity;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.spotsLeft = isOfferingAvailable(id, capacity);
+        this.spotsLeft = getSpotsLeft(id, capacity);
         this.instructorId = instructorId;
     }
-    private static int isOfferingAvailable(int offeringId, int capacity) {
+    private static int getSpotsLeft(int offeringId, int capacity) {
         String query = "SELECT COUNT(*) FROM public.bookings WHERE offering_id = ?"; // Count rows with the given offering_id
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -42,7 +40,7 @@ public class Offering {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int numberOfBookings = rs.getInt(1); // Get the count of bookings for this offering
-                    return capacity - numberOfBookings; // Return true if capacity is greater than bookings
+                    return capacity - numberOfBookings;
                 }
             }
         } catch (SQLException e) {
@@ -111,8 +109,6 @@ public class Offering {
     public void setCapacity(int capacity) { this.capacity = capacity; }
     public int getSpotsLeft() { return spotsLeft; }
     public void setSpotsLeft(int spotsLeft) { this.spotsLeft = spotsLeft; }
-    public String getMode() { return mode; }
-    public void setMode(String mode) { this.mode = mode; }
     public LocalDateTime getStartTime() { return startTime; }
     public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
     public LocalDateTime getEndTime() { return endTime; }

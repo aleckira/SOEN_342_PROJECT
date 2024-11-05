@@ -13,9 +13,11 @@ import java.text.SimpleDateFormat;
 
 public class AddOffering extends JFrame {
 
-    private JTextField classTypeField, locationField, capacityField, startTimeField, endTimeField; // Fields for adding new offering
+    private JTextField locationField, capacityField, startTimeField, endTimeField; // Fields for adding new offering
     private JRadioButton montrealRadioButton, lavalRadioButton, quebecCityRadioButton, gatineauRadioButton, sherbrookeRadioButton; // Radio buttons for cities
     private JPanel cityPanel; // Panel for city radio buttons
+    private JRadioButton swimmingRadioButton, judoRadioButton, mmaRadioButton, basketballRadioButton, soccerRadioButton, yogaRadioButton; // Radio buttons for class types
+    private JPanel classTypePanel; // Panel for class type radio buttons
     Admin admin = (Admin) UserSession.getCurrentUser();
 
     public AddOffering() {
@@ -30,7 +32,6 @@ public class AddOffering extends JFrame {
         addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.Y_AXIS));
         addPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding
 
-        classTypeField = new JTextField();
         locationField = new JTextField();
         capacityField = new JTextField();
         startTimeField = new JTextField();
@@ -52,7 +53,40 @@ public class AddOffering extends JFrame {
 
         // Add labels and fields to the panel
         addPanel.add(new JLabel("Class Type:"));
-        addPanel.add(classTypeField);
+
+        // Radio buttons for class types
+        swimmingRadioButton = new JRadioButton("Swimming");
+        judoRadioButton = new JRadioButton("Judo");
+        mmaRadioButton = new JRadioButton("MMA");
+        basketballRadioButton = new JRadioButton("Basketball");
+        soccerRadioButton = new JRadioButton("Soccer");
+        yogaRadioButton = new JRadioButton("Yoga");
+
+        // Add class type radio buttons to a ButtonGroup
+        ButtonGroup classTypeGroup = new ButtonGroup();
+        classTypeGroup.add(swimmingRadioButton);
+        classTypeGroup.add(judoRadioButton);
+        classTypeGroup.add(mmaRadioButton);
+        classTypeGroup.add(basketballRadioButton);
+        classTypeGroup.add(soccerRadioButton);
+        classTypeGroup.add(yogaRadioButton);
+
+        // Panel for the class type radio buttons
+        classTypePanel = new JPanel();
+        classTypePanel.setLayout(new BoxLayout(classTypePanel, BoxLayout.Y_AXIS));
+        classTypePanel.add(swimmingRadioButton);
+        classTypePanel.add(judoRadioButton);
+        classTypePanel.add(mmaRadioButton);
+        classTypePanel.add(basketballRadioButton);
+        classTypePanel.add(soccerRadioButton);
+        classTypePanel.add(yogaRadioButton);
+
+        // Wrap class type panel in JScrollPane to make it scrollable
+        JScrollPane classTypeScrollPane = new JScrollPane(classTypePanel);
+        classTypeScrollPane.setPreferredSize(new Dimension(200, 150)); // Set preferred size for scrolling
+        classTypeScrollPane.setMaximumSize(new Dimension(200, 150)); // Limit the maximum size
+
+        addPanel.add(classTypeScrollPane); // Add the scroll pane to the main panel
         addPanel.add(new JLabel("Location:"));
         addPanel.add(locationField);
         addPanel.add(new JLabel("Cities:"));
@@ -100,7 +134,20 @@ public class AddOffering extends JFrame {
 
     // Method to add offerings
     private void addOffering() {
-        String classType = classTypeField.getText();
+        String classType = ""; // Variable to store the selected class type
+
+        // Collect selected class type
+        if (swimmingRadioButton.isSelected()) classType = "Swimming";
+        else if (judoRadioButton.isSelected()) classType = "Judo";
+        else if (mmaRadioButton.isSelected()) classType = "MMA";
+        else if (basketballRadioButton.isSelected()) classType = "Basketball";
+        else if (soccerRadioButton.isSelected()) classType = "Soccer";
+        else if (yogaRadioButton.isSelected()) classType = "Yoga";
+        else {
+            JOptionPane.showMessageDialog(this, "Please select a class type", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         String location = locationField.getText();
         String city = ""; // Variable to store the selected city
 
@@ -140,7 +187,7 @@ public class AddOffering extends JFrame {
             return;
         }
 
-        if (classType.isEmpty() || location.isEmpty()) {
+        if (location.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -149,33 +196,35 @@ public class AddOffering extends JFrame {
         if (!isUnique) {
             JOptionPane.showMessageDialog(this, "Offering not unique", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            boolean addOfferingSuccess = admin.enterNewOffering(classType, location, city, capacity, startTime, endTime);
-
-            if (addOfferingSuccess) {
-                JOptionPane.showMessageDialog(this, "Offering added successfully!");
+            boolean addSuccessful = admin.enterNewOffering(classType, location, city, capacity, startTime, endTime);
+            if (addSuccessful) {
+                JOptionPane.showMessageDialog(this, "Offering added successfully");
+                clearFields(); // Clear fields after successful addition
             } else {
                 JOptionPane.showMessageDialog(this, "Error adding offering", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            clearFields();
         }
     }
 
-    // Helper method to parse the timestamp from a string
-    private Timestamp parseTimestamp(String timestampStr) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        java.util.Date parsedDate = dateFormat.parse(timestampStr);
+    private Timestamp parseTimestamp(String input) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date parsedDate = format.parse(input);
         return new Timestamp(parsedDate.getTime());
     }
 
-    // Method to clear the input fields after adding an offering
     private void clearFields() {
-        classTypeField.setText("");
         locationField.setText("");
         capacityField.setText("");
         startTimeField.setText("");
         endTimeField.setText("");
-
-        // Clear city radio buttons
+        endTimeField.setText("");
+        // Clear radio button selections
+        swimmingRadioButton.setSelected(false);
+        judoRadioButton.setSelected(false);
+        mmaRadioButton.setSelected(false);
+        basketballRadioButton.setSelected(false);
+        soccerRadioButton.setSelected(false);
+        yogaRadioButton.setSelected(false);
         montrealRadioButton.setSelected(false);
         lavalRadioButton.setSelected(false);
         quebecCityRadioButton.setSelected(false);

@@ -10,6 +10,5 @@ public abstract class Actor {
     }
     public String getName() {return name;}
     //abstract method that will get the corresponding correct offerings for each actor type
-    public abstract ArrayList<Offering> getOfferingsForViewing();
 
 }

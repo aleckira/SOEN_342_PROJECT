@@ -282,8 +282,19 @@ public class OfferingsPage extends JFrame {
     private void displayOfferings() {
         // Clear the table before displaying new data
         tableModel.setRowCount(0);
-
-        ArrayList<Offering> displayedOfferings = user.getOfferingsForViewing();
+        ArrayList<Offering> displayedOfferings = new ArrayList<Offering>();
+        if (role.equals("client")) {
+            Client c = (Client) user;
+            displayedOfferings = c.getOfferingsForViewing();
+        }
+        if (role.equals("instructor")) {
+            Instructor i = (Instructor) user;
+            displayedOfferings = i.getOfferingsForViewing();
+        }
+        if (role.equals("admin")) {
+            Admin a = (Admin) user;
+            displayedOfferings = a.getOfferingsForViewing();
+        }
 
         // Iterate over each offering in the list and add it to the table model
         for (Offering offering : displayedOfferings) {

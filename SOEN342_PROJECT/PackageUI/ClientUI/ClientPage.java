@@ -35,7 +35,7 @@ public class ClientPage extends JFrame {
 
         // Create buttons for User, Instructor, and Admin logins
         JButton viewAllAvailableOfferings = new JButton("View available offerings and make bookings");
-        JButton viewBookingsBtn = new JButton("View your bookings");
+        JButton viewBookingsBtn = new JButton("View your bookings, cancel bookings");
         JButton logout = new JButton("Logout");
         // Add action listeners for each button
         viewAllAvailableOfferings.addActionListener(new ActionListener() {

@@ -1,6 +1,5 @@
 package PackageActorsAndObjects;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +24,6 @@ public class Instructor extends Actor {
         this.cities = cities;
     }
 
-    @Override
     public ArrayList<Offering> getOfferingsForViewing() {
         ArrayList<Offering> offerings = new ArrayList<>();
         String query = "SELECT * FROM public.offerings";

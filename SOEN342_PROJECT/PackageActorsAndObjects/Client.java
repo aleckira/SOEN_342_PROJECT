@@ -20,7 +20,6 @@ public class Client extends Actor {
         this.age = age;
 
     }
-    @Override
     public ArrayList<Offering> getOfferingsForViewing() {
         ArrayList<Offering> offerings = new ArrayList<>();
         String query = "SELECT * FROM public.offerings WHERE instructor_id IS NOT NULL";

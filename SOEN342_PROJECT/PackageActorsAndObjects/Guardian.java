@@ -185,6 +185,25 @@ public class Guardian extends Actor {
         return false; // No conflict
     }
 
+    public String getMinorNameForBooking(int bookingId) {
+        String query = "SELECT m.name FROM minors m INNER JOIN bookings b ON m.id = b.minor_id WHERE b.id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, bookingId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("name"); // Return minor's name
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no minor found
+    }
+
+
 
     public int getId() {
         return id;

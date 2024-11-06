@@ -183,9 +183,14 @@ public class BookingsPage extends JFrame {
                     if (selectedRow != -1) {
                         int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
                         Guardian guardian = (Guardian) user;
+
+                        // Fetch the minor's name associated with this booking
+                        String minorName = guardian.getMinorNameForBooking(bookingId); // This method should already be in the Guardian class
+
                         boolean cancelSuccess = guardian.cancelBooking(bookingId);
                         if (cancelSuccess) {
-                            JOptionPane.showMessageDialog(BookingsPage.this, "Booking canceled.");
+                            JOptionPane.showMessageDialog(BookingsPage.this,
+                                    "Booking canceled for minor: " + (minorName != null ? minorName : "Unknown"));
                         } else {
                             JOptionPane.showMessageDialog(BookingsPage.this, "Booking cancel failed.");
                         }
@@ -195,7 +200,30 @@ public class BookingsPage extends JFrame {
                 }
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
+
+            actionButton = new JButton("View Minor");
+            actionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = bookingsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
+                        Guardian guardian = (Guardian) user;
+
+                        // Fetch the minor's name associated with this booking
+                        String minorName = guardian.getMinorNameForBooking(bookingId); // Implement this method in Guardian class
+
+                        // Display the minor's name in a dialog
+                        JOptionPane.showMessageDialog(BookingsPage.this,
+                                "Minor associated with this booking: " + (minorName != null ? minorName : "Unknown"));
+                    } else {
+                        JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
+                    }
+                }
+            });
+            buttonPanel.add(actionButton); // Add the "View Minor" button to the panel
         }
+
 
 
         refreshButton = new JButton("Refresh Bookings");

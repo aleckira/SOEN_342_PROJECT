@@ -30,7 +30,6 @@ public class EditOfferingPage extends JFrame {
         JTextField capacityField = new JTextField();
         JTextField startTimeField = new JTextField("yyyy-MM-dd HH:mm:ss");
         JTextField endTimeField = new JTextField("yyyy-MM-dd HH:mm:ss");
-        JTextField instructorIdField = new JTextField();
 
         JButton submitButton = new JButton("Edit Offering");
 
@@ -52,9 +51,6 @@ public class EditOfferingPage extends JFrame {
         add(new JLabel("End Time (yyyy-MM-dd HH:mm:ss):"));
         add(endTimeField);
 
-        add(new JLabel("Instructor ID:"));
-        add(instructorIdField);
-
         add(new JLabel());  // Empty space
         add(submitButton);
 
@@ -68,7 +64,6 @@ public class EditOfferingPage extends JFrame {
                     int capacity = Integer.parseInt(capacityField.getText());
                     LocalDateTime startTime = LocalDateTime.parse(startTimeField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     LocalDateTime endTime = LocalDateTime.parse(endTimeField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                    int instructorId = Integer.parseInt(instructorIdField.getText());
 
                     if (capacity <= 1) {
                         JOptionPane.showMessageDialog(EditOfferingPage.this, "Capacity must be greater than 1.");
@@ -77,11 +72,6 @@ public class EditOfferingPage extends JFrame {
 
                     Admin admin = (Admin) UserSession.getCurrentUser();
 
-                    // Validate the instructor ID
-                    if (!admin.isInstructorValid(instructorId)) {
-                        JOptionPane.showMessageDialog(EditOfferingPage.this, "Instructor ID does not exist.");
-                        return;
-                    }
 
                     boolean isUnique = admin.isNewOfferingUnique(location, city, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime));
 
@@ -90,7 +80,7 @@ public class EditOfferingPage extends JFrame {
                         return;
                     }
 
-                    boolean success = admin.editOffering(offeringId, city, location, classType, capacity, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime), instructorId);
+                    boolean success = admin.editOffering(offeringId, city, location, classType, capacity, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime));
 
                     if (success) {
                         JOptionPane.showMessageDialog(EditOfferingPage.this, "Offering updated successfully.");

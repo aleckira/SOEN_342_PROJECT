@@ -1,0 +1,75 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.4">
+  <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel dx="1669" dy="426" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-2" value="" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" parent="1" vertex="1">
+          <mxGeometry x="80" y="50" width="20" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-3" value="&lt;u&gt;:Instructor&lt;/u&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="50" y="20" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-4" value="&lt;u&gt;:System&lt;/u&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" parent="1" vertex="1">
+          <mxGeometry x="325" y="50" width="100" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-15" value="ViewOfferingsPage(instructor)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="0.0003" relative="1" as="geometry">
+            <mxPoint x="89.99857142857144" y="130" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="130" />
+            </Array>
+            <mxPoint x="374.57" y="130" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QT0idfkxXLzTyoDSYEQH-17" value="new ViewOfferingsPage(instructor)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="374.57" y="160" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="160" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="160" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wPXZ8VNcLeqiLXzsY5N9-1" value="&lt;div&gt;-ViewOfferingsPage is a UI class that take an actor (admin, instructor or client instance)&lt;/div&gt;-For Instructors, ViewOfferingsPage will have a table with all offerings that are NOT at full capacity, regardless of whether they have been assigned to an instructor or not&lt;div&gt;-An Instructor can choose an offering to take, so long as it doesn&#39;t have an instructor already assigned to it&lt;/div&gt;&lt;div&gt;-This will associate the instructor to the offering in the DB&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
+          <mxGeometry x="450" y="110" width="360" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="5JUKfk9W7O7YM97PZG29-1" value="takeOffering(offering)" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" parent="1" edge="1">
+          <mxGeometry x="0.0003" relative="1" as="geometry">
+            <mxPoint x="89.99857142857144" y="190" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="190" />
+            </Array>
+            <mxPoint x="374.57" y="190" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5JUKfk9W7O7YM97PZG29-2" value="confirmation" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="374.57" y="250" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="250" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="250" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AOGXBnjnHd7u9IUKuHr0-1" value="associate instructor to Offering in DB" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="374.57" y="220" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="180.07" y="220" />
+            </Array>
+            <mxPoint x="89.99857142857144" y="220" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="joDt2nWbmkYWZDt66dfc-1" value="&lt;u&gt;Instructor Take Offering Scenario&lt;/u&gt;&lt;div&gt;1. Instructor logs in to the system.&lt;/div&gt;&lt;div&gt;2. Instructor clicks on &quot;View all offerings, select an offering to teach&quot;&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="-420" y="120" width="370" height="140" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

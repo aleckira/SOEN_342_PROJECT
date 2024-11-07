@@ -266,8 +266,8 @@ public class Admin extends Actor {
             return false;
         }
     }
-    public boolean editOffering(int offeringId, String city, String location, String classType, int capacity, Timestamp startTime, Timestamp endTime, int instructor_id) {
-        String query = "UPDATE offerings SET city = ?, location = ?, class_type = ?, capacity = ?, start_time = ?, end_time = ?, instructor_id = ? WHERE id = ?";
+    public boolean editOffering(int offeringId, String city, String location, String classType, int capacity, Timestamp startTime, Timestamp endTime) {
+        String query = "UPDATE offerings SET city = ?, location = ?, class_type = ?, capacity = ?, start_time = ?, end_time = ? WHERE id = ?";
 
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -278,8 +278,7 @@ public class Admin extends Actor {
             stmt.setInt(4, capacity);
             stmt.setTimestamp(5, startTime);
             stmt.setTimestamp(6, endTime);
-            stmt.setInt(7, instructor_id);
-            stmt.setInt(8, offeringId);
+            stmt.setInt(7, offeringId);
             int rowsUpdated = stmt.executeUpdate();
 
             return rowsUpdated > 0;

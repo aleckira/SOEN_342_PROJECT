@@ -5,10 +5,8 @@ import PackageActorsAndObjects.Client;
 import PackageActorsAndObjects.Guardian;
 import PackageActorsAndObjects.Instructor;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class LoginService {
 
@@ -64,7 +62,22 @@ public class LoginService {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Instructor instructor = new Instructor(rs.getInt("id"), rs.getString("name"), rs.getString("phone_number"), rs.getString("specialty"), null);
+                    Array cityArray = rs.getArray("cities");
+
+                    ArrayList<String> cities = new ArrayList<>();
+                    if (cityArray != null) {
+                        String[] cityList = (String[]) cityArray.getArray();
+                        for (String city : cityList) {
+                            cities.add(city);
+                        }
+                    }
+
+                    Instructor instructor = new Instructor(rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("phone_number"),
+                            rs.getString("specialty"),
+                            cities);
+
                     UserSession.setCurrentUserRole("instructor", instructor);
                     return true;
                 }
@@ -74,6 +87,7 @@ public class LoginService {
         }
         return false;
     }
+
 
     public static boolean loginGuardian(String name, String phoneNumber) {
         String query = "SELECT * FROM guardians WHERE name = ? AND phone_number = ?";

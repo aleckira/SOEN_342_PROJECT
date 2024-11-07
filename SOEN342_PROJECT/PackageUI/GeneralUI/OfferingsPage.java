@@ -184,7 +184,7 @@ public class OfferingsPage extends JFrame {
             ArrayList<String> instructorCities = instructor.getCities();
             int id = instructor.getId();
             // Button to perform actions based on selected row
-            actionButton = new JButton("Reserve");
+            actionButton = new JButton("Take on an offering");
             actionButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -193,8 +193,8 @@ public class OfferingsPage extends JFrame {
                         // Perform action based on the selected row
                         String classType = (String) tableModel.getValueAt(selectedRow, 1);
                         String cityFromRow = (String) tableModel.getValueAt(selectedRow, 3);
-                        String instructorIdString = (String) tableModel.getValueAt(selectedRow, 8);
-                        int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
+                        String instructorIdString = (String) tableModel.getValueAt(selectedRow, 9);
+                        String offeringIDString = tableModel.getValueAt(selectedRow, 0).toString();
 
                         // Remove any curly braces and trim the location
                         String formattedLocation = cityFromRow.replaceAll("[{}]", "").trim();
@@ -209,13 +209,14 @@ public class OfferingsPage extends JFrame {
                                 break; // Exit the loop as we found a match
                             }
                         }
-                        if (cityMatch && Objects.equals(instructorIdString, "")) {
+                        if (classType.equals(instructor.getSpecialty()) && cityMatch && Objects.equals(instructorIdString, "") && !Objects.equals(instructorIdString, "N/A") && !Objects.equals(offeringIDString, "N/A")) {
+                            int offeringID = Integer.parseInt(offeringIDString);
                             boolean takeOfferingSuccess = ((Instructor) user).takeOffering(offeringID); // Call the method to update the database
                             if (!takeOfferingSuccess) {
                                 JOptionPane.showMessageDialog(OfferingsPage.this, "Error updating instructor ID in the database.");
                             }
                             else {
-                                JOptionPane.showMessageDialog(OfferingsPage.this, "Reservation successful for class type: " + classType);
+                                JOptionPane.showMessageDialog(OfferingsPage.this, "Success! You are now teaching this class!");
                             }
 
                             // Update the database with the instructor ID for this class
@@ -224,7 +225,11 @@ public class OfferingsPage extends JFrame {
                         } else if (!cityMatch && instructorIdString.isEmpty()) {
                             // No match found
                             JOptionPane.showMessageDialog(OfferingsPage.this, "No matching city found for reservation.");
-                        } else if (!instructorIdString.isEmpty()) {
+                        }
+                        else if (!classType.equals(instructor.getSpecialty())) {
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "You don't teach this type of class!.");
+                        }
+                        else if (!instructorIdString.isEmpty()) {
                             JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson already booked by an instructor.");
                         }
                     } else {

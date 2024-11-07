@@ -253,8 +253,7 @@ public class OfferingsPage extends JFrame {
                         String startTimeStr = (String) tableModel.getValueAt(selectedRow, 4);
                         String endTimeStr = (String) tableModel.getValueAt(selectedRow, 5);
 
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
                         LocalDateTime startLocalDateTime = LocalDateTime.parse(startTimeStr, formatter);
                         LocalDateTime endLocalDateTime = LocalDateTime.parse(endTimeStr, formatter);
 
@@ -333,7 +332,7 @@ public class OfferingsPage extends JFrame {
                                         String startTimeStr = (String) tableModel.getValueAt(selectedRow, 4);
                                         String endTimeStr = (String) tableModel.getValueAt(selectedRow, 5);
 
-                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.S");
                                         LocalDateTime startLocalDateTime = LocalDateTime.parse(startTimeStr, formatter);
                                         LocalDateTime endLocalDateTime = LocalDateTime.parse(endTimeStr, formatter);
 

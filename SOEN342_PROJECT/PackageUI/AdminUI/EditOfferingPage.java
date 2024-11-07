@@ -83,7 +83,7 @@ public class EditOfferingPage extends JFrame {
                         return;
                     }
 
-                    boolean isUnique = Admin.isNewOfferingUnique(location, city, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime));
+                    boolean isUnique = admin.isNewOfferingUnique(location, city, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime));
 
                     if (!isUnique) {
                         JOptionPane.showMessageDialog(EditOfferingPage.this, "The offering is not unique. Please modify the details.");

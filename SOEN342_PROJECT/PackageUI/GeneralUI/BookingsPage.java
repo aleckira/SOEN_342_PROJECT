@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -84,25 +85,41 @@ public class BookingsPage extends JFrame {
             }
         });
         buttonPanel.add(actionButton); // Add the action button to the panel
-        actionButton = new JButton("View instructor name");
+        actionButton = new JButton("View instructor");
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = bookingsTable.getSelectedRow();
                 if (selectedRow != -1) {
                     String instructorIdString = (String) tableModel.getValueAt(selectedRow, 9);
-                    if (Objects.equals(instructorIdString, "")) {
+                    if (Objects.equals(instructorIdString, "") || Objects.equals(instructorIdString, "N/A")) {
                         JOptionPane.showMessageDialog(BookingsPage.this, "No instructor for this offering.");
-                    }
-                    else {
+                    } else {
                         int instructorId = Integer.parseInt(instructorIdString);
-                        String instructorName = Objects.requireNonNull(Instructor.fetchInstructorById(instructorId)).getName();
-                        JOptionPane.showMessageDialog(BookingsPage.this, "Instructor name: " + instructorName);
+                        Instructor instructor = Instructor.fetchInstructorById(instructorId);
+
+                        if (instructor != null) {
+                            String instructorName = instructor.getName();
+                            String phoneNumber = instructor.getPhoneNumber();
+                            ArrayList<String> cities = instructor.getCities();
+
+                            String citiesString = String.join(", ", cities);
+
+                            JOptionPane.showMessageDialog(
+                                    BookingsPage.this,
+                                    "Instructor name: " + instructorName
+                                            + "\nPhone number: " + phoneNumber
+                                            + "\nCities: " + citiesString
+                            );
+                        } else {
+                            JOptionPane.showMessageDialog(BookingsPage.this, "Instructor not found.");
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
                 }
             }
+
         });
         buttonPanel.add(actionButton); // Add the action button to the panel
 
@@ -117,13 +134,27 @@ public class BookingsPage extends JFrame {
                     if (selectedRow != -1) {
                         int bookingId = (int) tableModel.getValueAt(selectedRow, 0);
                         Client c = Offering.fetchClientForBooking(bookingId);
-                        JOptionPane.showMessageDialog(BookingsPage.this, "Client ID and name: " + c.getId() + " - " + c.getName());
+                        if (c != null) {
+                            JOptionPane.showMessageDialog(
+                                    BookingsPage.this,
+                                    "Client ID, Name, Phone Number, and Age: "
+                                            + c.getId() + " - " + c.getName() + " - " + c.getPhoneNumber() + " - " + c.getAge()
+                            );
+                        }
+                        else {
+                            Minor m = Offering.fetchMinorForBooking(bookingId);
+                            JOptionPane.showMessageDialog(
+                                    BookingsPage.this,
+                                    "Minor ID, Name, and Guardian Id: "
+                                            + m.getId() + " - " + m.getName() + " - " + m.getGuardianId()
+                            );
+                        }
                     } else {
                         JOptionPane.showMessageDialog(BookingsPage.this, "Please select a row first.");
                     }
                 }
-
             });
+
             buttonPanel.add(actionButton); // Add the action button to the panel
             Admin a = (Admin) user;
 

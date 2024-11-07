@@ -14,12 +14,12 @@ public class Offering {
     private String classType;
     private int capacity;
     private int spotsLeft;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Timestamp startTime;
+    private Timestamp endTime;
     private int instructorId;
     public Offering() {}
 
-    public Offering(int id, String city, String location, String classType, int capacity, LocalDateTime startTime, LocalDateTime endTime, int instructorId) {
+    public Offering(int id, String city, String location, String classType, int capacity, Timestamp startTime, Timestamp endTime, int instructorId) {
         this.id = id;
         this.city = city;
         this.location = location;
@@ -96,6 +96,33 @@ public class Offering {
         }
         return client;  // Return the single Client or null if not found
     }
+    public static Minor fetchMinorForBooking(int bookingId) {
+        Minor minor = null;
+        String query = """
+        SELECT m.id, m.name, m.guardianId
+        FROM public.minors m
+        INNER JOIN public.bookings b ON c.id = b.minor_id
+        WHERE b.id = ?  
+    """;
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, bookingId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {  // Check if a result is returned
+                    int minorId = rs.getInt("id");
+                    String name = rs.getString("name");
+                    int guardianId = rs.getInt("guardian_id");
+                    minor = new Minor(minorId, name, guardianId);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return minor;
+    }
 
 
 
@@ -109,10 +136,10 @@ public class Offering {
     public void setCapacity(int capacity) { this.capacity = capacity; }
     public int getSpotsLeft() { return spotsLeft; }
     public void setSpotsLeft(int spotsLeft) { this.spotsLeft = spotsLeft; }
-    public LocalDateTime getStartTime() { return startTime; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
+    public Timestamp getStartTime() { return startTime; }
+    public void setStartTime(Timestamp startTime) { this.startTime = startTime; }
+    public Timestamp getEndTime() { return endTime; }
+    public void setEndTime(Timestamp endTime) { this.endTime = endTime; }
     public String getClassType() { return classType; }
     public void setClassType(String classType) { this.classType = classType; }
     public int getInstructorId() { return instructorId; }

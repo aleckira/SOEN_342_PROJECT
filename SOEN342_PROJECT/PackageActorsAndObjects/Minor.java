@@ -38,12 +38,4 @@ public class Minor {
         this.guardianId = guardianId;
     }
 
-    @Override
-    public String toString() {
-        return "Minor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", guardianId=" + guardianId +
-                '}';
-    }
 }

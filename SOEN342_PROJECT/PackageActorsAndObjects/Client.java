@@ -34,8 +34,8 @@ public class Client extends Actor {
                 String classType = rs.getString("class_type");
                 int capacity = rs.getInt("capacity");
                 int instructorId = rs.getInt("instructor_id");
-                LocalDateTime startTime = rs.getObject("start_time", LocalDateTime.class);
-                LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
+                Timestamp startTime = rs.getTimestamp("start_time");
+                Timestamp endTime = rs.getTimestamp("end_time");
 
                 // Create an Offering object and add it to the list
                 Offering offering = new Offering(id, city, location, classType, capacity, startTime, endTime, instructorId);
@@ -69,8 +69,8 @@ public class Client extends Actor {
                     String classType = rs.getString("class_type");
                     int capacity = rs.getInt("capacity");
                     int instructorId = rs.getInt("instructor_id");
-                    LocalDateTime startTime = rs.getObject("start_time", LocalDateTime.class);
-                    LocalDateTime endTime = rs.getObject("end_time", LocalDateTime.class);
+                    Timestamp startTime = rs.getTimestamp("start_time");
+                    Timestamp endTime = rs.getTimestamp("end_time");
                     int bookingId = rs.getInt("booking_id");  // Retrieve booking ID
 
                     // Create an Offering object

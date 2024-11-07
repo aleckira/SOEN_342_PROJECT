@@ -93,7 +93,7 @@ public class OfferingsPage extends JFrame {
             }
         });
         buttonPanel.add(actionButton); // Add the action button to the panel
-        actionButton = new JButton("View instructor name");
+        actionButton = new JButton("View instructor");
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,19 +102,35 @@ public class OfferingsPage extends JFrame {
                     String instructorIdString = (String) tableModel.getValueAt(selectedRow, 9);
                     if (Objects.equals(instructorIdString, "") || Objects.equals(instructorIdString, "N/A")) {
                         JOptionPane.showMessageDialog(OfferingsPage.this, "No instructor for this offering.");
-                    }
-                    else {
+                    } else {
                         int instructorId = Integer.parseInt(instructorIdString);
-                        String instructorName = Objects.requireNonNull(Instructor.fetchInstructorById(instructorId)).getName();
-                        JOptionPane.showMessageDialog(OfferingsPage.this, "Instructor name: " + instructorName);
+                        Instructor instructor = Instructor.fetchInstructorById(instructorId);
+
+                        if (instructor != null) {
+                            String instructorName = instructor.getName();
+                            String phoneNumber = instructor.getPhoneNumber();
+                            ArrayList<String> cities = instructor.getCities();
+
+                            String citiesString = String.join(", ", cities);
+
+                            JOptionPane.showMessageDialog(
+                                    OfferingsPage.this,
+                                    "Instructor name: " + instructorName
+                                            + "\nPhone number: " + phoneNumber
+                                            + "\nCities: " + citiesString
+                            );
+                        } else {
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "Instructor not found.");
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
                 }
             }
+
         });
         buttonPanel.add(actionButton); // Add the action button to the panel
-        //for now just doing names but we should be able to see everything probably
+        //for now just doing names, but we should be able to see everything probably
         // Create action button based on user role
         if ("admin".equals(role)) {
             Admin a = (Admin) user;

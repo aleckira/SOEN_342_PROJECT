@@ -108,6 +108,30 @@ public class Admin extends Actor {
 
         return false;
     }
+    public boolean isEditedOfferingUnique(String location, String city, Timestamp startTime, Timestamp endTime, int offeringId) {
+        String query = "SELECT COUNT(*) FROM public.offerings " +
+                "WHERE city = ? AND location = ? AND start_time = ? AND end_time = ? AND id <> ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, city);
+            stmt.setString(2, location);
+            stmt.setTimestamp(3, startTime);
+            stmt.setTimestamp(4, endTime);
+            stmt.setInt(5, offeringId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count == 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 
     public boolean enterNewOffering(String classType, String location, String city, int capacity, Timestamp startTime, Timestamp endTime) {

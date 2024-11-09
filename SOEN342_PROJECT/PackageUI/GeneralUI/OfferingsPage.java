@@ -1,11 +1,12 @@
 package PackageUI.GeneralUI;
 
 import PackageActorsAndObjects.*;
-import PackageUI.AdminUI.AddOffering;
+import PackageUI.AdminUI.AddOfferingPage;
 import PackageUI.AdminUI.AdminPage;
 import PackageUI.AdminUI.EditOfferingPage;
 import PackageUI.ClientUI.ClientPage;
 import PackageUI.GuardianUI.GuardianPage;
+import PackageUI.GuardianUI.SelectMinorPage;
 import PackageUI.InstructorsUI.InstructorPage;
 import Services.UserSession;
 
@@ -21,8 +22,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import static Services.DbConnectionService.connectToDb;
 
 public class OfferingsPage extends JFrame {
 
@@ -138,7 +137,7 @@ public class OfferingsPage extends JFrame {
             actionButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new AddOffering();
+                    new AddOfferingPage();
                 }
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
@@ -300,65 +299,10 @@ public class OfferingsPage extends JFrame {
                         String availability = (String) tableModel.getValueAt(selectedRow, 6);
 
                         if ("Available".equals(availability)) {
-                            int offeringID = (int) tableModel.getValueAt(selectedRow, 0);
-                            Guardian guardian = (Guardian) user;
-
-                            // Open a new window with a radio selection of minors
-                            JFrame minorSelectionFrame = new JFrame("Select Minor");
-                            minorSelectionFrame.setSize(300, 200);
-                            minorSelectionFrame.setLayout(new BorderLayout());
-
-                            JPanel radioPanel = new JPanel();
-                            radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
-                            ButtonGroup group = new ButtonGroup();
-
-                            ArrayList<Minor> minors = guardian.getMinors(); // Assume this method exists in Guardian class
-                            for (Minor minor : minors) {
-                                JRadioButton radioButton = new JRadioButton(minor.getName());
-                                radioButton.setActionCommand(String.valueOf(minor.getId()));
-                                group.add(radioButton);
-                                radioPanel.add(radioButton);
-                            }
-
-                            JButton confirmButton = new JButton("Confirm");
-                            confirmButton.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    String selectedMinorId = group.getSelection().getActionCommand();
-                                    if (selectedMinorId != null) {
-                                        int minorId = Integer.parseInt(selectedMinorId);
-
-                                        // Check for time conflicts and proceed with booking
-                                        String startTimeStr = (String) tableModel.getValueAt(selectedRow, 4);
-                                        String endTimeStr = (String) tableModel.getValueAt(selectedRow, 5);
-
-                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.S");
-                                        LocalDateTime startLocalDateTime = LocalDateTime.parse(startTimeStr, formatter);
-                                        LocalDateTime endLocalDateTime = LocalDateTime.parse(endTimeStr, formatter);
-
-                                        Timestamp startTime = Timestamp.valueOf(startLocalDateTime);
-                                        Timestamp endTime = Timestamp.valueOf(endLocalDateTime);
-
-                                        if (guardian.isThereBookingTimeConflict(minorId, startTime, endTime)) {
-                                            JOptionPane.showMessageDialog(minorSelectionFrame, "The selected minor already has a booking at this time.");
-                                        } else {
-                                            boolean makeBookingSuccess = guardian.makeBooking(minorId, offeringID);
-                                            if (makeBookingSuccess) {
-                                                JOptionPane.showMessageDialog(minorSelectionFrame, "Lesson booked successfully.");
-                                                minorSelectionFrame.dispose();
-                                            } else {
-                                                JOptionPane.showMessageDialog(minorSelectionFrame, "Error booking lesson.");
-                                            }
-                                        }
-                                    } else {
-                                        JOptionPane.showMessageDialog(minorSelectionFrame, "Please select a minor.");
-                                    }
-                                }
-                            });
-
-                            minorSelectionFrame.add(radioPanel, BorderLayout.CENTER);
-                            minorSelectionFrame.add(confirmButton, BorderLayout.SOUTH);
-                            minorSelectionFrame.setVisible(true);
+                            int offeringId = (int) tableModel.getValueAt(selectedRow, 0);
+                            String startTime = (String) tableModel.getValueAt(selectedRow, 4);
+                            String endTime = (String) tableModel.getValueAt(selectedRow, 5);
+                            new SelectMinorPage(offeringId, startTime, endTime);
                         } else {
                             JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson fully booked already.");
                         }

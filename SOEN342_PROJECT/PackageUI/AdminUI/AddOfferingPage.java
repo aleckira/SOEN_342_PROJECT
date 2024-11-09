@@ -11,7 +11,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class AddOffering extends JFrame {
+public class AddOfferingPage extends JFrame {
 
     private JTextField locationField, capacityField, startTimeField, endTimeField; // Fields for adding new offering
     private JRadioButton montrealRadioButton, lavalRadioButton, quebecCityRadioButton, gatineauRadioButton, sherbrookeRadioButton; // Radio buttons for cities
@@ -20,7 +20,7 @@ public class AddOffering extends JFrame {
     private JPanel classTypePanel; // Panel for class type radio buttons
     Admin admin = (Admin) UserSession.getCurrentUser();
 
-    public AddOffering() {
+    public AddOfferingPage() {
         // Set up the frame
         setTitle("Add an Offering");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

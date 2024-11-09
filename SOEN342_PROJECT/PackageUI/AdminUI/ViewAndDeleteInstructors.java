@@ -25,7 +25,7 @@ public class ViewAndDeleteInstructors extends JFrame {
 
     public ViewAndDeleteInstructors() {
         // Set up the frame
-        setTitle("Clients");
+        setTitle("Instructors");
         setSize(1000, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame

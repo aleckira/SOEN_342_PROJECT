@@ -11,36 +11,36 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class AdminPage extends JFrame {
 
-    // Constructor for LoginPage
     public AdminPage() {
-        Admin a = (Admin)UserSession.getCurrentUser();
+        Admin a = (Admin) UserSession.getCurrentUser();
+
         // Set up the frame
         setTitle("Admin Page");
-        setSize(500, 400);
+        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the frame
 
         // Create the main panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 1, 10, 10)); // 4 rows, 1 column, with spacing
+        panel.setLayout(new GridLayout(8, 1, 10, 10)); // 8 rows, 1 column, with spacing
 
-        // Create the label for login selection
+        // Create the label for options selection
         JLabel loginLabel = new JLabel("Select among the following options", JLabel.CENTER);
         loginLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(loginLabel);
 
-        // Create buttons for User, Instructor, and Admin logins
+        // Create buttons for each action
         JButton viewOfferingsBtn = new JButton("View, add, edit and delete offerings");
         JButton viewBookingsBtn = new JButton("View, and delete all bookings");
         JButton deleteInstructorBtn = new JButton("View and delete instructors");
         JButton deleteClientBtn = new JButton("View and delete clients");
-        JButton logout = new JButton("Logout");
+        JButton deleteGuardianBtn = new JButton("View and delete guardians");
+        JButton deleteMinorBtn = new JButton("View and delete minors");
+        JButton logoutBtn = new JButton("Logout");
 
-
-
+        // Add action listeners for each button
         viewOfferingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,6 +48,7 @@ public class AdminPage extends JFrame {
                 new OfferingsPage();
             }
         });
+
         viewBookingsBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,6 +56,7 @@ public class AdminPage extends JFrame {
                 new BookingsPage();
             }
         });
+
         deleteInstructorBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,6 +64,7 @@ public class AdminPage extends JFrame {
                 new ViewAndDeleteInstructors();
             }
         });
+
         deleteClientBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,26 +72,45 @@ public class AdminPage extends JFrame {
                 new ViewAndDeleteClients();
             }
         });
-        logout.addActionListener(new ActionListener() {
+
+        deleteGuardianBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new ViewAndDeleteGuardians();
+            }
+        });
+
+        deleteMinorBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new ViewAndDeleteMinors();
+            }
+        });
+
+        logoutBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 UserSession.setCurrentUserRole(null, null);
-                new LoginPage(); // Create and display the offerings page
+                new LoginPage();
             }
         });
-
 
         // Add buttons to the panel
         panel.add(viewOfferingsBtn);
         panel.add(viewBookingsBtn);
         panel.add(deleteInstructorBtn);
         panel.add(deleteClientBtn);
-        panel.add(logout);
+        panel.add(deleteGuardianBtn);
+        panel.add(deleteMinorBtn);
+        panel.add(logoutBtn);
+
+        // Add panel to the frame
         add(panel);
 
         // Make the frame visible
         setVisible(true);
     }
-
 }

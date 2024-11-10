@@ -1,5 +1,7 @@
 package PackageActorsAndObjects;
 
+import Services.DbConnectionService;
+
 import javax.swing.*;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -97,32 +99,31 @@ public class Offering {
         return client;  // Return the single Client or null if not found
     }
     public static Minor fetchMinorForBooking(int bookingId) {
-        Minor minor = null;
         String query = """
-        SELECT m.id, m.name, m.guardianId
-        FROM public.minors m
-        INNER JOIN public.bookings b ON c.id = b.minor_id
-        WHERE b.id = ?  
+        SELECT m.id, m.name, m.guardian_id
+        FROM minors m
+        INNER JOIN bookings b ON b.minor_id = m.id
+        WHERE b.id = ?
     """;
 
-        try (Connection connection = connectToDb();
+        try (Connection connection = DbConnectionService.connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, bookingId);
-
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {  // Check if a result is returned
-                    int minorId = rs.getInt("id");
+                if (rs.next()) {
+                    int id = rs.getInt("id");
                     String name = rs.getString("name");
                     int guardianId = rs.getInt("guardian_id");
-                    minor = new Minor(minorId, name, guardianId);
+                    return new Minor(id, name, guardianId);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return minor;
+        return null;
     }
+
 
 
 

@@ -66,8 +66,8 @@ public class LoginPage extends JFrame {
         // Add buttons to the panel
         panel.add(clientLoginBtn);
         panel.add(instructorLoginBtn);
-        panel.add(adminLoginBtn);
         panel.add(guardianLoginBtn);
+        panel.add(adminLoginBtn);
 
         // Add panel to the frame
         add(panel);

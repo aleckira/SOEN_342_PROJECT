@@ -4,7 +4,6 @@ import PackageActorsAndObjects.*;
 import PackageUI.AdminUI.AdminPage;
 import PackageUI.ClientUI.ClientPage;
 import PackageUI.GuardianUI.GuardianPage;
-import PackageUI.InstructorsUI.InstructorPage;
 import Services.UserSession;
 
 import javax.swing.*;

@@ -100,7 +100,7 @@ public class OfferingsPage extends JFrame {
                 if (selectedRow != -1) {
                     String instructorIdString = (String) tableModel.getValueAt(selectedRow, 9);
                     if (Objects.equals(instructorIdString, "") || Objects.equals(instructorIdString, "N/A")) {
-                        JOptionPane.showMessageDialog(OfferingsPage.this, "No instructor for this offering.");
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "No instructor for this offering or offering not available.");
                     } else {
                         int instructorId = Integer.parseInt(instructorIdString);
                         Instructor instructor = Instructor.fetchInstructorById(instructorId);

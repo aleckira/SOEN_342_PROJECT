@@ -94,15 +94,24 @@ public class RegisterService {
         }
     }
 
-    public static boolean registerGuardian(String name, String phoneNumber, int age, String minors) {
+    public static boolean registerGuardian(String name, String phoneNumber, String age, String minors) {
         String query = "INSERT INTO guardians (name, phone_number, age) VALUES (?, ?, ?)";
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        if (!phoneNumber.matches("\\d{15}") || !isPhoneNumberUnique(phoneNumber, "guardian")) {
+            return false;
+        }
+        if (!age.trim().matches("\\d+") || Integer.parseInt(age) <= 0 || Integer.parseInt(age) < 18) {
+            return false;
+        }
 
         try (Connection connection = DbConnectionService.connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, name);
             stmt.setString(2, phoneNumber);
-            stmt.setInt(3, age);
+            stmt.setInt(3, Integer.parseInt(age));
 
             int rowsInserted = stmt.executeUpdate();
 
@@ -110,6 +119,7 @@ public class RegisterService {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int guardianId = generatedKeys.getInt(1);
+
                         return insertMinors(minors, guardianId);
                     }
                 }
@@ -141,8 +151,16 @@ public class RegisterService {
     }
 
     private static boolean isPhoneNumberUnique(String phoneNumber, String typeOfActor) {
-        String query = typeOfActor == "client" ? "SELECT COUNT(*) FROM \"public\".\"clients\" WHERE \"phone_number\" = ?" :
-                "SELECT COUNT(*) FROM \"public\".\"instructors\" WHERE \"phone_number\" = ?";
+        String query = "";
+        if (typeOfActor.equals("client")) {
+            query = "SELECT COUNT(*) FROM \"public\".\"clients\" WHERE \"phone_number\" = ?";
+        }
+        if (typeOfActor.equals("instructor")) {
+            query = "SELECT COUNT(*) FROM \"public\".\"instructors\" WHERE \"phone_number\" = ?";
+        }
+        if (typeOfActor.equals("guardian")) {
+            query = "SELECT COUNT(*) FROM \"public\".\"guardians\" WHERE \"phone_number\" = ?";
+        }
 
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {

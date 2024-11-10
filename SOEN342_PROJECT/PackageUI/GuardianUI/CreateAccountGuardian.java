@@ -26,10 +26,10 @@ public class CreateAccountGuardian extends JFrame {
         add(new JLabel("Name:"));
         add(nameField);
 
-        add(new JLabel("Phone Number:"));
+        add(new JLabel("Phone Number: (123456789012345)"));
         add(phoneField);
 
-        add(new JLabel("Age:"));
+        add(new JLabel("Age: (18+)"));
         add(ageField);
 
         add(new JLabel("Minors:"));
@@ -43,13 +43,13 @@ public class CreateAccountGuardian extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText();
                 String phoneNumber = phoneField.getText();
-                int age = Integer.parseInt(ageField.getText());
+                String age = ageField.getText().trim();
                 String minors = minorsField.getText();
 
                 if (RegisterService.registerGuardian(name, phoneNumber, age, minors)) {
                     JOptionPane.showMessageDialog(CreateAccountGuardian.this, "Guardian account created successfully.");
                     // Set the current user as the registered guardian
-                    Guardian guardian = new Guardian(name, phoneNumber, age);
+                    Guardian guardian = new Guardian(name, phoneNumber, Integer.parseInt(age));
                     UserSession.setCurrentUserRole("guardian", guardian);
 
                     // Open GuardianPage

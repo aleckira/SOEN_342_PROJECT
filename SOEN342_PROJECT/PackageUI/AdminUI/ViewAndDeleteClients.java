@@ -1,7 +1,6 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.*;
-import PackageUI.ClientUI.ClientPage;
 import Services.UserSession;
 
 import javax.swing.*;

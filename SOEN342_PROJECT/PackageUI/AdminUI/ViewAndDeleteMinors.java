@@ -1,13 +1,15 @@
 package PackageUI.AdminUI;
 
-import Services.DbConnectionService;
+import PackageActorsAndObjects.Admin;
+import PackageActorsAndObjects.Minor;
+import Services.UserSession;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.util.ArrayList;
 
 public class ViewAndDeleteMinors extends JFrame {
 
@@ -15,7 +17,7 @@ public class ViewAndDeleteMinors extends JFrame {
     private DefaultTableModel tableModel;
     private JButton deleteButton;
     private JButton backButton;
-
+    Admin user = (Admin) UserSession.getCurrentUser();
     public ViewAndDeleteMinors() {
         setTitle("View and Delete Minors");
         setSize(800, 400);
@@ -28,7 +30,7 @@ public class ViewAndDeleteMinors extends JFrame {
         JScrollPane scrollPane = new JScrollPane(minorsTable);
 
         // Load minors data into table
-        loadMinors();
+        displayMinors();
 
         // Delete button setup
         deleteButton = new JButton("Delete Selected Minor");
@@ -38,8 +40,14 @@ public class ViewAndDeleteMinors extends JFrame {
                 int selectedRow = minorsTable.getSelectedRow();
                 if (selectedRow != -1) {
                     int minorId = (int) tableModel.getValueAt(selectedRow, 0);
-                    deleteMinorAndRelatedBookings(minorId);
-                    loadMinors(); // Refresh the table after deletion
+                    boolean deleteMinorSuccess = user.deleteMinorAndRelatedBookings(minorId);
+                    if (deleteMinorSuccess) {
+                        JOptionPane.showMessageDialog(ViewAndDeleteMinors.this, "Successfully deleted Minor .");
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(ViewAndDeleteMinors.this, "Failed to delete Minor .");
+                    }
+                    displayMinors(); // Refresh the table after deletion
                 } else {
                     JOptionPane.showMessageDialog(ViewAndDeleteMinors.this, "Please select a minor to delete.");
                 }
@@ -67,55 +75,21 @@ public class ViewAndDeleteMinors extends JFrame {
         setVisible(true);
     }
 
-    private void loadMinors() {
-        // Clear existing rows in table model
+
+    private void displayMinors() {
+        // Clear the table before displaying new data
         tableModel.setRowCount(0);
 
-        String query = "SELECT id, name, guardian_id FROM minors";
-        try (Connection connection = DbConnectionService.connectToDb();
-             PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+        ArrayList<Minor> displayedMinors = user.getAllMinorsForViewing();
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                int guardianId = rs.getInt("guardian_id");
-                tableModel.addRow(new Object[]{id, name, guardianId});
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading minors.");
+        // Iterate over each offering in the list and add it to the table model
+        for (Minor minor : displayedMinors) {
+            int id = minor.getId();
+            String name = minor.getName();
+            int guardianId = minor.getGuardianId();
+            tableModel.addRow(new Object[]{id, name, guardianId});
         }
     }
 
-    private void deleteMinorAndRelatedBookings(int minorId) {
-        String deleteBookingsQuery = "DELETE FROM bookings WHERE minor_id = ?";
-        String deleteMinorQuery = "DELETE FROM minors WHERE id = ?";
 
-        try (Connection connection = DbConnectionService.connectToDb()) {
-            connection.setAutoCommit(false); // Start transaction
-
-            try (PreparedStatement deleteBookingsStmt = connection.prepareStatement(deleteBookingsQuery);
-                 PreparedStatement deleteMinorStmt = connection.prepareStatement(deleteMinorQuery)) {
-
-                // Delete associated bookings
-                deleteBookingsStmt.setInt(1, minorId);
-                deleteBookingsStmt.executeUpdate();
-
-                // Delete the minor
-                deleteMinorStmt.setInt(1, minorId);
-                deleteMinorStmt.executeUpdate();
-
-                connection.commit(); // Commit the transaction
-                JOptionPane.showMessageDialog(this, "Minor and all associated bookings deleted successfully.");
-            } catch (SQLException ex) {
-                connection.rollback(); // Rollback transaction on failure
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error deleting minor and associated bookings.");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

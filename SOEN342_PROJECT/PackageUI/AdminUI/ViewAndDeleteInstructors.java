@@ -1,7 +1,6 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.*;
-import PackageUI.GeneralUI.BookingsPage;
 import Services.UserSession;
 
 import javax.swing.*;

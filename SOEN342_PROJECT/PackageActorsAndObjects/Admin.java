@@ -1,5 +1,8 @@
 package PackageActorsAndObjects;
 
+import Services.DbConnectionService;
+
+import javax.swing.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -203,6 +206,48 @@ public class Admin extends Actor {
         }
         return instructors;
     }
+    public ArrayList<Guardian> getAllGuardiansForViewing() {
+        ArrayList<Guardian> guardians = new ArrayList<>();
+        String query = "SELECT * FROM public.guardians";
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String phoneNumber = rs.getString("phone_number");
+                int age = rs.getInt("age");
+
+
+                Guardian g = new Guardian(id,name,phoneNumber, age);
+                guardians.add(g);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return guardians;
+    }
+    public ArrayList<Minor> getAllMinorsForViewing() {
+        ArrayList<Minor> minors = new ArrayList<>();
+        String query = "SELECT * FROM public.minors";
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int guardianId = rs.getInt("guardian_id");
+
+                Minor m = new Minor(id,name,guardianId);
+                minors.add(m);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return minors;
+    }
     public boolean deleteOffering(int offeringId) {
         String deleteBookingsQuery = "DELETE FROM bookings WHERE offering_id = ?";
         String deleteOfferingQuery = "DELETE FROM offerings WHERE id = ?";
@@ -289,6 +334,72 @@ public class Admin extends Actor {
             e.printStackTrace();
             return false;
         }
+    }
+    public boolean deleteGuardianAndRelatedData(int guardianId) {
+        String deleteBookingsQuery = "DELETE FROM bookings WHERE minor_id IN (SELECT id FROM minors WHERE guardian_id = ?)";
+        String deleteMinorsQuery = "DELETE FROM minors WHERE guardian_id = ?";
+        String deleteGuardianQuery = "DELETE FROM guardians WHERE id = ?";
+
+        try (Connection connection = DbConnectionService.connectToDb()) {
+            connection.setAutoCommit(false); // Start transaction
+
+            try (PreparedStatement deleteBookingsStmt = connection.prepareStatement(deleteBookingsQuery);
+                 PreparedStatement deleteMinorsStmt = connection.prepareStatement(deleteMinorsQuery);
+                 PreparedStatement deleteGuardianStmt = connection.prepareStatement(deleteGuardianQuery)) {
+
+                // Delete associated bookings
+                deleteBookingsStmt.setInt(1, guardianId);
+                deleteBookingsStmt.executeUpdate();
+
+                // Delete associated minors
+                deleteMinorsStmt.setInt(1, guardianId);
+                deleteMinorsStmt.executeUpdate();
+
+                // Delete the guardian
+                deleteGuardianStmt.setInt(1, guardianId);
+                deleteGuardianStmt.executeUpdate();
+
+                connection.commit(); // Commit the transaction
+                return true;
+            } catch (SQLException ex) {
+                connection.rollback(); // Rollback transaction on failure
+                ex.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean deleteMinorAndRelatedBookings(int minorId) {
+        String deleteBookingsQuery = "DELETE FROM bookings WHERE minor_id = ?";
+        String deleteMinorQuery = "DELETE FROM minors WHERE id = ?";
+
+        try (Connection connection = DbConnectionService.connectToDb()) {
+            connection.setAutoCommit(false); // Start transaction
+
+            try (PreparedStatement deleteBookingsStmt = connection.prepareStatement(deleteBookingsQuery);
+                 PreparedStatement deleteMinorStmt = connection.prepareStatement(deleteMinorQuery)) {
+
+                // Delete associated bookings
+                deleteBookingsStmt.setInt(1, minorId);
+                deleteBookingsStmt.executeUpdate();
+
+                // Delete the minor
+                deleteMinorStmt.setInt(1, minorId);
+                deleteMinorStmt.executeUpdate();
+
+                connection.commit(); // Commit the transaction
+                return true;
+            } catch (SQLException ex) {
+                connection.rollback(); // Rollback transaction on failure
+                ex.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     public boolean editOffering(int offeringId, String city, String location, String classType, int capacity, Timestamp startTime, Timestamp endTime) {
         String query = "UPDATE offerings SET city = ?, location = ?, class_type = ?, capacity = ?, start_time = ?, end_time = ? WHERE id = ?";

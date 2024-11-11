@@ -15,12 +15,6 @@ public class Guardian extends Actor {
 
     public Guardian() {}
 
-    public Guardian(String name, String phoneNumber, int age) {
-        super(name);
-        this.phoneNumber = phoneNumber;
-        this.age = age;
-    }
-
     public Guardian(int id, String name, String phoneNumber, int age) {
         super(name);
         this.id = id;

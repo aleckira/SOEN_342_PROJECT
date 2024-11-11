@@ -2,6 +2,7 @@ package Services;
 
 
 import PackageActorsAndObjects.Client;
+import PackageActorsAndObjects.Guardian;
 import PackageActorsAndObjects.Instructor;
 
 import java.sql.Connection;
@@ -95,34 +96,37 @@ public class RegisterService {
     }
 
     public static boolean registerGuardian(String name, String phoneNumber, String age, String minors) {
-        String query = "INSERT INTO guardians (name, phone_number, age) VALUES (?, ?, ?)";
+        String query = "INSERT INTO guardians (name, phone_number, age) VALUES (?, ?, ?) RETURNING \"id\"";
+        int ageInt = Integer.parseInt(age);
         if (name == null || name.trim().isEmpty()) {
             return false;
         }
         if (!phoneNumber.matches("\\d{15}") || !isPhoneNumberUnique(phoneNumber, "guardian")) {
             return false;
         }
-        if (!age.trim().matches("\\d+") || Integer.parseInt(age) <= 0 || Integer.parseInt(age) < 18) {
+        if (!age.trim().matches("\\d+") || Integer.parseInt(age) < 18) {
+            return false;
+        }
+        if (minors.isEmpty()) {
             return false;
         }
 
         try (Connection connection = DbConnectionService.connectToDb();
-             PreparedStatement stmt = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setString(1, name);
             stmt.setString(2, phoneNumber);
             stmt.setInt(3, Integer.parseInt(age));
 
-            int rowsInserted = stmt.executeUpdate();
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
 
-            if (rowsInserted > 0) {
-                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int guardianId = generatedKeys.getInt(1);
-
-                        return insertMinors(minors, guardianId);
-                    }
-                }
+                Guardian g = new Guardian(id, name, phoneNumber, ageInt);
+                UserSession.setCurrentUserRole("guardian", g);
+                return insertMinors(minors, id);
+            } else {
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();

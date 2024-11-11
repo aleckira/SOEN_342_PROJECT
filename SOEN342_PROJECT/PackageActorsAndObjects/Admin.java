@@ -2,9 +2,7 @@ package PackageActorsAndObjects;
 
 import Services.DbConnectionService;
 
-import javax.swing.*;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -335,7 +333,7 @@ public class Admin extends Actor {
             return false;
         }
     }
-    public boolean deleteGuardianAndRelatedData(int guardianId) {
+    public boolean deleteGuardian(int guardianId) {
         String deleteBookingsQuery = "DELETE FROM bookings WHERE minor_id IN (SELECT id FROM minors WHERE guardian_id = ?)";
         String deleteMinorsQuery = "DELETE FROM minors WHERE guardian_id = ?";
         String deleteGuardianQuery = "DELETE FROM guardians WHERE id = ?";
@@ -371,7 +369,7 @@ public class Admin extends Actor {
         }
         return false;
     }
-    public boolean deleteMinorAndRelatedBookings(int minorId) {
+    public boolean deleteMinor(int minorId) {
         String deleteBookingsQuery = "DELETE FROM bookings WHERE minor_id = ?";
         String deleteMinorQuery = "DELETE FROM minors WHERE id = ?";
 
@@ -424,19 +422,5 @@ public class Admin extends Actor {
 
     }
 
-    public boolean isInstructorValid(int instructorId) {
-        String query = "SELECT COUNT(*) FROM instructors WHERE id = ?";
-        try (Connection connection = connectToDb();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, instructorId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
 }

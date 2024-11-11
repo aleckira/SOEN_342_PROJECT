@@ -48,15 +48,13 @@ public class CreateAccountGuardian extends JFrame {
 
                 if (RegisterService.registerGuardian(name, phoneNumber, age, minors)) {
                     JOptionPane.showMessageDialog(CreateAccountGuardian.this, "Guardian account created successfully.");
-                    // Set the current user as the registered guardian
-                    Guardian guardian = new Guardian(name, phoneNumber, Integer.parseInt(age));
-                    UserSession.setCurrentUserRole("guardian", guardian);
+
 
                     // Open GuardianPage
                     new GuardianPage();
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(CreateAccountGuardian.this, "Failed to create guardian account.");
+                    JOptionPane.showMessageDialog(CreateAccountGuardian.this, "Failed to create guardian account or minor accounts. Please check your input.");
                 }
             }
         });

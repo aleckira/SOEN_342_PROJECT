@@ -40,7 +40,7 @@ public class ViewAndDeleteMinors extends JFrame {
                 int selectedRow = minorsTable.getSelectedRow();
                 if (selectedRow != -1) {
                     int minorId = (int) tableModel.getValueAt(selectedRow, 0);
-                    boolean deleteMinorSuccess = user.deleteMinorAndRelatedBookings(minorId);
+                    boolean deleteMinorSuccess = user.deleteMinor(minorId);
                     if (deleteMinorSuccess) {
                         JOptionPane.showMessageDialog(ViewAndDeleteMinors.this, "Successfully deleted Minor .");
                     }

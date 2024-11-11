@@ -1,9 +1,7 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.Admin;
-import PackageActorsAndObjects.Client;
 import PackageActorsAndObjects.Guardian;
-import Services.DbConnectionService;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -11,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 import java.util.ArrayList;
 
 public class ViewAndDeleteGuardians extends JFrame {
@@ -43,7 +40,7 @@ public class ViewAndDeleteGuardians extends JFrame {
                 int selectedRow = guardiansTable.getSelectedRow();
                 if (selectedRow != -1) {
                     int guardianId = (int) tableModel.getValueAt(selectedRow, 0);
-                    boolean deleteGuardianSuccess = user.deleteGuardianAndRelatedData(guardianId);
+                    boolean deleteGuardianSuccess = user.deleteGuardian(guardianId);
                     if (deleteGuardianSuccess) {
                         JOptionPane.showMessageDialog(ViewAndDeleteGuardians.this, "Guardian deleted.");
                     }

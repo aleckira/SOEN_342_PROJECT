@@ -58,20 +58,38 @@ public class EditOfferingPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    if (locationField.getText() == null || locationField.getText().isEmpty() ||
+                            capacityField.getText() == null || capacityField.getText().isEmpty() ||
+                            startTimeField.getText() == null || startTimeField.getText().isEmpty() ||
+                            endTimeField.getText() == null || endTimeField.getText().isEmpty()) {
+
+                        JOptionPane.showMessageDialog(EditOfferingPage.this, "Please enter all fields.");
+                        return;
+                    }
                     String city = (String) cityDropdown.getSelectedItem();
                     String location = locationField.getText();
                     String classType = (String) classTypeDropdown.getSelectedItem();
-                    int capacity = Integer.parseInt(capacityField.getText());
+                    String capacityString = capacityField.getText();
+                    if (!capacityString.matches("\\d+")) {
+                        JOptionPane.showMessageDialog(EditOfferingPage.this, "Capacity must be an integer.");
+                        return;
+                    }
+                    int capacity = Integer.parseInt(capacityString);
                     LocalDateTime startTime = LocalDateTime.parse(startTimeField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     LocalDateTime endTime = LocalDateTime.parse(endTimeField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-                    if (capacity <= 1) {
+                    if (capacity < 1) {
                         JOptionPane.showMessageDialog(EditOfferingPage.this, "Capacity must be greater than 1.");
                         return;
                     }
 
+
                     Admin admin = (Admin) UserSession.getCurrentUser();
 
+                    if (Timestamp.valueOf(startTime).after(Timestamp.valueOf(endTime)) || Timestamp.valueOf(startTime).equals(Timestamp.valueOf(endTime))) {
+                        JOptionPane.showMessageDialog(EditOfferingPage.this, "End time must be after start time.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
 
                     boolean isUnique = admin.isEditedOfferingUnique(location, city, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime), offeringId);
 

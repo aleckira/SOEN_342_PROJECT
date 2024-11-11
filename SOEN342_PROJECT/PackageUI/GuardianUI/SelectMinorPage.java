@@ -28,7 +28,7 @@ public class SelectMinorPage extends JFrame {
         radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
         ButtonGroup group = new ButtonGroup();
 
-        ArrayList<Minor> minors = guardian.getMinors(); // Assume this method exists in Guardian class
+        ArrayList<Minor> minors = guardian.getMinors();
         for (Minor minor : minors) {
             JRadioButton radioButton = new JRadioButton(minor.getName());
             radioButton.setActionCommand(String.valueOf(minor.getId()));

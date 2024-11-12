@@ -141,6 +141,39 @@ public class OfferingsPage extends JFrame {
                 }
             });
             buttonPanel.add(actionButton); // Add the action button to the panel
+            actionButton = new JButton("Remove instructor");
+            actionButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = offeringsTable.getSelectedRow();
+                    if (selectedRow != -1) {
+                        int offeringId = (int) tableModel.getValueAt(selectedRow, 0);
+                        String instructorIdString = (String) tableModel.getValueAt(selectedRow, 9);
+                        int capacity = (int) tableModel.getValueAt(selectedRow, 7);
+                        int spotsLeft = (int) tableModel.getValueAt(selectedRow, 8);
+                        if (Objects.equals(instructorIdString, "") || Objects.equals(instructorIdString, "N/A")) {
+                            JOptionPane.showMessageDialog(OfferingsPage.this, "No instructor for this offering.");
+                        } else {
+                            if (capacity != spotsLeft) {
+                                JOptionPane.showMessageDialog(OfferingsPage.this, "There are clients associated to this offering!");
+                            }
+                            else {
+                                boolean removeInstructorSuccess = a.removeInstructorFromOffering(offeringId);
+                                if (removeInstructorSuccess) {
+                                    JOptionPane.showMessageDialog(OfferingsPage.this, "Removed instructor.");
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(OfferingsPage.this, "Failed to remove instructor.");
+                                }
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(OfferingsPage.this, "Please select a row first.");
+                    }
+                }
+
+            });
+            buttonPanel.add(actionButton); // Add the action button to the panel
             actionButton = new JButton("Edit");
             actionButton.addActionListener(new ActionListener() {
                 @Override
@@ -178,7 +211,7 @@ public class OfferingsPage extends JFrame {
             buttonPanel.add(actionButton); // Add the action button to the panel
         }
 
-        if ("instructor".equals(role)) {
+        if (role.equals("instructor")) {
             Instructor instructor = (Instructor) user;
             ArrayList<String> instructorCities = instructor.getCities();
             int id = instructor.getId();
@@ -345,7 +378,7 @@ public class OfferingsPage extends JFrame {
             //A client should only be able to see all Offering details for offerings that are not at capacity. They can see their bookings in another page
             //An instructor can't see Offering details for offerings that are at capacity, period.
             //An admin should only be able to see all Offering details for offerings that are not at capacity. They can see ALL bookings in another page
-            if (spotsLeft == 0) {
+            if (spotsLeft == 0 && !role.equals("admin")) {
                 tableModel.addRow(new Object[]{"N/A", "N/A", location, city, startTime, endTime, availability, "N/A", "N/A", "N/A"});
             }
             else {

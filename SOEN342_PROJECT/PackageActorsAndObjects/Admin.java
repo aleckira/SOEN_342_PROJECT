@@ -421,6 +421,21 @@ public class Admin extends Actor {
         }
 
     }
+    public boolean removeInstructorFromOffering(int offeringId) {
+        String query = "UPDATE offerings SET instructor_id = NULL WHERE id = ?";
+
+        try (Connection connection = connectToDb();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, offeringId);
+            int rowsUpdated = stmt.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package PackageUI.AdminUI;
 
 import PackageActorsAndObjects.Admin;
+import PackageActorsAndObjects.Offering;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -97,9 +98,9 @@ public class AddOfferingPage extends JFrame {
                         return;
                     }
 
-                    boolean success = admin.enterNewOffering(classType, location, city, capacity, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime));
+                    Offering newOffering = admin.enterNewOffering(classType, location, city, capacity, Timestamp.valueOf(startTime), Timestamp.valueOf(endTime));
 
-                    if (success) {
+                    if (newOffering != null) {
                         JOptionPane.showMessageDialog(AddOfferingPage.this, "Offering added successfully.");
                         dispose();  // Close the window
                     } else {

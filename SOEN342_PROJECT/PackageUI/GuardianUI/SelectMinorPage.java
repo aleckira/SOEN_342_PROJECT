@@ -2,6 +2,7 @@ package PackageUI.GuardianUI;
 
 import PackageActorsAndObjects.Guardian;
 import PackageActorsAndObjects.Minor;
+import PackageActorsAndObjects.MinorBooking;
 import Services.UserSession;
 
 import javax.swing.*;
@@ -57,8 +58,8 @@ public class SelectMinorPage extends JFrame {
                     if (guardian.isThereBookingTimeConflict(minorId, startTimeTimestamp, endTimeTimeStamp)) {
                         JOptionPane.showMessageDialog(SelectMinorPage.this, "The selected minor already has a booking at this time.");
                     } else {
-                        boolean makeBookingSuccess = guardian.makeBooking(minorId, offeringId);
-                        if (makeBookingSuccess) {
+                        MinorBooking newBooking = guardian.makeBooking(minorId, offeringId);
+                        if (newBooking != null) {
                             JOptionPane.showMessageDialog(SelectMinorPage.this, "Lesson booked successfully.");
                             SelectMinorPage.this.dispose();
                         } else {

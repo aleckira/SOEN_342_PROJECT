@@ -301,8 +301,8 @@ public class OfferingsPage extends JFrame {
                                     JOptionPane.showMessageDialog(OfferingsPage.this, "You already have booked an offering at this time and day.");
                                 }
                                 else {
-                                    boolean makeBookingSuccess = ((Client) user).makeBooking(offeringID);
-                                    if (!makeBookingSuccess) {
+                                    ClientBooking newBooking = ((Client) user).makeBooking(offeringID);
+                                    if (newBooking == null) {
                                         JOptionPane.showMessageDialog(OfferingsPage.this, "Error adding booking to the database.");
                                     }
                                     JOptionPane.showMessageDialog(OfferingsPage.this, "Lesson booked successfully.");

@@ -135,7 +135,7 @@ public class Admin extends Actor {
     }
 
 
-    public boolean enterNewOffering(String classType, String location, String city, int capacity, Timestamp startTime, Timestamp endTime) {
+    public Offering enterNewOffering(String classType, String location, String city, int capacity, Timestamp startTime, Timestamp endTime) {
         String query = "INSERT INTO offerings (class_type, location, city, capacity, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = connectToDb();
@@ -148,11 +148,11 @@ public class Admin extends Actor {
             stmt.setTimestamp(5, startTime);  // Use Timestamp for start_time
             stmt.setTimestamp(6, endTime);    // Use Timestamp for end_time
             stmt.executeUpdate();
-            return true;
+            return new Offering(city,location,classType,capacity,startTime,endTime);
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
     public ArrayList<Client> getAllClientsForViewing() {

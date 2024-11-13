@@ -86,7 +86,7 @@ public class Client extends Actor {
     }
 
 
-    public boolean makeBooking(int offeringId) {
+    public ClientBooking makeBooking(int offeringId) {
         String query = "INSERT INTO public.bookings (client_id, offering_id) VALUES (?, ?)"; // Insert a new row
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -96,15 +96,13 @@ public class Client extends Actor {
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                System.out.println("Booking added successfully.");
-                return true;
+                new ClientBooking(offeringId,this.getId());
             } else {
-                System.out.println("Failed to add booking.");
-                return false;
+                return null;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

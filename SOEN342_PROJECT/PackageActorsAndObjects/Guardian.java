@@ -89,19 +89,18 @@ public class Guardian extends Actor {
     }
 
 
-    public boolean makeBooking(int minorId, int offeringId) {
+    public MinorBooking makeBooking(int minorId, int offeringId) {
         String query = "INSERT INTO public.bookings (minor_id, offering_id) VALUES (?, ?)";
         try (Connection connection = connectToDb();
              PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, minorId);
             stmt.setInt(2, offeringId);
-            int rowsInserted = stmt.executeUpdate();
 
-            return rowsInserted > 0;
+            return new MinorBooking(offeringId,minorId);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

@@ -4,7 +4,6 @@ import Services.DbConnectionService;
 
 import javax.swing.*;
 import java.sql.*;
-import java.time.LocalDateTime;
 
 import static Services.DbConnectionService.connectToDb;
 
@@ -20,6 +19,18 @@ public class Offering {
     private Timestamp endTime;
     private int instructorId;
     public Offering() {}
+    //offering with no instructor
+    public Offering(String city, String location, String classType, int capacity, Timestamp startTime, Timestamp endTime) {
+        this.id = id;
+        this.city = city;
+        this.location = location;
+        this.classType = classType;
+        this.capacity = capacity;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.spotsLeft = getSpotsLeft(id, capacity);
+        this.instructorId = instructorId;
+    }
 
     public Offering(int id, String city, String location, String classType, int capacity, Timestamp startTime, Timestamp endTime, int instructorId) {
         this.id = id;

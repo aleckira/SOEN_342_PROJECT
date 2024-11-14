@@ -96,7 +96,7 @@ public class Client extends Actor {
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                new ClientBooking(offeringId,this.getId());
+                return new ClientBooking(offeringId,this.getId());
             } else {
                 return null;
             }
